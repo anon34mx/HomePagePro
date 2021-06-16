@@ -1,0 +1,20 @@
+[
+    {
+        "type":"group",
+        "name":"servers",
+        "content":[
+            {
+                "type":"link",
+                "name":"heroku",
+                "uri":"https://www.heroku.com/",
+                "icon":"https://www.heroku.com/favicon.ico"
+            }
+        ]
+    },
+    {
+        "type":"link",
+        "name":"facebook",
+        "uri":"https://www.facebook.com/",
+        "icon":"https://www.facebook.com/favicon.ico"
+    }
+]

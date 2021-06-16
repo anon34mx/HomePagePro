@@ -4,16 +4,75 @@
             *{
                 outline:1px solid tomato;
             }
+            html{
+                background-color: purple;
+                /* color: white; */
+            }
+            nav{
+                display: inline-flex;
+                width: 100%;
+                height: 38px;
+            }
+            nav div{
+                display: block;
+                width: 50%;
+                height: inherit;
+            }
+            section{
+                display: block;
+                width: 100%;
+            }
+            section .container{
+                display: inline-flex;
+                width: 100%;
+            }
+
+            .element{
+                width: 60px;
+                height: 60px;
+                margin: 5px;
+            }
+            .file{
+                background-color: lightblue;
+            }
+            .folder{
+                background-color: yellow;
+            }
+            .uriGroup{
+                background-color: blue;
+            }
+            .uri{
+                background-color: green;
+            }
         </style>
     </head>
     <body>
-    <div>
-        <h5>Files</h5>
-        <%-filesFound%>
-    </div>
-    <div>
-        <h5>Folders</h5>
-        <%-folders%>
-    </div>
+        <nav>
+            <div>menu</div>
+            <div>
+                <form action="">
+                    <input type="text" value="" place holder="Search">
+                    <input type="submit" value="Go!">
+                </form>
+            </div>
+        </nav>
+        <section>
+            <h5>Shortcuts</h5>
+            <div class="container">
+                <%-shortcuts%>
+            </div>
+        </section>
+        <section>
+            <h5>Files</h5>
+            <div class="container">
+                <%-filesFound%>
+            </div>
+        </section>
+        <section>
+            <h5>Folders</h5>
+            <div class="container">
+                <%-folders%>
+            </div>
+        </section>
     </body>
 </html>
