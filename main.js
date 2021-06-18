@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 let ejs = require('ejs');
 app.set('view engine', 'ejs');
-
+app.use('/assets', express.static('assets')); 
 var filesFound="",folders="",shortcuts="x";
 
 // respond with "hello world" when a GET request is made to the homepage
@@ -83,33 +83,26 @@ function renderFolder(path,file){
 function renderFile(path,file){
     // return `<a href="http://localhost/`+file+`">
     return `<a class="element file" href='http://localhost:8080/open?file=`+path+"/"+file+`'>
-        asd
+            <img src="x">
+            <span>`+file+`</span>    
     </a>`;
 }
-function renderUriGroup(element){
-    return `
-        <div class="element uriGroup">`+element.name+`</div>
-    `;
+function renderUriGroup(links){
+    var html=`
+        <div class="element uriGroup">
+            <img src="`+links.icon+`">
+            <span>`+links.name+`</span>
+            <div class="container">`;
+            links.content.forEach(link => {
+                html+=renderUri(link);
+            });
+    return html+=`</div></div>`;
 }
 function renderUri(element){
-    return `
-        <div class="element uri">`+element.name+`</div>
-    `;
-
+    return `<a class="element uri" href="`+element.uri+`">
+        <div class="">
+            <img src="`+element.icon+`">
+            `+element.name+`
+        </div>
+    </a>`;
 }
-// async function scanDir(path) {
-//     await fs.readdir(path, async function (err, files) {
-//         if (err) {
-//             return console.log('Unable to scan directory: ' + err);
-//         } 
-//         //listing all files using forEach
-//         await files.forEach(function (file) {
-//             console.log(file);
-//             if(fs.lstatSync(path+"/"+file).isDirectory()){
-//                 folders+=path+"/"+file+"<br>";
-//             }else{
-//                 filesFound+=path+"/"+file+"<br>";
-//             }
-//         });
-//     });
-// }

@@ -2,12 +2,19 @@
     {
         "type":"group",
         "name":"servers",
+        "icon":"./assets/servidor.png",
         "content":[
             {
                 "type":"link",
                 "name":"heroku",
                 "uri":"https://www.heroku.com/",
-                "icon":"https://www.heroku.com/favicon.ico"
+                "icon":"https://www.herokucdn.com/favicon.ico"
+            },
+            {
+                "type":"link",
+                "name":"hostinger",
+                "uri":"https://www.hostinger.mx/",
+                "icon":"https://assets.hostinger.com/images/favicons/favicon-97d9192479.ico"
             }
         ]
     },
@@ -16,5 +23,17 @@
         "name":"facebook",
         "uri":"https://www.facebook.com/",
         "icon":"https://www.facebook.com/favicon.ico"
+    },
+    {
+        "type":"link",
+        "name":"instagram",
+        "uri":"https://www.instagram.com/",
+        "icon":"https://www.instagram.com/favicon.ico"
+    },
+    {
+        "type":"link",
+        "name":"twitter",
+        "uri":"https://www.twitter.com/",
+        "icon":"https://www.twitter.com/favicon.ico"
     }
 ]

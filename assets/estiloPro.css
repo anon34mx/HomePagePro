@@ -1,0 +1,106 @@
+*{
+    outline:1px solid tomato;
+}
+html{
+    /* background-color: purple; */
+    /* color: white; */
+}
+nav{
+    display: inline-flex;
+    width: 100%;
+    height: 38px;
+}
+nav div{
+    display: block;
+    width: 50%;
+    height: inherit;
+}
+section{
+    display: block;
+    width: 100%;
+}
+section .container{
+    display: inline-flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.element{
+    width: 60px;
+    height: 100px;
+    margin: 5px;
+    padding: 5px;
+    display: block;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.element span{
+    width: 100%;
+    max-height: 42px;
+    display: block;
+    line-break: anywhere;
+    line-height: 0.9;
+}
+.element:hover{
+    background-color: gray;
+}
+.element img{
+    width: inherit;
+}
+.file{
+    /* background-color: lightblue; */
+}
+.folder{
+    /* background-color: yellow; */
+}
+.uriGroup{
+    /* background-color: blue; */
+}
+.uriGroup .container{
+    width: 80;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    /* left: 5px; */
+    top: -79px;
+    position: relative;
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+.uriGroup:hover > .container{
+    pointer-events: initial;
+    opacity: 1;
+    left: 65px;
+    padding-left: 5px;
+}
+/* .showGroupRight{
+    left: 65px !important;
+} */
+.uriGroup .container .uri{
+    background-color: pink;
+}
+.uriGroup .container :first-child{
+    margin-top: 0px;
+}
+.uriGroup .container .uri:hover{
+    background-color: gray;
+}
+
+
+.container{
+    display: block;
+}
+a{
+    width: auto;
+}
+.uri{
+    /* background-color: green; */
+}
+.uri:hover{
+    background-color: gray;
+}
+.uri div img{
+    width: 100%;
+}
