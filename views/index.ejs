@@ -1,16 +1,31 @@
 <html>
     <head>
-        <link rel="stylesheet" href="/assets/estiloPro.css">
+        <title>🏡 Home Pro</title>
         <script src="/assets/jquery-3.6.0.min.js"></script>
         <script src="/assets/controller.js"></script>
+        <link rel="stylesheet" href="/assets/styles/default/style.css">
     </head>
     <body>
         <nav>
-            <div>menu</div>
+            <div> </div>
             <div>
-                <form action="https://www.google.com/search?q=">
-                    <input type="text" value="" place holder="Search" name="q">
-                    <input type="submit" value="Go!">
+                <form action="https://www.google.com/search?q=" class="searchForm" id="searchForm">
+                    <input id="searchInput" type="text" value="" place holder="Search" name="q" autofocus>
+                    <input type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
+                    <!--  -->
+                    <ul class="engines">
+                        <div class="desp">▼</div>
+                        <!-- <li>
+                            <img src="https://cdn-static.ecosia.org/assets/images/ico/favicon.ico"
+                                alt="">
+                            span
+                        </li>
+                        <li>
+                            <img src="https://duckduckgo.com/favicon.ico" alt="">
+                            gugul 2
+                        </li> -->
+                        <%-engines%>
+                    </ul>
                 </form>
             </div>
         </nav>
@@ -32,5 +47,9 @@
                 <%-folders%>
             </div>
         </section>
+        <script src="https://www.google.com/complete/search?client=hp&hl=en&sugexp=msedr&gs_rn=62&gs_ri=hp&cp=1&gs_id=9c&q=a&xhr=t&callback=hello&callback=testApi"></script>
+        <!-- 
+            https://simplestepscode.com/autocomplete-data-tutorial/
+         -->
     </body>
 </html>

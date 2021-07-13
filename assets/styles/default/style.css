@@ -1,21 +1,90 @@
 *{
     /* outline:1px solid tomato; */
 }
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+         -o-user-select: none;
+            user-select: none;
+  }
+
 html{
     /* background-color: purple; */
     /* color: white; */
 }
+body{
+    background-color: black;
+}
 nav{
     display: inline-flex;
     width: 100%;
-    height: 38px;
+    height: 30px;
     font-family: Arial, Helvetica, sans-serif;
+    position: sticky;
+    top: 8px;
+    background: white;
 }
 nav div{
     display: block;
     width: 50%;
     height: inherit;
 }
+.searchForm{
+    display: flex;
+    height: inherit;
+}
+.engines{
+    display: block;
+    list-style: none;
+    background-color: red;
+    margin: 0px;
+    padding: 0px;
+    /* padding: 0px 4px; */
+    width: 24px;
+}
+.engines .desp{
+    padding:0px;
+    margin: 0px;
+    width: inherit;
+    height: 100%;
+    background: green;
+    text-align: center;
+    /* padding: 0px 4px; */
+}
+.engines:hover>li{
+    display: block;
+}
+.engines li{
+    display: none;
+    position: absolute;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 110px;
+    background-color: pink;
+    padding: 4px 2px;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
+    cursor: pointer;
+}
+.engines li img{
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+.engines li:hover{
+    background-color: hotpink;
+}
+
+
 section{
     display: block;
     width: 100%;
@@ -38,14 +107,14 @@ section .container{
 }
 
 .element{
-    width: 60px;
+    width: 64px;
     height: 100px;
     margin: 5px;
     padding: 5px;
     display: block;
     border-radius: 4px;
     text-decoration: none;
-
+    line-break: anywhere;
     background: #e6a8ff; /* Old browsers */
     background: -moz-linear-gradient(top,  #e6a8ff 0%, #7713f9 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top,  #e6a8ff 0%,#7713f9 100%); /* Chrome10-25,Safari5.1-6 */
@@ -62,6 +131,7 @@ section .container{
     display: block;
     line-break: anywhere;
     line-height: 0.9;
+    margin-top: 4px;
 }
 .element:hover{
     /* background-color: gray; */
@@ -95,13 +165,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
     height: auto;
     display: flex;
     flex-direction: column;
-    /* left: 5px; */
-    top: -79px;
+    left: 5px;
+    top: -87px;
     position: relative;
     display: flex;
     opacity: 0;
     pointer-events: none;
     transition: 0.3s;
+    padding-top: 2px;
 }
 .uriGroup:hover > .container{
     pointer-events: initial;
@@ -109,9 +180,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
     /* left: 65px; */
     padding-left: 5px;
 }
-/* .showGroupRight{
+/*
+.showGroupRight{
     left: 65px !important;
-} */
+}
+*/
 .uriGroup .container .uri{
     background-color: pink;
 }
@@ -137,4 +210,5 @@ a{
 }
 .uri div img{
     width: 100%;
+    height: 64px;
 }

@@ -12,11 +12,69 @@ $(document).ready(()=>{
         var wx2=window.innerWidth;
 
         if(container.offsetWidth + px2 < wx2){
-            $(container).css("left","65px");
-            console.log("cabe");
+            $(container).css("left","69px");
         }else{
-            console.log("no cabe");
             $(container).css("left","0px");
         }
     });
 });
+
+function openElement(file){
+	console.log(file);
+    $.ajax({
+        url:"http://localhost:8080/open",
+        data:{
+            file :file
+        }
+    });
+}
+
+function searchss(uri, parameter){
+    // console.log(uri+parameter+"="+$("#search").val());
+    window.location.href=uri+parameter+"="+$("#search").val();
+}
+
+function testApi(){
+
+}
+
+async function validateSearch(searchEngine){
+	var search=$("#searchInput").val();
+	var x=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{4})?/);
+	if(x == null){//no es IP
+		if(search.match(/https|ftp|http?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/) || search.match(/^mailto:(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+			//IS URI
+			window.location.href=search;
+			console.log("URI");
+		}else{
+			//SEARCH
+			if(searchEngine!=undefined){
+				if(search==""){
+					search=404;
+				}
+				window.location.href=searchEngine+"="+search;
+				console.log("search owo");
+			}else{
+				console.log("Submit");
+				if(search==""){
+					$("#searchInput").val(404)
+				}
+				$("#searchForm").submit();
+			}
+		}
+	}else{//IS IP DIRECTIO
+		if(x[0].length == search.length){
+			window.location.href="http://"+search;
+			console.log("IP");
+		}else{
+			console.log("search2");
+		}
+	}
+}
+
+function autocomplete(){
+	// http://suggestqueries.google.com/complete/search?client=firefox&q=YOURQUERY
+	// $.ajax(){
+		
+	// }
+}

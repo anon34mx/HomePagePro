@@ -2,19 +2,23 @@ var http = require('http');
 const path = require('path');
 const fs = require('fs');
 const lhl="D:/xampp/htdocs";
+const openExplorer = require('open-file-explorer');
 var express = require('express');
 var app = express();
 let ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use('/assets', express.static('assets')); 
-var filesFound="",folders="",shortcuts="x";
+var filesFound="",folders="",shortcuts="x",engines="";
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', async function(req, res) {
+    console.log("START___"+new Date().getTime());
     filesFound="";
     folders="";
-    // shortcuts="";
-    console.log("START___"+new Date().getTime());
+    engines="";
+    
+    await renderEngines();
+    console.log("owo"+engines);
     await Shortcuts();
     await scanFolder(lhl);
     console.log("END_____"+new Date().getTime());
@@ -23,31 +27,56 @@ app.get('/', async function(req, res) {
         filesFound:filesFound,
         folders:folders,
         shortcuts:shortcuts,
+        engines:engines
     });
 });
 app.get('/open', function(req, res) {
-    // console.log(req);
-    // "D:\xampp\htdocs\EV 12 corregido_v4.rar"
-    // require('child_process').exec('start "" "D:/xampp/htdocs/EV 12 corregido_v4.rar"');
-    // res.render('index', {
-    //     filesFound:filesFound,
-    //     folders:folders
-    // });
+    console.log(req.query.file.replace(/\//g,"\\"));
+    require('child_process').exec('start "" "'+req.query.file.replace(/\//g,"\\")+'"');
+    res.status(200).send();
+    // https://www.youtube.com/watch?v=5jTXE9txzwQ
 });
-
+app.get('/openPath', function(req, res) {
+    // using nodejs-open-file-explorer
+    // const path = 'C:\\Users';
+    // path = req.query.file;
+    f=String(req.query.file);
+    f=f.replace(/\//g,"\\");
+    // console.log(f.replace(/\//g,"\\"));
+    openExplorer(f, err => {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            //Do Something
+        }
+    });
+    res.status(200).send();
+});
 app.listen(8080,()=>{});
 
 async function Shortcuts(){
     shortcuts="";
     return await new Promise((resolve,reject)=>{
-        fs.readFile("./shortcuts.json","utf8",async (err,jsonString)=>{
+        fs.readFile("./config/shortcuts.json","utf8",async (err,jsonString)=>{
             jsonString=JSON.parse(jsonString)
             
             await jsonString.forEach(element => {
-                if(element.type=="group"){
-                    shortcuts+=renderUriGroup(element);
-                }else{
-                    shortcuts+=renderUri(element);
+                // if(element.type=="group"){
+                //     
+                // }else{
+                //     
+                // }
+                switch (element.type) {
+                    case "group":
+                        shortcuts+=renderUriGroup(element);
+                        break;
+                    case "file":
+                        // shortcuts+=renderExec(path,file)
+                        break;
+                    default:
+                        shortcuts+=renderUri(element);
+                        break;
                 }
             });
             resolve();
@@ -55,6 +84,24 @@ async function Shortcuts(){
     });
 
 }
+
+async function renderEngines(){
+    return await new Promise((resolve,reject)=>{
+        fs.readFile("./config/searchEngines.json", "utf-8", async (err, jsonString)=>{
+            jsonString=JSON.parse(jsonString);
+            // console.log(jsonString);
+
+            await jsonString.forEach(element=>{
+                engines+=`<li class="noselect" onclick="validateSearch('`+element.uri+element.parameter+`')">
+                    <img class="noselect" src="`+element.icon+`" alt="" draggable="false">
+                    `+element.name+`
+                </li>`;
+            });
+        });
+        resolve();
+    });
+}
+
 function scanFolder(path){
     return new Promise(async (resolve,reject)=>{
         fs.readdir(path, async function (err, files) {
@@ -64,11 +111,10 @@ function scanFolder(path){
             //listing all files using forEach
             files.forEach(function (file) {
                 if(fs.lstatSync(path+"/"+file).isDirectory()){
-                    // folders+=path+"/"+file+"<br>";
                     folders+=renderFolder(path,file);
                 }else{
-                    // filesFound+=path+"/"+file+"<br>";
                     filesFound+=renderFile(path,file);
+                    console.log(file);
                 }
             });
             resolve();
@@ -76,21 +122,23 @@ function scanFolder(path){
     })
 }
 function renderFolder(path,file){
-    return `<div class='element folder'>
+    return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
+        <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
         `+file+`
     </div>`;
 }
 function renderFile(path,file){
-    // return `<a href="http://localhost/`+file+`">
-    return `<a class="element file" href='http://localhost:8080/open?file=`+path+"/"+file+`'>
-            <img src="x">
+    var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
+    // href='=`+path+"/"+file+`'
+    return `<a class="element file" onclick="openElement('`+(path+"/"+file)+`')">
+            <img src="/assets/styles/default/`+ext+`.svg">
             <span>`+file+`</span>    
     </a>`;
 }
 function renderUriGroup(links){
     var html=`
         <div class="element uriGroup">
-            <img src="`+links.icon+`">
+            <img src="/assets/styles/default/`+links.icon+`">
             <span>`+links.name+`</span>
             <div class="container">`;
             links.content.forEach(link => {
@@ -105,4 +153,10 @@ function renderUri(element){
             `+element.name+`
         </div>
     </a>`;
+}
+function renderExec(path,file){
+    return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
+    <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
+    `+file+`
+</div>`;
 }

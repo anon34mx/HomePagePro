@@ -1,17 +1,33 @@
 [
     {
         "type":"group",
-        "name":"servers",
-        "icon":"./assets/servidor.png",
+        "name":"Dev Tools",
+        "icon":"servidor.png",
         "content":[
             {
                 "type":"link",
+                "blank":false,
+                "name":"php My Admin",
+                "uri":"http://localhost/phpmyadmin",
+                "icon":"http://localhost/phpmyadmin/favicon.ico"
+            }
+        ]
+    },
+    {
+        "type":"group",
+        "name":"servers",
+        "icon":"servidor.png",
+        "content":[
+            {
+                "type":"link",
+                "blank":false,
                 "name":"heroku",
                 "uri":"https://www.heroku.com/",
                 "icon":"https://www.herokucdn.com/favicon.ico"
             },
             {
                 "type":"link",
+                "blank":false,
                 "name":"hostinger",
                 "uri":"https://www.hostinger.mx/",
                 "icon":"https://assets.hostinger.com/images/favicons/favicon-97d9192479.ico"
@@ -20,20 +36,37 @@
     },
     {
         "type":"link",
+        "blank":false,
         "name":"facebook",
         "uri":"https://www.facebook.com/",
         "icon":"https://www.facebook.com/favicon.ico"
     },
     {
         "type":"link",
+        "blank":false,
         "name":"instagram",
         "uri":"https://www.instagram.com/",
         "icon":"https://www.instagram.com/favicon.ico"
     },
     {
         "type":"link",
+        "blank":false,
         "name":"twitter",
         "uri":"https://www.twitter.com/",
         "icon":"https://www.twitter.com/favicon.ico"
+    },
+    {
+        "type":"link",
+        "blank":false,
+        "name":"youtube",
+        "uri":"https://www.youtube.com/",
+        "icon":"https://www.youtube.com/favicon.ico"
+    },
+    {
+        "type":"exec",
+        "blank":false,
+        "name":"visual studio",
+        "uri":"Code.exe",
+        "icon":""
     }
 ]
