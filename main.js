@@ -122,9 +122,16 @@ function scanFolder(path){
     })
 }
 function renderFolder(path,file){
-    return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
-        <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
-        `+file+`
+    return `
+    <div class='element folder'>
+        <div onclick="openElement('`+(path+"/"+file)+`')">
+            <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
+            `+file+`
+        </div>
+        <ol class="submenu">
+            <li onclick="openElement('`+(path+"/"+file)+`')">Execute</li>
+            <li >Open in explorer</li>
+        </ol>
     </div>`;
 }
 function renderFile(path,file){

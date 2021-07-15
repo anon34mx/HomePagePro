@@ -6,17 +6,29 @@
 
 // temp1.style.left = "-95px"
 $(document).ready(()=>{
-    $(".uriGroup").hover(function(){
-        var container=$(this).find(".container")[0];
-        var px2=$(this)[0].offsetLeft + $(this)[0].offsetWidth;
-        var wx2=window.innerWidth;
+    // $(".uriGroup").hover(function(){
+    //     var container=$(this).find(".container")[0];
+    //     var px2=$(this)[0].offsetLeft + $(this)[0].offsetWidth;
+    //     var wx2=window.innerWidth;
 
-        if(container.offsetWidth + px2 < wx2){
-            $(container).css("left","69px");
-        }else{
-            $(container).css("left","0px");
-        }
-    });
+    //     if(container.offsetWidth + px2 < wx2){
+    //         $(container).css("left","69px");
+    //     }
+	// 	// else{
+    //     //     $(container).css("left","0px");
+    //     // }
+    // });
+	$('.uriGroup').mouseenter(function () {
+		console.log("out");
+		var container=$(this).find(".container")[0];
+		$(container).css("left","69px");
+	}).mouseleave();//trigger in
+
+	$('.uriGroup').mouseleave(function () {
+		console.log("out");
+		var container=$(this).find(".container")[0];
+		$(container).css("left","-10px");
+	}).mouseleave();//trigger out
 });
 
 function openElement(file){
@@ -50,7 +62,8 @@ async function validateSearch(searchEngine){
 			//SEARCH
 			if(searchEngine!=undefined){
 				if(search==""){
-					search=404;
+					// search=404;
+					search="";
 				}
 				window.location.href=searchEngine+"="+search;
 				console.log("search owo");

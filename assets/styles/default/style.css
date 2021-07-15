@@ -31,6 +31,7 @@ nav{
     position: sticky;
     top: 8px;
     background: white;
+    z-index: 1;
 }
 nav div{
     display: block;
@@ -90,6 +91,9 @@ section{
     width: 100%;
 }
 section h5{
+    position: sticky;
+    top: 40px;
+
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     padding: 4px;
@@ -108,18 +112,18 @@ section .container{
 
 .element{
     width: 64px;
-    height: 100px;
+    height: 102px;
     margin: 5px;
     padding: 5px;
     display: block;
     border-radius: 4px;
     text-decoration: none;
     line-break: anywhere;
-    background: #e6a8ff; /* Old browsers */
-    background: -moz-linear-gradient(top,  #e6a8ff 0%, #7713f9 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  #e6a8ff 0%,#7713f9 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  #e6a8ff 0%,#7713f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6a8ff', endColorstr='#7713f9',GradientType=0 ); /* IE6-9 */
+    background: #db82ff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #db82ff 0%, #7713f9 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  #db82ff 0%,#7713f9 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #db82ff 0%,#7713f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#db82ff', endColorstr='#7713f9',GradientType=0 ); /* IE6-9 */
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
@@ -154,13 +158,47 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e6a8ff+0,7713f9+100 */
 
 }
-.folder{
-    /* background-color: yellow; */
+.folder div{
+    width: inherit;
+}
+.folder div img{
+    width: inherit;
+}
+.folder:hover > .submenu{
+    opacity: 1;
+    /* display: block; */
+    pointer-events: initial;
+}
+.folder .submenu{
+    position: relative;
+    top: -115px;
+    left: 69px;
+    background: beige;
+    width: max-content;
+    height: auto;
+    color: black;
+    list-style: none;
+    padding: 2px 2px;
+    cursor: pointer;
+    opacity: 0;
+    /* display: none; */
+    transition: 0.3s;
+    pointer-events: none;
+}
+.folder .submenu li{
+    border: 1px solid black;
+    padding: 3px;
+    margin: 2px;
+}
+.folder .submenu li:hover{
+    border: 1px solid black;
+    background-color: gray;
 }
 .uriGroup{
     /* background-color: blue; */
 }
 .uriGroup .container{
+    z-index: 1;
     width: 80;
     height: auto;
     display: flex;
