@@ -89,7 +89,6 @@ async function renderEngines(){
     return await new Promise((resolve,reject)=>{
         fs.readFile("./config/searchEngines.json", "utf-8", async (err, jsonString)=>{
             jsonString=JSON.parse(jsonString);
-            // console.log(jsonString);
 
             await jsonString.forEach(element=>{
                 engines+=`<li class="noselect" onclick="validateSearch('`+element.uri+element.parameter+`')">
@@ -122,15 +121,25 @@ function scanFolder(path){
     })
 }
 function renderFolder(path,file){
+    var project=false;
+    try {
+        if (fs.existsSync(path+"/"+file+"/index.php")) {
+          console.log("asdasd");
+        }else{
+            console.log(path+"/"+file+"/index.php");
+        }
+      } catch(err) {
+        console.error(err)
+      }
     return `
     <div class='element folder'>
-        <div onclick="openElement('`+(path+"/"+file)+`')">
+        <div onclick="window.location.href='http://localhost/`+file+`'">
             <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
             `+file+`
         </div>
         <ol class="submenu">
-            <li onclick="openElement('`+(path+"/"+file)+`')">Execute</li>
-            <li >Open in explorer</li>
+            <li onclick="window.location.href='http://localhost/`+file+`'">Execute</li>
+            <li onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>
         </ol>
     </div>`;
 }

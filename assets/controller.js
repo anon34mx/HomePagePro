@@ -1,34 +1,48 @@
-// temp1.offsetLeft
-// window.innerWidth
-// temp1.offsetWidth
-
-// temp1.offsetWidth + temp1.offsetLeft > window.innerWidth
-
-// temp1.style.left = "-95px"
 $(document).ready(()=>{
-    // $(".uriGroup").hover(function(){
-    //     var container=$(this).find(".container")[0];
-    //     var px2=$(this)[0].offsetLeft + $(this)[0].offsetWidth;
-    //     var wx2=window.innerWidth;
+	$('a, .folder').contextmenu(function() {
+		return false;
+	});
 
-    //     if(container.offsetWidth + px2 < wx2){
-    //         $(container).css("left","69px");
-    //     }
-	// 	// else{
-    //     //     $(container).css("left","0px");
-    //     // }
-    // });
+	$('a, .folder').mousedown(function(event) {
+		event.preventDefault();
+		
+		switch (event.which) {
+			case 1:
+				// alert('Left Mouse button pressed.');
+				// console.log(event)
+				$(this).trigger('click');
+				break;
+			case 2:
+				// alert('Middle Mouse button pressed.');
+				break;
+			case 3:
+				$(".submenu").css("opacity","0");
+				$(".submenu").css("pointerEvents","none");
+				// console.log('Right Mouse button pressed.');
+				context=$(this).find(".submenu")[0];
+				// console.log(context);
+				context.style.opacity="1";
+				context.style.pointerEvents="initial";
+				// $(context).attr("opacity","1")
+				break;
+			default:
+				// alert('You have a strange Mouse!');
+		}
+	});
 	$('.uriGroup').mouseenter(function () {
 		console.log("out");
 		var container=$(this).find(".container")[0];
 		$(container).css("left","69px");
 	}).mouseleave();//trigger in
 
-	$('.uriGroup').mouseleave(function () {
-		console.log("out");
-		var container=$(this).find(".container")[0];
-		$(container).css("left","-10px");
-	}).mouseleave();//trigger out
+	document.onclick = hideMenu;
+	function hideMenu() {
+		console.log("!");
+		$(".submenu").css("opacity","0");
+		setTimeout(()=>{
+			$(".submenu").css("pointerEvents","none");
+		},100);
+	}
 });
 
 function openElement(file){
@@ -70,7 +84,7 @@ async function validateSearch(searchEngine){
 			}else{
 				console.log("Submit");
 				if(search==""){
-					$("#searchInput").val(404)
+					$("#searchInput").val()
 				}
 				$("#searchForm").submit();
 			}
