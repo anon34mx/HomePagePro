@@ -75,7 +75,6 @@ $(document).ready(()=>{
 
 	document.onclick = hideMenu;
 	function hideMenu() {
-		console.log("!");
 		$(".submenu").css("opacity","0");
 		setTimeout(()=>{
 			$(".submenu").css("pointerEvents","none");

@@ -133,16 +133,16 @@ function renderFolder(path,file){
         console.error(err)
       }
     return `
-    <div class='element folder'>
+    <div class='element folder' onclick="window.location.href='http://localhost/`+file+`'">
         <div class="bgBlur"></div>
-        <div onclick="window.location.href='http://localhost/`+file+`'">
+        
             <div class="imgContainer">
                 <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
             <span>
             `+file+`
             </span>
-        </div>
+        
         <ol class="submenu">
             <li onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
             <li onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>

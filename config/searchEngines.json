@@ -22,5 +22,11 @@
         "uri":"https://translate.google.com/?&sl=auto&tl=auto&op=translate&",
         "parameter":"text",
         "icon":"https://ssl.gstatic.com/translate/favicon.ico"
+    },
+    {
+        "name":"Youtube",
+        "uri":"https://www.youtube.com/results?",
+        "parameter":"search_query",
+        "icon":"https://www.youtube.com/favicon.ico"
     }
 ]
