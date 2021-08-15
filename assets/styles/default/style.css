@@ -1,3 +1,11 @@
+
+:root{
+    /* --background:#005aff24; */
+    --background:#1f56ba9e;
+    /* --background-hover:#003ba65c; */
+    --background-hover:#0035979e;
+    --background-blur:blur(5px);
+}
 *{
     /* outline:1px solid tomato; */
 }
@@ -16,12 +24,22 @@
             user-select: none;
   }
 
-html{
+html,body{
     /* background-color: purple; */
     /* color: white; */
+    padding: 0px;
+    margin: 0px;
 }
-body{
+#background{
     background-color: black;
+    background-image: url(/assets/styles/default/background2.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    z-index: -1;
 }
 nav{
     display: inline-flex;
@@ -30,8 +48,7 @@ nav{
     font-family: Arial, Helvetica, sans-serif;
     position: sticky;
     top: 8px;
-    background: white;
-    z-index: 1;
+    z-index: 3;
 }
 nav div{
     display: block;
@@ -42,22 +59,53 @@ nav div{
     display: flex;
     height: inherit;
 }
+#searchInput{
+    width: 100%;
+    background-color: var(--background);
+    border:2px solid transparent;
+    outline: none;
+    color: white;
+    backdrop-filter: var(--background-blur);
+    border-radius: 4px 0px 0px 4px;
+}
+#searchInput:focus{
+    width: 100%;
+    background-color: var(--background);
+    border:2px solid var(--background-hover);
+    backdrop-filter: var(--background-blur);
+}
+#searchBtn{
+    background-color: var(--background);
+    backdrop-filter: var(--background-blur);
+    border:2px solid transparent;
+    color: white;
+}
+#searchBtn:hover{
+    background-color: var(--background-hover);
+}
 .engines{
     display: block;
     list-style: none;
-    background-color: red;
+    background-color: var(--background);
+    border:2px solid transparent;
     margin: 0px;
     padding: 0px;
-    /* padding: 0px 4px; */
+    /* backdrop-filter: var(--background-blur); */
     width: 24px;
+    backdrop-filter: none;
+}
+.engines:hover{
+    background-color: var(--background-hover);
 }
 .engines .desp{
-    padding:0px;
+    padding: 5px 0px 0px 0px;
     margin: 0px;
-    width: inherit;
-    height: 100%;
-    background: green;
+    width:26px;
+    height: calc(100% - 4px);
+    /* background-color: var(--background); */
+    border:0px solid rgba(255, 0, 0, 0.233);
     text-align: center;
+    display: block;
     /* padding: 0px 4px; */
 }
 .engines:hover>li{
@@ -67,13 +115,15 @@ nav div{
     display: none;
     position: absolute;
     position: relative;
-    top: 0px;
-    left: 0px;
-    width: 110px;
-    background-color: pink;
+    /* top: 0px;
+    left: 0px; */
+    right: 180px;
+    width: 202px;
+    background-color: var(--background);
+    /* border:2px solid transparent; */
     padding: 4px 2px;
-    border-top: 1px solid red;
-    border-bottom: 1px solid red;
+    border-top: 1px solid var(--background-hover);
+    border-bottom: 1px solid var(--background-hover);
     cursor: pointer;
 }
 .engines li img{
@@ -82,7 +132,7 @@ nav div{
     margin-right: 4px;
 }
 .engines li:hover{
-    background-color: hotpink;
+    background-color: var(--background-hover);
 }
 
 
@@ -93,62 +143,68 @@ section{
 section h5{
     position: sticky;
     top: 40px;
-
+    z-index: 1;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     padding: 4px;
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
-    background: rgb(30,87,153); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+    background: var(--background);
+    backdrop-filter: var(--background-blur);
+    z-index: 0;
 }
 section .container{
     display: inline-flex;
     width: 100%;
     flex-wrap: wrap;
+    padding-top: 20px;
 }
 
 .element{
     width: 64px;
-    height: 102px;
+    height: 92px;
     margin: 5px;
     padding: 5px;
     display: block;
     border-radius: 4px;
     text-decoration: none;
     line-break: anywhere;
-    background: #db82ff; /* Old browsers */
-    background: -moz-linear-gradient(top,  #db82ff 0%, #7713f9 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  #db82ff 0%,#7713f9 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  #db82ff 0%,#7713f9 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#db82ff', endColorstr='#7713f9',GradientType=0 ); /* IE6-9 */
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     transition: 0.3s;
+    background: var(--background);
+    position: relative;
+    border: 2px solid var(--background);
+    /* backdrop-filter: blur(10px);
+    position: relative; */
+}
+.bgBlur{
+    backdrop-filter: var(--background-blur);
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
 }
 .element span{
     width: 100%;
     max-height: 42px;
     display: block;
     line-break: anywhere;
-    line-height: 0.9;
+    line-height: 1.0;
     margin-top: 4px;
+    text-align: center;
+    pointer-events: none;
 }
 .element:hover{
-    /* background-color: gray; */
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#7abcff+0,60abf8+44,4096ee+100;Blue+3D+%2314 */
-background: rgb(122,188,255); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(122,188,255,1) 0%, rgba(96,171,248,1) 44%, rgba(64,150,238,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(122,188,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 ); /* IE6-9 */
-
+    background-color: var(--background-hover);
+    border: 2px solid var(--background-hover);
 }
 .element img{
     width: inherit;
+    /* width: 48px;
+    height: 48px; */
 }
 .file{
     /* background-color: lightblue; */
@@ -159,20 +215,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
 
 }
 .folder div{
-    width: inherit;
+    width: 100%;
 }
-.folder div img{
+/* .folder div img{
     width: inherit;
-}
+} */
 /* .folder:hover > .submenu{
     opacity: 1;
     pointer-events: initial;
 } */
-.folder .submenu{
-    position: relative;
+.submenu{
+    /* position: relative; */
     top: -115px;
     left: 69px;
-    background: beige;
+    /* background: beige; */
     width: max-content;
     height: auto;
     color: black;
@@ -181,19 +237,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
     cursor: pointer;
     opacity: 0;
     /* display: none; */
-    transition: 0.3s;
+    position: fixed;
+    /* transition: 0.3s; */
+    z-index: 1;
     pointer-events: none;
     margin: 0px;
+    border: 2px solid var(--background-hover);
+    background-color: var(--background);
 }
-.folder .submenu li{
+.submenu li{
     /* border: 1px solid black; */
     padding: 3px 10px;
     /* margin: 2px; */
-    background-color: green;
+    background-color: var(--background);
+    backdrop-filter: var(--background-blur);
 }
-.folder .submenu li:hover{
+.submenu li:hover{
     /* border: 1px solid black; */
-    background-color: gray;
+    background-color: var(--background-hover);
 }
 .uriGroup{
     /* background-color: blue; */
@@ -205,17 +266,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
     display: flex;
     flex-direction: column;
     left: 5px;
-    top: -87px;
+    top: -75px;
     position: relative;
     display: flex;
     opacity: 0;
     pointer-events: none;
     transition: 0.3s;
+    z-index: 2 !important;
     padding-top: 2px;
 }
 .uriGroup:hover > .container{
     pointer-events: initial;
     opacity: 1;
+    
     /* left: 65px; */
     padding-left: 5px;
 }
@@ -225,13 +288,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', end
 }
 */
 .uriGroup .container .uri{
-    background-color: pink;
+    background-color: var(--background-hover);
 }
 .uriGroup .container :first-child{
     margin-top: 0px;
 }
 .uriGroup .container .uri:hover{
-    background-color: gray;
+    background-color: var(--background-hover);
 }
 
 
@@ -245,9 +308,55 @@ a{
     /* background-color: green; */
 }
 .uri:hover{
-    background-color: gray;
+    background-color: var(--background-hover);
 }
-.uri div img{
+.imgContainer img{
+    /* width: 100%;
+    height: 64px; */
+    width: 48px;
+    height: 48px;
+}
+.imgContainer{
+    text-align: center;
     width: 100%;
-    height: 64px;
+}
+
+.menu2{
+    display: inline-flex;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    background: var(--background);
+    backdrop-filter: var(--background-blur);
+}
+
+.menu2 a{
+    text-decoration: none;
+}
+.menu2 li{
+    height: auto;
+    /* background: red; */
+    color: white;
+    padding: 6px 5px;
+    margin: 0px 8px;
+    transition: .3s;
+}
+.menu2 li:hover{
+    background-color: var(--background-hover);
+}
+
+#configIcon{
+    position: fixed;
+    display: block;
+    bottom: 4px;
+    right: 4px;
+    width: 34;
+    background-color: var(--background);
+    backdrop-filter: var(--background-blur);
+    border: 1px solid var(--background-hover);
+    border-radius: 4px;
+}
+#configIcon:hover{
+    background-color: var(--background-hover);
 }

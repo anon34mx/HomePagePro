@@ -15,24 +15,62 @@ $(document).ready(()=>{
 			case 2:
 				// alert('Middle Mouse button pressed.');
 				break;
-			case 3:
+				case 3:
+				// console.log('Right Mouse button pressed.');
 				$(".submenu").css("opacity","0");
 				$(".submenu").css("pointerEvents","none");
-				// console.log('Right Mouse button pressed.');
 				context=$(this).find(".submenu")[0];
-				// console.log(context);
 				context.style.opacity="1";
 				context.style.pointerEvents="initial";
-				// $(context).attr("opacity","1")
+
+				console.log("\n\n___________________\n");
+				// console.log(context.style.opacity);
+				// context.offsetHeight // ALTO DEL MENU
+				////
+				// context.style.top=(event.pageY); // POSICION DEL CLICK
+				// context.style.left=(event.pageX); // POSICION DEL CLICK
+				posX=(event.pageX); // POSICION DEL CLICK
+				posY=(event.pageY); // POSICION DEL CLICK
+
+				console.log("click"); // POSICION DEL CLICK
+				console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
+				console.log("X->"+event.pageX+"_Y->"+event.pageY); // POSICION DEL CLICK
+				console.log("W->"+window.innerWidth+"_H->"+window.innerHeight); // POSICION DEL CLICK
+				console.log("T->"+document.getElementsByTagName("body")[0].scrollTop+"_H->"+document.getElementsByTagName("body")[0].scrollLeft); // POSICION DEL CLICK
+				// console.log("\n");
+				// console.log(event.pageX + posX); // POSICION DEL CLICK
+				// console.log(event.pageY + posY); // POSICION DEL CLICK
+				// console.log("\n");
+				
+				// console.log(window.innerWidth); // TAMAÑO DE LA VENTANA
+				// console.log(window.innerHeight); // TAMAÑO DE LA VENTANA
+
+				//document.getElementsByTagName("body")[0].scrollTop
+				if(posX+context.offsetWidth > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
+					// console.log(event.pageX + posX);
+					posX=posX-context.offsetWidth;
+				}else{
+					posX=posX+1;
+				}
+				if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
+					// console.log(event.pageY + posY);
+					posY=posY-context.offsetHeight;
+				}else{
+					posY=posY+1;
+				}
+
+				context.style.left=(posX); // POSICION DEL CLICK
+				context.style.top=(posY); // POSICION DEL CLICK
+				$("#testClick").css("left",event.pageX+"px");
+				$("#testClick").css("top",event.pageY+"px");
 				break;
 			default:
 				// alert('You have a strange Mouse!');
 		}
 	});
 	$('.uriGroup').mouseenter(function () {
-		console.log("out");
 		var container=$(this).find(".container")[0];
-		$(container).css("left","69px");
+		$(container).css("left","71px");
 	}).mouseleave();//trigger in
 
 	document.onclick = hideMenu;

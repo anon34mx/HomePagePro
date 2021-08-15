@@ -44,6 +44,20 @@
     {
         "type":"link",
         "blank":false,
+        "name":"Descargas",
+        "uri":"brave://downloads/",
+        "icon":""
+    },
+    {
+        "type":"link",
+        "blank":false,
+        "name":"amazon",
+        "uri":"https://www.amazon.com.mx/",
+        "icon":"https://www.amazon.com.mx/favicon.ico"
+    },
+    {
+        "type":"link",
+        "blank":false,
         "name":"instagram",
         "uri":"https://www.instagram.com/",
         "icon":"https://www.instagram.com/favicon.ico"

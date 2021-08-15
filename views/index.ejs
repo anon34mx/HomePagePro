@@ -1,14 +1,16 @@
 <html>
     <head>
-        <title>🏡 Home Pro</title>
-        <script src="/assets/jquery-3.6.0.min.js"></script>
-        <script src="/assets/controller.js"></script>
-        <link rel="stylesheet" href="/assets/styles/default/style.css">
-        
-        <link rel="stylesheet" href="/assets/context menu.css">
-        <script src="/assets/context menu.js"></script>
+        <title>Home Pro</title>
+        <script src="assets/jquery-3.6.0.min.js"></script>
+        <script src="assets/controller.js"></script>
+        <link rel="stylesheet" href="assets/styles/default/style.css">
+        <link rel="icon" type="image/png" href="assets/favicon.ico">
+
     </head>
     <body>
+        <div id="background">
+
+        </div>
         <div id="contextMenu" class="context-menu" style="display: none"> 
             <ul class="menu"> 
                 <li class="share"><a href="#"><i class="fa fa-share" aria-hidden="true"></i> Share</a></li> 
@@ -21,11 +23,17 @@
             </ul> 
         </div> 
         <nav>
-            <div> </div>
+            <div>
+                <ul class="menu2">
+                    <a href="#shortcuts"><li>Shortcuts</li></a>
+                    <a href="#"><li>Files</li></a>
+                    <a href="#"><li>Projects</li></a>
+                </ul>
+            </div>
             <div>
                 <form action="https://www.google.com/search?q=" class="searchForm" id="searchForm">
                     <input id="searchInput" type="text" value="" place holder="Search" name="q" autofocus>
-                    <input type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
+                    <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
                     <!--  -->
                     <ul class="engines">
                         <div class="desp">▼</div>
@@ -43,7 +51,7 @@
                 </form>
             </div>
         </nav>
-        <section>
+        <section id="shortcuts">
             <h5>Shortcuts</h5>
             <div class="container">
                 <%-shortcuts%>
@@ -61,6 +69,19 @@
                 <%-folders%>
             </div>
         </section>
+        <img id="configIcon" src="assets/styles/default/config.png" alt="">
+
+        <div id="testClick" style="
+            display: block;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            z-index: 9999999;
+            pointer-events: none;
+        "></div>
         <script src="https://www.google.com/complete/search?client=hp&hl=en&sugexp=msedr&gs_rn=62&gs_ri=hp&cp=1&gs_id=9c&q=a&xhr=t&callback=hello&callback=testApi"></script>
         <!-- 
             https://simplestepscode.com/autocomplete-data-tutorial/
