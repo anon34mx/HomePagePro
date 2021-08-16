@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 const path = require('path');
 const fs = require('fs');
 const lhl="D:/xampp/htdocs";
@@ -9,19 +10,19 @@ let ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use('/assets', express.static('assets')); 
 var filesFound="",folders="",shortcuts="x",engines="";
-
+//xml
+var parseString = require('xml2js').parseString;
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', async function(req, res) {
-    console.log("START___"+new Date().getTime());
+    // console.log("START___"+new Date().getTime());
     filesFound="";
     folders="";
     engines="";
     
     await renderEngines();
-    console.log("owo"+engines);
     await Shortcuts();
     await scanFolder(lhl);
-    console.log("END_____"+new Date().getTime());
+    // console.log("END_____"+new Date().getTime());
 
     res.render('index', {
         filesFound:filesFound,
@@ -30,8 +31,29 @@ app.get('/', async function(req, res) {
         engines:engines
     });
 });
+// app.get('/xml',function(req,res){
+//     var xml = `<?xml version="1.0"?><toplevel><CompleteSuggestion><suggestion data="cotorrisa"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa podcast"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa boletos"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa merch"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa monterrey"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa nivel dios"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa en vivo"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa guadalajara"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa facundo"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa youtube"/></CompleteSuggestion></toplevel>`;
+//     parseString(xml, function (err, result) {
+//         // console.log(result);
+//     });
+//     res.status(200).send();
+// });
+// https.get('https://suggestqueries.google.com/complete/search?output=toolbar&hl=en&q=cotorrisa', function(res) {
+//     parseString(res, function (err, result) {
+//         console.log(result);
+//     });
+    // console.log(res);
+    // if (res.statusCode >= 200 && res.statusCode < 400) {
+    // res.on('data', function(data_) { data += data_.toString(); });
+    // res.on('end', function() {
+    //     console.log('data', data);
+    //     parser.parseString(data, function(err, result) {
+    //     console.log('FINISHED', err, result);
+    //     });
+    // });
+    // }
+// });
 app.get('/open', function(req, res) {
-    console.log(req.query.file.replace(/\//g,"\\"));
     require('child_process').exec('start "" "'+req.query.file.replace(/\//g,"\\")+'"');
     res.status(200).send();
     // https://www.youtube.com/watch?v=5jTXE9txzwQ
@@ -42,7 +64,6 @@ app.get('/openPath', function(req, res) {
     // path = req.query.file;
     f=String(req.query.file);
     f=f.replace(/\//g,"\\");
-    // console.log(f.replace(/\//g,"\\"));
     openExplorer(f, err => {
         if(err) {
             console.log(err);
@@ -106,7 +127,7 @@ function scanFolder(path){
     return new Promise(async (resolve,reject)=>{
         fs.readdir(path, async function (err, files) {
             if (err) {
-                return console.log('Unable to scan directory: ' + err);
+                return console.error('Unable to scan directory: ' + err);
             } 
             //listing all files using forEach
             files.forEach(function (file) {
@@ -114,7 +135,6 @@ function scanFolder(path){
                     folders+=renderFolder(path,file);
                 }else{
                     filesFound+=renderFile(path,file);
-                    console.log(file);
                 }
             });
             resolve();

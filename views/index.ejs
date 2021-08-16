@@ -32,7 +32,11 @@
             </div>
             <div>
                 <form action="https://www.google.com/search?q=" class="searchForm" id="searchForm">
-                    <input id="searchInput" type="text" value="" place holder="Search" name="q" autofocus>
+                    <input id="searchInput" type="text" value="" place holder="Search" name="q" autofocus onkeyup="testApi()"
+                        autocomplete="ofdsf" list="suggestions">
+                    <datalist id="suggestions">
+                        <option value="Internet Explorer">
+                      </datalist>
                     <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
                     <!--  -->
                     <ul class="engines">

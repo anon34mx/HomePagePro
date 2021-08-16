@@ -82,6 +82,8 @@ $(document).ready(()=>{
 	}
 });
 
+//funciones
+
 function openElement(file){
 	console.log(file);
     $.ajax({
@@ -97,8 +99,27 @@ function searchss(uri, parameter){
     window.location.href=uri+parameter+"="+$("#search").val();
 }
 
-function testApi(){
-
+async function testApi(){
+	$("#suggestions").empty()
+	https://stackoverflow.com/questions/21549516/how-to-work-with-google-suggest-queries-using-jquery
+	// console.log($("#searchInput").val());
+	await $.ajax({
+		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
+		type: 'GET',
+		dataType: 'jsonp',
+		success: function (data) {
+			// console.log(data[1]);
+			data[1].forEach(function(sug){
+				// console.log(sug);
+				$("#suggestions").append(`<option value="`+sug+`">`);
+			});
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+		  console.log(jqXHR);
+		  console.log(textStatus);
+		  console.log(errorThrown);
+		}
+	});
 }
 
 async function validateSearch(searchEngine){
@@ -137,8 +158,18 @@ async function validateSearch(searchEngine){
 }
 
 function autocomplete(){
-	// http://suggestqueries.google.com/complete/search?client=firefox&q=YOURQUERY
-	// $.ajax(){
-		
-	// }
+// http://suggestqueries.google.com/complete/search?client=firefox&q=YOURQUERY
+	$.ajax({
+		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
+		type: 'GET',
+		dataType: 'jsonp',
+		success: function (data) {
+		  console.log(data[1]);
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+		  console.log(jqXHR);
+		  console.log(textStatus);
+		  console.log(errorThrown);
+		}
+	});
 }
