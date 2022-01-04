@@ -2,7 +2,7 @@ var http = require('http');
 var https = require('https');
 const path = require('path');
 const fs = require('fs');
-const lhl="D:/xampp/htdocs";
+const lhl="c:/xampp/htdocs";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
 var app = express();
@@ -31,28 +31,6 @@ app.get('/', async function(req, res) {
         engines:engines
     });
 });
-// app.get('/xml',function(req,res){
-//     var xml = `<?xml version="1.0"?><toplevel><CompleteSuggestion><suggestion data="cotorrisa"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa podcast"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa boletos"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa merch"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa monterrey"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa nivel dios"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa en vivo"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa guadalajara"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa facundo"/></CompleteSuggestion><CompleteSuggestion><suggestion data="cotorrisa youtube"/></CompleteSuggestion></toplevel>`;
-//     parseString(xml, function (err, result) {
-//         // console.log(result);
-//     });
-//     res.status(200).send();
-// });
-// https.get('https://suggestqueries.google.com/complete/search?output=toolbar&hl=en&q=cotorrisa', function(res) {
-//     parseString(res, function (err, result) {
-//         console.log(result);
-//     });
-    // console.log(res);
-    // if (res.statusCode >= 200 && res.statusCode < 400) {
-    // res.on('data', function(data_) { data += data_.toString(); });
-    // res.on('end', function() {
-    //     console.log('data', data);
-    //     parser.parseString(data, function(err, result) {
-    //     console.log('FINISHED', err, result);
-    //     });
-    // });
-    // }
-// });
 app.get('/open', function(req, res) {
     require('child_process').exec('start "" "'+req.query.file.replace(/\//g,"\\")+'"');
     res.status(200).send();
@@ -83,11 +61,6 @@ async function Shortcuts(){
             jsonString=JSON.parse(jsonString)
             
             await jsonString.forEach(element => {
-                // if(element.type=="group"){
-                //     
-                // }else{
-                //     
-                // }
                 switch (element.type) {
                     case "group":
                         shortcuts+=renderUriGroup(element);
@@ -210,6 +183,7 @@ function renderUri(element){
             <span>`+element.name+`</span>
         <ol class="submenu">
         <li onclick="event.preventDefault();window.open('`+element.uri+`', '_blank');">Open in new tab</li>
+        <li onclick="event.preventDefault();">Edit</li>
         </ol>
         </a>`;
     }

@@ -1,0 +1,16 @@
+{
+    "id01":{
+        "name":"asd",
+        "type":"group",
+        "content":{
+            "id02":{
+                "name":"facebook",
+                "type":"link"
+            }
+        }
+    },
+    "id03":{
+        "name":"facebook",
+        "type":"link"
+    }
+}
