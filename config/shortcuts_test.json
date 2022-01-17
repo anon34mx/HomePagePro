@@ -1,0 +1,31 @@
+{
+    "id001":{
+        "type":"group",
+        "name":"Parikuni",
+        "icon":"servidor.png",
+        "content":{
+            "id002":{
+                "type":"link",
+                "blank":false,
+                "name":"Parhikuni.com",
+                "uri":"http://parhikuni.com/",
+                "icon":"http://parhikuni.com/img/icono-P.png"
+            },
+            "id003":{
+                "type":"link",
+                "blank":false,
+                "name":"admin",
+                "uri":"http://parhikuni.com/admin",
+                "icon":"http://parhikuni.com/img/icono-P.png"
+            }
+        }
+    },
+    "id003":{
+        "type":"link",
+        "blank":false,
+        "name":"admin",
+        "uri":"http://parhikuni.com/admin",
+        "icon":"http://parhikuni.com/img/icono-P.png"
+    }
+}
+

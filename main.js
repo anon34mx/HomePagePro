@@ -2,7 +2,7 @@ var http = require('http');
 var https = require('https');
 const path = require('path');
 const fs = require('fs');
-const lhl="c:/xampp/htdocs";
+const lhl="C:/xampp/htdocs";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
 var app = express();
@@ -12,7 +12,16 @@ app.use('/assets', express.static('assets'));
 var filesFound="",folders="",shortcuts="x",engines="";
 //xml
 var parseString = require('xml2js').parseString;
+const { resolve } = require('path');
+const { json } = require('express/lib/response');
 // respond with "hello world" when a GET request is made to the homepage
+app.get('/shortcuts/read', async function(req, res) {
+    x= await readSavedShortcuts("id001");
+    console.log(x);
+    // res.setHeader('Content-Type', 'application/json');
+    // res.json(x);
+    res.send(x);
+});
 app.get('/', async function(req, res) {
     // console.log("START___"+new Date().getTime());
     filesFound="";
@@ -36,6 +45,31 @@ app.get('/open', function(req, res) {
     res.status(200).send();
     // https://www.youtube.com/watch?v=5jTXE9txzwQ
 });
+
+app.get('/limpiarcola', function(req, res) {
+    require('child_process').exec('start "" "C:\\tabletBasculaHostess\\restart pooler.lnk"');
+    res.status(200).send();
+    // https://www.youtube.com/watch?v=5jTXE9txzwQ
+});
+
+app.get('/reiniciarbascula', function(req, res) {
+    require('child_process').exec('start "" "C:\\HomePagePro\\REINICIAR PRO.bat"');
+    res.status(200).send();
+    // https://www.youtube.com/watch?v=5jTXE9txzwQ
+    //C:/tabletBasculaHostess/ticket.pdf
+});
+
+app.get('/ultimoticket', async function(req, res) {
+    //C:/tabletBasculaHostess/ticket.pdf
+    pdf="C:/tabletBasculaHostess/ticket.pdf";
+    fs.readFile(pdf, function (err,data){
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.contentType("application/pdf");
+        res.send(data);
+    });
+});
+
 app.get('/openPath', function(req, res) {
     // using nodejs-open-file-explorer
     // const path = 'C:\\Users';
@@ -57,43 +91,57 @@ app.listen(8080,()=>{});
 async function Shortcuts(){
     shortcuts="";
     return await new Promise((resolve,reject)=>{
-        fs.readFile("./config/shortcuts.json","utf8",async (err,jsonString)=>{
-            jsonString=JSON.parse(jsonString)
-            
-            await jsonString.forEach(element => {
-                switch (element.type) {
+        fs.readFile("./config/shortcuts_test.json","utf8",async (err,jsonString)=>{
+            try{
+                jsonString=JSON.parse(jsonString,true)
+                // console.log("tipo",typeof(jsonString["id003"]))
+            }catch(e){
+                console.error("error ALV");
+            }
+            for(element in jsonString){
+                switch(jsonString[element].type){
                     case "group":
-                        shortcuts+=renderUriGroup(element);
+                        shortcuts+=renderUriGroup(jsonString[element], element);
                         break;
-                    case "file":
-                        // shortcuts+=renderExec(path,file)
-                        break;
-                    default:
-                        shortcuts+=renderUri(element);
+                    case "link":
+                        shortcuts+=renderUri(
+                            element,
+                            jsonString[element]["uri"],
+                            jsonString[element]["icon"],
+                            jsonString[element]["name"]
+                            );
                         break;
                 }
-            });
+            };
             resolve();
         });
     });
-
 }
-
+var readFilePromise = function(file) {
+    return new Promise(function(ok, notOk) {
+      fs.readFile(file, function(err, data) {
+          if (err) {
+            notOk(err)
+          } else {
+            ok(data)
+          }
+      })
+    })
+  }
+async function readSavedShortcuts(id){
+    // "./config/shortcuts_test.json"
+    var x;  
+    await readFilePromise("./config/shortcuts_test.json").then(function(data) {
+        x=JSON.parse(data)
+      })
+    if(id==undefined){
+        return x;
+    }else{
+        return x[id];
+    }
+}
 async function renderEngines(){
-    return await new Promise((resolve,reject)=>{
-        fs.readFile("./config/searchEngines.json", "utf-8", async (err, jsonString)=>{
-            jsonString=JSON.parse(jsonString);
-
-            await jsonString.forEach(element=>{
-                engines+=`<li class="noselect" onclick="validateSearch('`+element.uri+element.parameter+`')">
-                    <div class="bgBlur"></div>
-                    <img class="noselect" src="`+element.icon+`" alt="" draggable="false">
-                    `+element.name+`
-                </li>`;
-            });
-        });
-        resolve();
-    });
+    
 }
 
 function scanFolder(path){
@@ -118,9 +166,9 @@ function renderFolder(path,file){
     var project=false;
     try {
         if (fs.existsSync(path+"/"+file+"/index.php")) {
-          console.log("asdasd");
+        //   console.log("asdasd");
         }else{
-            console.log(path+"/"+file+"/index.php");
+            // console.log(path+"/"+file+"/index.php");
         }
       } catch(err) {
         console.error(err)
@@ -144,48 +192,56 @@ function renderFolder(path,file){
     </div>`;
 }
 function renderFile(path,file){
-    var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-    // href='=`+path+"/"+file+`'
-    return `<a class="element file" onclick="openElement('`+(path+"/"+file)+`')">
-        <div class="bgBlur"></div>
-        <div class="imgContainer">
-            <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-        </div>
-        <span>`+file+`</span>    
-    </a>`;
+    try{
+        var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
+        // href='=`+path+"/"+file+`'
+        return `<a class="element file" onclick="openElement('`+(path+"/"+file)+`')">
+            <div class="bgBlur"></div>
+            <div class="imgContainer">
+                <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+            </div>
+            <span>`+file+`</span>    
+        </a>`;
+    }catch(e){
+        return "";
+    }
 }
-function renderUriGroup(links){
+function renderUriGroup(links,id){
     var html=`
-        <div class="element uriGroup">
+        <div class="element uriGroup" id=`+id+`>
             <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
             <span>`+links.name+`</span>
             <div class="container">`;
-            links.content.forEach(link => {
-                html+=renderUri(link);
-            });
+            for(var id in links.content){
+                html+=renderUri(
+                    id,
+                    links.content[id]["uri"],
+                    links.content[id]["icon"],
+                    links.content[id]["name"]
+                    );
+            }
+            
     return html+=`</div></div>`;
 }
-function renderUri(element){
-    /***
-    <ol class="submenu">
-        <li onclick="window.location.href='http://localhost/`+file+`'">Execute</li>
-        <li onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>
-    </ol>
-     */
-    return `<a class="element uri" href="`+element.uri+`">
-        <div class="bgBlur"></div>  
-        <div class="imgContainer">
-            <img src="`+element.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-        </div>
-            <span>`+element.name+`</span>
+function renderUri(id,uri,icon,name){
+    return `
+    <div class="elementContainer" id="`+id+`">
+        <a class="element uri" onclick="window.open('`+uri+`', '_blank');" >
+            <div class="bgBlur"></div>  
+            <div class="imgContainer">
+                <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+            </div>
+            <span>`+name+`</span>
+        </a>
         <ol class="submenu">
-        <li onclick="event.preventDefault();window.open('`+element.uri+`', '_blank');">Open in new tab</li>
-        <li onclick="event.preventDefault();">Edit</li>
+            <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
+            <li onclick="event.preventDefault();console.log('editar');">edit</li>
         </ol>
-        </a>`;
+    </div>
+            `;
     }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 // <li onclick="window.location.href='`+element.uri+`'">Execute</li>

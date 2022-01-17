@@ -1,15 +1,14 @@
 $(document).ready(()=>{
-	$('a, .folder').contextmenu(function() {
+	$('.elementContainer, .folder, .uriGroup').contextmenu(function() {
 		return false;
 	});
 
-	$('a, .folder').mousedown(function(event) {
+	$('.elementContainer, .folder, .uriGroup').mousedown(function(event) {
 		event.preventDefault();
 		
 		switch (event.which) {
 			case 1:
 				// alert('Left Mouse button pressed.');
-				// console.log(event)
 				$(this).trigger('click');
 				break;
 			case 2:
@@ -63,6 +62,8 @@ $(document).ready(()=>{
 				context.style.top=(posY); // POSICION DEL CLICK
 				$("#testClick").css("left",event.pageX+"px");
 				$("#testClick").css("top",event.pageY+"px");
+
+				console.log($(this).attr("id"));
 				break;
 			default:
 				// alert('You have a strange Mouse!');
@@ -80,6 +81,15 @@ $(document).ready(()=>{
 			$(".submenu").css("pointerEvents","none");
 		},100);
 	}
+
+	// $(".ui-menu-item").trigger((event)=>{
+	// 	console.log(event);
+	// });
+	$('.ui-menu-item').on('click', function (e) {
+		if(e.which === 13){
+			console.log(e);
+		}
+	});
 });
 
 //funciones
@@ -108,11 +118,18 @@ async function testApi(){
 		type: 'GET',
 		dataType: 'jsonp',
 		success: function (data) {
-			// console.log(data[1]);
-			data[1].forEach(function(sug){
-				// console.log(sug);
-				$("#suggestions").append(`<option value="`+sug+`">`);
-			});
+			// availableTags=data[1];
+			console.log(data[1]);
+			// data[1].forEach(function(sug){
+			// 	console.log(sug);
+			// 	$("#suggestions").append(`<option value="`+sug+`">`);
+			// });
+			$( "#searchInput" ).autocomplete({
+				source: data[1],
+				select: function( event, ui ) {
+					$("#searchForm").submit();
+				}
+			  });
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 		  console.log(jqXHR);
@@ -164,7 +181,10 @@ function autocomplete(){
 		type: 'GET',
 		dataType: 'jsonp',
 		success: function (data) {
-		  console.log(data[1]);
+		  console.log(data);
+		  $( "#searchInput" ).autocomplete({
+			source: availableTags
+		  });
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 		  console.log(jqXHR);

@@ -263,6 +263,7 @@ section .container{
     margin: 0px;
     border: 2px solid var(--background-hover);
     background-color: var(--background);
+    font-family: Arial;
 }
 .submenu li{
     /* border: 1px solid black; */
@@ -399,4 +400,15 @@ a{
     position: absolute;
     margin: 25%;
     background: green;
+}
+
+.ui-menu{
+    list-style: none;
+    padding: 1px 4px;
+    display: none;
+    max-width: 40%
+}
+
+.ui-menu .ui-menu-item{
+    border-bottom: 1px solid red;
 }
