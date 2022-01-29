@@ -1,4 +1,26 @@
 $(document).ready(()=>{
+	$("#searchEngines").focus(()=>{
+		console.log("asd");
+		enginesShow(true);
+	});
+	$("#searchEngines li").blur(()=>{
+		// console.log("focus lost");
+		// enginesShow(false);
+		console.log($("#searchEngines li").is(":focus"));
+	});
+	$("#searchEngines").hover(()=>{
+		console.log("abc");
+		enginesShow(true);
+	});
+
+	function enginesShow(show){
+		if(show){
+			$("#searchEngines li").fadeIn(199)
+		}else{
+			$("#searchEngines li").fadeOut(199)
+		}
+	}
+
 	$('.elementContainer, .folder, .uriGroup').contextmenu(function() {
 		return false;
 	});
@@ -106,7 +128,7 @@ function openElement(file){
 
 function searchss(uri, parameter){
     // console.log(uri+parameter+"="+$("#search").val());
-    window.location.href=uri+parameter+"="+$("#search").val();
+    window.location.href=uri+parameter+"="+$("#searchInput").val();
 }
 
 async function testApi(){
@@ -119,7 +141,7 @@ async function testApi(){
 		dataType: 'jsonp',
 		success: function (data) {
 			// availableTags=data[1];
-			console.log(data[1]);
+			// console.log(data[1]);
 			// data[1].forEach(function(sug){
 			// 	console.log(sug);
 			// 	$("#suggestions").append(`<option value="`+sug+`">`);

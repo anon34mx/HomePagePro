@@ -86,7 +86,7 @@ app.get('/openPath', function(req, res) {
     });
     res.status(200).send();
 });
-app.listen(8080,()=>{});
+app.listen(3434,()=>{});
 
 async function Shortcuts(){
     shortcuts="";
@@ -141,7 +141,21 @@ async function readSavedShortcuts(id){
     }
 }
 async function renderEngines(){
-    
+    var x;
+    var ret="";
+    await readFilePromise("./config/searchEngines.json").then(function(data) {
+        x=JSON.parse(data)
+    });
+    x.forEach(element => {
+        console.log(element);
+        ret+=`
+            <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="3"
+            onkeypress="console.log(event)"
+            >
+            <img src="${element.icon}">${element.name}
+            </li>`;   
+    });
+    engines=ret;
 }
 
 function scanFolder(path){

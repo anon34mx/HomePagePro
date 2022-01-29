@@ -12,5 +12,9 @@
     "id03":{
         "name":"facebook",
         "type":"link"
+    },
+    "id04":{
+        "name":"twitter",
+        "type":"link"
     }
 }
