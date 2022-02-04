@@ -5775,7 +5775,8 @@ $.widget( "ui.autocomplete", {
 					break;
 				case keyCode.TAB:
 					if ( this.menu.active ) {
-						this.menu.select( event );
+						//aaron
+						// this.menu.select( event );
 					}
 					break;
 				case keyCode.ESCAPE:

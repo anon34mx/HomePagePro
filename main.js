@@ -9,7 +9,9 @@ var app = express();
 let ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use('/assets', express.static('assets')); 
-var filesFound="",folders="",shortcuts="x",engines="";
+var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSearchImg="";
+
+
 //xml
 var parseString = require('xml2js').parseString;
 const { resolve } = require('path');
@@ -17,7 +19,6 @@ const { json } = require('express/lib/response');
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/shortcuts/read', async function(req, res) {
     x= await readSavedShortcuts("id001");
-    console.log(x);
     // res.setHeader('Content-Type', 'application/json');
     // res.json(x);
     res.send(x);
@@ -37,7 +38,9 @@ app.get('/', async function(req, res) {
         filesFound:filesFound,
         folders:folders,
         shortcuts:shortcuts,
-        engines:engines
+        engines:engines,
+        defaultSearch:defaultSearch,
+        defaultSearchImg:defaultSearchImg
     });
 });
 app.get('/open', function(req, res) {
@@ -78,7 +81,7 @@ app.get('/openPath', function(req, res) {
     f=f.replace(/\//g,"\\");
     openExplorer(f, err => {
         if(err) {
-            console.log(err);
+            console.error(err);
         }
         else {
             //Do Something
@@ -94,7 +97,6 @@ async function Shortcuts(){
         fs.readFile("./config/shortcuts_test.json","utf8",async (err,jsonString)=>{
             try{
                 jsonString=JSON.parse(jsonString,true)
-                // console.log("tipo",typeof(jsonString["id003"]))
             }catch(e){
                 console.error("error ALV");
             }
@@ -108,7 +110,8 @@ async function Shortcuts(){
                             element,
                             jsonString[element]["uri"],
                             jsonString[element]["icon"],
-                            jsonString[element]["name"]
+                            jsonString[element]["name"],
+                            jsonString[element]["blank"]
                             );
                         break;
                 }
@@ -146,14 +149,20 @@ async function renderEngines(){
     await readFilePromise("./config/searchEngines.json").then(function(data) {
         x=JSON.parse(data)
     });
+    contTabIndex=3;
     x.forEach(element => {
-        console.log(element);
         ret+=`
-            <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="3"
-            onkeypress="console.log(event)"
+            <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="${contTabIndex}" id="${element.name}"
+            onkeypress="$(this).click()" class="searchEngine txt-shadow"
             >
-            <img src="${element.icon}">${element.name}
-            </li>`;   
+            <img src="${element.icon}" class="noselect">
+                <span>${element.name}</span>
+            </li>`;
+        contTabIndex++;
+        if(element.default==true){
+            defaultSearch=element.uri+element.parameter;
+            defaultSearchImg=element.icon
+        }
     });
     engines=ret;
 }
@@ -180,9 +189,8 @@ function renderFolder(path,file){
     var project=false;
     try {
         if (fs.existsSync(path+"/"+file+"/index.php")) {
-        //   console.log("asdasd");
         }else{
-            // console.log(path+"/"+file+"/index.php");
+            // console.error(path+"/"+file+"/index.php");
         }
       } catch(err) {
         console.error(err)
@@ -194,13 +202,13 @@ function renderFolder(path,file){
             <div class="imgContainer">
                 <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
-            <span>
+            <span class="txt-shadow">
             `+file+`
             </span>
         
-        <ol class="submenu">
-            <li onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            <li onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>
+        <ol class="submenu ">
+            <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
+            <li class="txt-shadow" onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>
         </ol>
         
     </div>`;
@@ -214,7 +222,7 @@ function renderFile(path,file){
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
-            <span>`+file+`</span>    
+            <span class="txt-shadow">`+file+`</span>    
         </a>`;
     }catch(e){
         return "";
@@ -227,35 +235,36 @@ function renderUriGroup(links,id){
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
-            <span>`+links.name+`</span>
+            <span class="text-shadow">`+links.name+`</span>
             <div class="container">`;
             for(var id in links.content){
                 html+=renderUri(
                     id,
                     links.content[id]["uri"],
                     links.content[id]["icon"],
-                    links.content[id]["name"]
+                    links.content[id]["name"],
+                    links.content[id]["blank"]
                     );
             }
             
     return html+=`</div></div>`;
 }
-function renderUri(id,uri,icon,name){
+function renderUri(id,uri,icon,name,blank){
     return `
     <div class="elementContainer" id="`+id+`">
-        <a class="element uri" onclick="window.open('`+uri+`', '_blank');" >
+        <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
+            href="${uri}">
             <div class="bgBlur"></div>  
             <div class="imgContainer">
                 <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
-            <span>`+name+`</span>
+            <span class="txt-shadow">`+name+`</span>
         </a>
         <ol class="submenu">
             <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
             <li onclick="event.preventDefault();console.log('editar');">edit</li>
         </ol>
-    </div>
-            `;
+    </div>`;
     }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 // <li onclick="window.location.href='`+element.uri+`'">Execute</li>

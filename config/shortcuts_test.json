@@ -1,4 +1,25 @@
 {
+    "serv11":{
+        "type":"group",
+        "name":"Servidor 11",
+        "icon":"servidor.png",
+        "content":{
+            "phpmyadmin11":{
+                "type":"link",
+                "blank":false,
+                "name":"PhpMyAdmin",
+                "uri":"http://172.17.1.11:8081/phpmyadmin/",
+                "icon":"http://172.17.1.11:8081/phpmyadmin/favicon.ico"
+            },
+            "dti":{
+                "type":"link",
+                "blank":false,
+                "name":"PhpMyAdmin",
+                "uri":"http://172.17.1.11:8081/",
+                "icon":"http://172.17.1.11:8081/favicon.ico"
+            }
+        }
+    },
     "id001":{
         "type":"group",
         "name":"Parikuni",
@@ -26,6 +47,27 @@
         "name":"admin",
         "uri":"http://parhikuni.com/admin",
         "icon":"http://parhikuni.com/img/icono-P.png"
+    },
+    "whatsapp":{
+        "type":"link",
+        "blank":true,
+        "name":"whatsapp",
+        "uri":"https://web.whatsapp.com/",
+        "icon":"http://www.whatsapp.com/favicon.ico"
+    },
+    "twitter":{
+        "type":"link",
+        "blank":false,
+        "name":"Twitter",
+        "uri":"http://twitter.com/",
+        "icon":"http://twitter.com/favicon.ico"
+    },
+    "facebook":{
+        "type":"link",
+        "blank":false,
+        "name":"facebook",
+        "uri":"http://facebook.com/",
+        "icon":"http://facebook.com/favicon.ico"
     }
 }
 

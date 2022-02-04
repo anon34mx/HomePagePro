@@ -2,9 +2,12 @@
 :root{
     /* --background:#005aff24; */
     /* --background-hover:#003ba65c; */
-    --background:#1f56ba9e;
-    --background-hover:#0035979e;
+    /* --background:#1f56ba9e; */
+    /* --background-hover:#0035979e; */
+    --background:#d1d1d114;
+    --background-hover:#dddddd30;
     --background-blur:blur(5px);
+    --border:2px solid #ffffff19;
 
     /* --background:#1f89ba52; */
 }
@@ -19,13 +22,14 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-         -o-user-select: none;
-            user-select: none;
   }
-
+.txt-shadow{
+    text-shadow:
+    -1px -1px 2px black,
+    -1px 1px 2px black,
+    1px 1px 2px black,
+    1px -1px 2px black;
+}
 html,body{
     /* background-color: purple; */
     /* color: white; */
@@ -34,7 +38,8 @@ html,body{
 }
 #background{
     background-color: black;
-    background-image: url(/assets/styles/default/background2.jpg);
+    /* background-image: url(/assets/styles/default/background2.jpg); */
+    background-image: url(/assets/backgrounds/keita-senoh-eEqgTUnwbAk-unsplash.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -49,8 +54,10 @@ nav{
     height: 30px;
     font-family: Arial, Helvetica, sans-serif;
     position: sticky;
-    top: 8px;
+    top: 0px;
+    margin-top: 8px;
     z-index: 3;
+    backdrop-filter: blur(4px);
 }
 nav div{
     display: block;
@@ -68,7 +75,7 @@ nav div{
     outline: none;
     color: white;
     backdrop-filter: var(--background-blur);
-    border-radius: 4px 0px 0px 4px;
+    /* border-radius: 4px 0px 0px 4px; */
 }
 #searchInput:hover{
     background-color: var(--background-hover);
@@ -86,6 +93,9 @@ nav div{
     color: white;
 }
 #searchBtn:hover{
+    background-color: var(--background-hover);
+}
+#searchBtn:hover + label{
     background-color: var(--background-hover);
 }
 .engines{
@@ -106,23 +116,37 @@ nav div{
 .engines .desp{
     padding: 5px 0px 0px 0px;
     margin: 0px;
-    width:26px;
-    height: calc(100% - 4px);
+    width:0px;
+    height: 0px;
     /* background-color: var(--background); */
     border:0px solid rgba(255, 0, 0, 0.233);
     text-align: center;
     display: block;
+    color:white;
     /* padding: 0px 4px; */
+}
+.engines .desp::after{
+    /* content:"▼" */
 }
 .engines:hover>li{
     /* display: block; */
 }
+/*
+.engines::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+} */
 .engines li{
     display: none;
     position: absolute;
     position: relative;
     /* top: 0px;
     left: 0px; */
+    color: white;
     right: 180px;
     width: 202px;
     background-color: var(--background);
@@ -130,6 +154,7 @@ nav div{
     padding: 4px 2px;
     border-top: 1px solid var(--background-hover);
     border-bottom: 1px solid var(--background-hover);
+    backdrop-filter: var(--background-blur);
 }
 .engines li img{
     width: 20px;
@@ -180,7 +205,7 @@ section .container{
     transition: 0.3s;
     background: var(--background);
     position: relative;
-    border: 2px solid var(--background);
+    border: var(--border);
     cursor: pointer;
     /* backdrop-filter: blur(10px);
     position: relative; */
@@ -250,7 +275,7 @@ section .container{
     /* background: beige; */
     width: max-content;
     height: auto;
-    color: black;
+    color: white;
     list-style: none;
     padding: 0px;
     cursor: pointer;
@@ -352,10 +377,13 @@ a{
     height: 100%;
     background: var(--background);
     backdrop-filter: var(--background-blur);
+    width: 100%;
 }
 
 .menu2 a{
     text-decoration: none;
+    width: 33.33%;
+    text-align: center;
 }
 .menu2 li{
     height: auto;
@@ -389,7 +417,7 @@ a{
     top: 0px;
     width: 100%;
     height: 100%;
-    background: red;
+    backdrop-filter: blur(3px);
     display: none;
     /* opacity: 0; */
     transition: 0.3s;
@@ -399,16 +427,40 @@ a{
     height: 50%;
     position: absolute;
     margin: 25%;
-    background: green;
+    background: #3664a79f;
 }
 
+
+/* AUTOCOMPLETE */
 .ui-menu{
     list-style: none;
     padding: 1px 4px;
     display: none;
-    max-width: 40%
+    max-width: 40%;
+    background-color: transparent;
+    background-color: var(--background);
+    backdrop-filter: var(--background-blur);
+    border: var(--border) !important;
+}
+.ui-menu .ui-menu-item{
+    border-bottom: 1px solid #d1d1d15c;
+    background-color: transparent;
+    color:white;
+    text-shadow:
+    -1px -1px 2px black,
+    -1px 1px 2px black,
+    1px 1px 2px black,
+    1px -1px 2px black;
+}
+.ui-menu .ui-menu-item:last-child{
+    border-bottom: none;
+}
+.ui-menu .ui-menu-item div{
+    border: 1px solid transparent;
 }
 
-.ui-menu .ui-menu-item{
-    border-bottom: 1px solid red;
+.ui-state-active{
+    background-color: var(--background-hover) !important;
+    border:white;
+    cursor: pointer;
 }

@@ -1,18 +1,30 @@
 $(document).ready(()=>{
-	$("#searchEngines").focus(()=>{
-		console.log("asd");
-		enginesShow(true);
-	});
-	$("#searchEngines li").blur(()=>{
-		// console.log("focus lost");
-		// enginesShow(false);
-		console.log($("#searchEngines li").is(":focus"));
-	});
-	$("#searchEngines").hover(()=>{
-		console.log("abc");
-		enginesShow(true);
-	});
 
+	//$("#searchEngines li:hover").click()
+	$("#searchEngines").focus(()=>{
+		enginesShow(true);
+	});
+	$("#searchEngines li").blur((e)=>{
+		var last=$("#searchEngines li:last").attr("tabindex");
+		if(e.currentTarget.tabIndex >= last){
+			enginesShow(false)
+		}
+	});
+	$("#searchEngines").mouseout((e)=>{
+		// console.log("salio owo");
+		// console.log(e)
+		// console.log($("#searchEngines li:hover").length)
+
+		if($("#searchEngines li:hover").length < 1){
+			enginesShow(false)
+			console.log("asd")
+		}
+	});
+	$("#searchEngines").mouseenter(()=>{
+		console.log("hover");
+		enginesShow(true);
+	});
+	//$( document.activeElement )
 	function enginesShow(show){
 		if(show){
 			$("#searchEngines li").fadeIn(199)
@@ -141,7 +153,7 @@ async function testApi(){
 		dataType: 'jsonp',
 		success: function (data) {
 			// availableTags=data[1];
-			// console.log(data[1]);
+			console.log(data);
 			// data[1].forEach(function(sug){
 			// 	console.log(sug);
 			// 	$("#suggestions").append(`<option value="`+sug+`">`);
@@ -214,4 +226,8 @@ function autocomplete(){
 		  console.log(errorThrown);
 		}
 	});
+}
+
+function showEdit(){
+	
 }

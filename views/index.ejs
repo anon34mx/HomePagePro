@@ -3,7 +3,8 @@
         <title>Home Pro</title>
         <script src="assets/jquery-3.6.0.min.js"></script>
 
-        <script src="assets/jquery-ui.min.js"></script>
+        <!-- <script src="assets/jquery-ui.min.js"></script> -->
+        <script src="assets/jquery-ui.js"></script>
         <link rel="stylesheet" href="assets/jquery-ui.theme.min.css">
 
 
@@ -13,72 +14,53 @@
 
     </head>
     <body>
-        <div id="background">
-
-        </div>
-        <div id="contextMenu" class="context-menu" style="display: none"> 
-            <ul class="menu"> 
-                <li class="share"><a href="#"><i class="fa fa-share" aria-hidden="true"></i> Share</a></li> 
-                <li class="rename"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Rename</a></li> 
-                <li class="link"><a href="#"><i class="fa fa-link" aria-hidden="true"></i> Copy Link Address</a></li> 
-                <li class="copy"><a href="#"><i class="fa fa-copy" aria-hidden="true"></i> Copy to</a></li> 
-                <li class="paste"><a href="#"><i class="fa fa-paste" aria-hidden="true"></i> Move to</a></li> 
-                <li class="download"><a href="#"><i class="fa fa-download" aria-hidden="true"></i> Download</a></li> 
-                <li class="trash"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li> 
-            </ul> 
-        </div> 
+        <div id="background"></div>
         <nav>
             <div>
                 <ul class="menu2">
-                    <a href="#shortcuts"><li>Shortcuts</li></a>
-                    <a href="#"><li>Files</li></a>
-                    <a href="#"><li>Projects</li></a>
+                    <a class="txt-shadow" href="#shortcuts"><li>Shortcuts</li></a>
+                    <a class="txt-shadow" href="#"><li>Files</li></a>
+                    <a class="txt-shadow" href="#"><li>Projects</li></a>
                 </ul>
             </div>
             <div>
-                <form action="https://www.google.com/search?q=" class="searchForm" id="searchForm">
-                    <input id="searchInput" type="text" value="" place holder="Search" name="q" autofocus onkeyup="testApi();"
-                        autocomplete="off" tabindex="2" >
-                    <datalist id="suggestions">
-                        <option value="Internet Explorer">
-                      </datalist>
+                
+                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm">
+                    <input id="searchInput" type="text" value="" place holder="Search"
+                        name="q" autofocus onkeyup="testApi();" class="txt-shadow"
+                        autocomplete="off" tabindex="1" >
                     <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
-                    <!--  -->
+                    <label for="searchBtn" style="background: var(--background);" tabindex="1">
+                        <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
+                    </label>
                     <ul id="searchEngines" class="engines" tabindex="2">
-                        <div class="desp">▼</div>
-                        <!-- <li>
-                            <img src="https://cdn-static.ecosia.org/assets/images/ico/favicon.ico"
-                                alt="">
-                            span
-                        </li>
-                        <li>
-                            <img src="https://duckduckgo.com/favicon.ico" alt="">
-                            gugul 2
-                        </li> -->
-                        <%-engines%>
+                        <div class="desp noselect" style="pointer-events: none;">▼</div>
+                        <div style="margin-top: 22px;width: 0px;height: 0px;" class="noselect">
+                            <%-engines%>
+                        </div>
                     </ul>
                 </form>
             </div>
         </nav>
         <section id="shortcuts">
-            <h5>Shortcuts</h5>
+            <h5 class="txt-shadow">Shortcuts</h5>
             <div class="container">
                 <%-shortcuts%>
             </div>
         </section>
         <section>
-            <h5>Files</h5>
+            <h5 class="txt-shadow">Files</h5>
             <div class="container">
                 <%-filesFound%>
             </div>
         </section>
         <section>
-            <h5>Folders</h5>
+            <h5 class="txt-shadow">Folders</h5>
             <div class="container">
                 <%-folders%>
             </div>
         </section>
-        <img id="configIcon" src="assets/styles/default/config.png" alt="">
+        <!-- <img id="configIcon" src="assets/styles/default/config.png" alt=""> -->
 
         <div id="testClick" style="
             display: block;
@@ -96,7 +78,7 @@ function shortcutsRead(){
     $.ajax({
         url:"http://localhost:8080/shortcuts/read",
         success:function(response){
-            // console.log(response);
+            console.log(response);
         }
     });
 }
