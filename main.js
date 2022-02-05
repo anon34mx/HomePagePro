@@ -16,11 +16,9 @@ var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSe
 var parseString = require('xml2js').parseString;
 const { resolve } = require('path');
 const { json } = require('express/lib/response');
-// respond with "hello world" when a GET request is made to the homepage
+
 app.get('/shortcuts/read', async function(req, res) {
     x= await readSavedShortcuts("id001");
-    // res.setHeader('Content-Type', 'application/json');
-    // res.json(x);
     res.send(x);
 });
 app.get('/', async function(req, res) {
@@ -59,11 +57,9 @@ app.get('/reiniciarbascula', function(req, res) {
     require('child_process').exec('start "" "C:\\HomePagePro\\REINICIAR PRO.bat"');
     res.status(200).send();
     // https://www.youtube.com/watch?v=5jTXE9txzwQ
-    //C:/tabletBasculaHostess/ticket.pdf
 });
 
 app.get('/ultimoticket', async function(req, res) {
-    //C:/tabletBasculaHostess/ticket.pdf
     pdf="C:/tabletBasculaHostess/ticket.pdf";
     fs.readFile(pdf, function (err,data){
         res.header("Access-Control-Allow-Origin", "*");
@@ -72,23 +68,47 @@ app.get('/ultimoticket', async function(req, res) {
         res.send(data);
     });
 });
-
 app.get('/openPath', function(req, res) {
-    // using nodejs-open-file-explorer
-    // const path = 'C:\\Users';
-    // path = req.query.file;
-    f=String(req.query.file);
+    f=String(req.query.folder);
     f=f.replace(/\//g,"\\");
-    openExplorer(f, err => {
-        if(err) {
-            console.error(err);
+
+    const { exec } = require("child_process");
+
+    exec(`start explorer.exe /k "${f}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
         }
-        else {
-            //Do Something
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
         }
+        console.log(`stdout: ${stdout}`);
     });
+
     res.status(200).send();
 });
+$.ajax({
+    url:"http://localhost:3434/openPath",
+    data:{
+        "folder":"C:/xampp/htdocs/cajero2"
+    }
+});
+
+
+// app.get('/openPath', function(req, res) {
+//     f=String(req.query.file);
+//     f=f.replace(/\//g,"\\");
+//     openExplorer(f, err => {
+//         if(err) {
+//             console.error(err);
+//         }
+//         else {
+//             //Do Something
+//         }
+//     });
+//     res.status(200).send();
+// });
 app.listen(3434,()=>{});
 
 async function Shortcuts(){
@@ -132,7 +152,6 @@ var readFilePromise = function(file) {
     })
   }
 async function readSavedShortcuts(id){
-    // "./config/shortcuts_test.json"
     var x;  
     await readFilePromise("./config/shortcuts_test.json").then(function(data) {
         x=JSON.parse(data)
@@ -208,7 +227,7 @@ function renderFolder(path,file){
         
         <ol class="submenu ">
             <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            <li class="txt-shadow" onclick="openElement('`+(path+"/"+file)+`')">Open in explorer</li>
+            <li class="txt-shadow" onclick="localhost:3434/openPath/${path}/${file})">Open in explorer</li>
         </ol>
         
     </div>`;
@@ -216,8 +235,8 @@ function renderFolder(path,file){
 function renderFile(path,file){
     try{
         var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-        // href='=`+path+"/"+file+`'
-        return `<a class="element file" onclick="openElement('`+(path+"/"+file)+`')">
+        return `<a class="element file" href="http://localhost/${file}">
+            <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
             <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
@@ -267,7 +286,6 @@ function renderUri(id,uri,icon,name,blank){
     </div>`;
     }
 // window.open("https://www.geeksforgeeks.org", "_blank");
-// <li onclick="window.location.href='`+element.uri+`'">Execute</li>
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
         <img src="/assets/styles/default/folder_ByDinosoftLabs.png">

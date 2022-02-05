@@ -75,6 +75,7 @@ nav div{
     outline: none;
     color: white;
     backdrop-filter: var(--background-blur);
+    font-size: 15px;
     /* border-radius: 4px 0px 0px 4px; */
 }
 #searchInput:hover{
@@ -428,6 +429,18 @@ a{
     position: absolute;
     margin: 25%;
     background: #3664a79f;
+}
+
+footer.credits{
+    font-family: Verdana, Calibri;
+    font-size: 12px;
+    /* background: red; */
+    text-align: right;
+    padding: 5px;
+    color: white;
+}
+footer.credits a{
+    color: white;
 }
 
 
