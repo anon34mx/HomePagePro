@@ -25,7 +25,7 @@
             </div>
             <div>
                 
-                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm">
+                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()">
                     <input id="searchInput" type="text" value="" place holder="Search"
                         name="q" autofocus onkeyup="testApi();" class="txt-shadow"
                         autocomplete="off" tabindex="1" >
@@ -87,24 +87,27 @@ function shortcutsRead(){
             <form action="">
                 <table>
                     <tr>
-                        <td>Name</td>
+                        <td><label class="txt-shadow" for="">Name</label></td>
                         <td><input type=""></td>
                     </tr>
                     <tr>
-                        <td>icon</td>
+                        <td><label class="txt-shadow" for="">icon</label></td>
                         <td><input type=""></td>
                     </tr>
                     <tr>
-                        <td>uri</td>
+                        <td><label class="txt-shadow" for="">uri</label></td>
                         <td><input type=""></td>
                     </tr>
                     <tr>
-                        <td>New tab</td>
+                        <td><label class="txt-shadow" for="">New tab</label></td>
                         <td><input type=""></td>
                     </tr>
                     <tr>
                         <td>
-                            <button>Save</button>
+                            <span>
+                                <button>Save</button>
+                                <input type="reset" value="cancelar" onclick='$("#editLink").fadeOut()'>
+                            </span>
                         </td>
                     </tr>
                 </table>

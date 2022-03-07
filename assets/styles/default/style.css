@@ -428,7 +428,20 @@ a{
     height: 50%;
     position: absolute;
     margin: 25%;
-    background: #3664a79f;
+    background: var(--background);
+}
+#editLink form table{
+    width: 100%;
+    color:white;
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#editLink form table label{
+}
+#editLink form table input{
+    width:100%;
 }
 
 footer.credits{

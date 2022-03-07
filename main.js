@@ -81,18 +81,12 @@ app.get('/openPath', function(req, res) {
         }
         if (stderr) {
             console.log(`stderr: ${stderr}`);
-            return;
+            return;cursorTo()
         }
         console.log(`stdout: ${stdout}`);
     });
 
     res.status(200).send();
-});
-$.ajax({
-    url:"http://localhost:3434/openPath",
-    data:{
-        "folder":"C:/xampp/htdocs/cajero2"
-    }
 });
 
 
@@ -227,7 +221,7 @@ function renderFolder(path,file){
         
         <ol class="submenu ">
             <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            <li class="txt-shadow" onclick="localhost:3434/openPath/${path}/${file})">Open in explorer</li>
+            <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
         </ol>
         
     </div>`;
@@ -281,7 +275,7 @@ function renderUri(id,uri,icon,name,blank){
         </a>
         <ol class="submenu">
             <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();console.log('editar');">edit</li>
+            <li onclick="event.preventDefault();showEdit(${id});">edit</li>
         </ol>
     </div>`;
     }

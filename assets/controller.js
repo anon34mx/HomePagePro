@@ -138,6 +138,12 @@ function openElement(file){
     });
 }
 
+function launchFolder(folder){
+	$.ajax({
+		url:"http://localhost:3434/openPath?folder"+folder
+	});
+}
+
 function searchss(uri, parameter){
     // console.log(uri+parameter+"="+$("#search").val());
     window.location.href=uri+parameter+"="+$("#searchInput").val();
@@ -198,7 +204,7 @@ async function validateSearch(searchEngine){
 				$("#searchForm").submit();
 			}
 		}
-	}else{//IS IP DIRECTIO
+	}else{//IS IP DIRECTION
 		if(x[0].length == search.length){
 			window.location.href="http://"+search;
 			console.log("IP");
@@ -229,5 +235,5 @@ function autocomplete(){
 }
 
 function showEdit(){
-	
+	$("#editLink").fadeIn();
 }
