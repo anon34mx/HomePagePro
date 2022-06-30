@@ -68,6 +68,13 @@
         "name":"facebook",
         "uri":"http://facebook.com/",
         "icon":"http://facebook.com/favicon.ico"
+    },
+    "outlook":{
+        "type":"link",
+        "blank":false,
+        "name":"outlook",
+        "uri":"https://outlook.office.com/",
+        "icon":"https://outlook.office.com/favicon.ico"
     }
 }
 
