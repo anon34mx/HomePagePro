@@ -71,7 +71,7 @@ nav div{
 #searchInput{
     width: 100%;
     background-color: var(--background);
-    border:2px solid transparent;
+    border:var(--border);
     outline: none;
     color: white;
     backdrop-filter: var(--background-blur);
@@ -427,8 +427,10 @@ a{
     width: 50%;
     height: 50%;
     position: absolute;
-    margin: 25%;
     background: var(--background);
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
 }
 #editLink form table{
     width: 100%;
@@ -447,13 +449,15 @@ a{
 footer.credits{
     font-family: Verdana, Calibri;
     font-size: 12px;
-    /* background: red; */
     text-align: right;
-    padding: 5px;
     color: white;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
 }
 footer.credits a{
     color: white;
+    padding: 5px;
 }
 
 

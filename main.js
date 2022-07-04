@@ -3,6 +3,7 @@ var https = require('https');
 const path = require('path');
 const fs = require('fs');
 const lhl="C:/xampp/htdocs";
+const myShortcuts="./config/shortcuts_test.json";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
 var app = express();
@@ -18,9 +19,27 @@ const { resolve } = require('path');
 const { json } = require('express/lib/response');
 
 app.get('/shortcuts/read', async function(req, res) {
-    x= await readSavedShortcuts("id001");
-    res.send(x);
+    // x= await readSavedShortcuts("id001");
+    // res.send(x);
+    var id=req.query.shortcutID;
+    x= await readSavedShortcuts(id);
+    res.send(x).status(200);
 });
+
+app.get('/shortcuts/save', async function(req, res) {
+    var id=req.query.shortcutID;
+    x= await readSavedShortcuts();
+
+    x[id].blank=req.query.newtab;
+    x[id].name=req.query.name;
+    x[id].uri=req.query.link;
+    x[id].icon=req.query.icon;
+
+    fs.writeFileSync(myShortcuts, JSON.stringify(x));
+    // myShortcuts
+    res.send(x).status(200);
+});
+
 app.get('/', async function(req, res) {
     // console.log("START___"+new Date().getTime());
     filesFound="";
@@ -32,7 +51,7 @@ app.get('/', async function(req, res) {
     await scanFolder(lhl);
     // console.log("END_____"+new Date().getTime());
 
-    res.render('index', {
+    res.status(200).render('index', {
         filesFound:filesFound,
         folders:folders,
         shortcuts:shortcuts,
@@ -41,6 +60,7 @@ app.get('/', async function(req, res) {
         defaultSearchImg:defaultSearchImg
     });
 });
+
 app.get('/open', function(req, res) {
     require('child_process').exec('start "" "'+req.query.file.replace(/\//g,"\\")+'"');
     res.status(200).send();
@@ -103,12 +123,14 @@ app.get('/openPath', function(req, res) {
 //     });
 //     res.status(200).send();
 // });
-app.listen(3434,()=>{});
+app.listen(3434,()=>{
+    console.log("running");
+});
 
 async function Shortcuts(){
     shortcuts="";
     return await new Promise((resolve,reject)=>{
-        fs.readFile("./config/shortcuts_test.json","utf8",async (err,jsonString)=>{
+        fs.readFile(myShortcuts,"utf8",async (err,jsonString)=>{
             try{
                 jsonString=JSON.parse(jsonString,true)
             }catch(e){
@@ -147,7 +169,7 @@ var readFilePromise = function(file) {
   }
 async function readSavedShortcuts(id){
     var x;  
-    await readFilePromise("./config/shortcuts_test.json").then(function(data) {
+    await readFilePromise(myShortcuts).then(function(data) {
         x=JSON.parse(data)
       })
     if(id==undefined){
@@ -182,20 +204,28 @@ async function renderEngines(){
 
 function scanFolder(path){
     return new Promise(async (resolve,reject)=>{
-        fs.readdir(path, async function (err, files) {
-            if (err) {
-                return console.error('Unable to scan directory: ' + err);
-            } 
-            //listing all files using forEach
-            files.forEach(function (file) {
-                if(fs.lstatSync(path+"/"+file).isDirectory()){
-                    folders+=renderFolder(path,file);
-                }else{
-                    filesFound+=renderFile(path,file);
-                }
+        // try {
+            fs.readdir(path, async function (err, files) {
+                if (err) {
+                    // return console.error('Unable to scan directory: ' + err);
+                    // throw new Error();
+                    // return false;
+                    resolve();
+                } 
+                //listing all files using forEach
+                files.forEach(function (file) {
+                    if(fs.lstatSync(path+"/"+file).isDirectory()){
+                        folders+=renderFolder(path,file);
+                    }else{
+                        filesFound+=renderFile(path,file);
+                    }
+                });
+                resolve();
             });
-            resolve();
-        });
+            
+        // } catch (error) {
+            
+        // }
     })
 }
 function renderFolder(path,file){

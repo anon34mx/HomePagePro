@@ -7,11 +7,9 @@
         <script src="assets/jquery-ui.js"></script>
         <link rel="stylesheet" href="assets/jquery-ui.theme.min.css">
 
-
         <script src="assets/controller.js"></script>
         <link rel="stylesheet" href="assets/styles/default/style.css">
-        <link rel="icon" type="image/png" href="assets/favicon.ico">
-
+        <link rel="icon" type="image/png" href="assets/favicon.png">
     </head>
     <body>
         <div id="background"></div>
@@ -19,12 +17,11 @@
             <div>
                 <ul class="menu2">
                     <a class="txt-shadow" href="#shortcuts"><li>Shortcuts</li></a>
-                    <a class="txt-shadow" href="#"><li>Files</li></a>
-                    <a class="txt-shadow" href="#"><li>Projects</li></a>
+                    <a class="txt-shadow" href="#"><li>Localhost</li></a>
+                    <!-- <a class="txt-shadow" href="#"><li>Projects</li></a> -->
                 </ul>
             </div>
             <div>
-                
                 <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()">
                     <input id="searchInput" type="text" value="" place holder="Search"
                         name="q" autofocus onkeyup="testApi();" class="txt-shadow"
@@ -46,16 +43,40 @@
             <h5 class="txt-shadow">Shortcuts</h5>
             <div class="container">
                 <%-shortcuts%>
+                <div class="elementContainer" id="`+id+`">
+                    <a class="element uri"
+                        href="${uri}">
+                        <div class="bgBlur"></div>
+                        <div class="imgContainer">
+                            <!-- <img src="`+icon+`"> -->
+                            <p style="width: 48px;
+                            height: 48px;"
+                            >
+                            ➕
+                            </p>
+                        </div>
+                        <span class="txt-shadow">Add</span>
+                    </a>
+                    <ol class="submenu">
+                        <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
+                        <li onclick="event.preventDefault();showEdit(${id});">edit</li>
+                    </ol>
+                </div>
             </div>
         </section>
         <section>
-            <h5 class="txt-shadow">Files</h5>
+            <% if(filesFound!="" || folders!=""){ %>
+            <h5 class="txt-shadow">Localhost</h5>
+            <%
+                }
+            %>
+
             <div class="container">
                 <%-filesFound%>
             </div>
         </section>
         <section>
-            <h5 class="txt-shadow">Folders</h5>
+            <!-- <h5 class="txt-shadow">Folders</h5> -->
             <div class="container">
                 <%-folders%>
             </div>
@@ -74,39 +95,71 @@
             pointer-events: none;
         "></div>
 <script>
-function shortcutsRead(){
+function shortcutsRead(id){
     $.ajax({
-        url:"http://localhost:8080/shortcuts/read",
+        url:"http://localhost:3434/shortcuts/read",
+        data:{
+            shortcutID:id
+        },
         success:function(response){
             console.log(response);
+            $("#link").val(response.uri);
+            $("#name").val(response.name);
+            $("#icon").val(response.icon);
+            $("#shortcutID").val(id);
+            $("#newtab").prop("checked",response.blank);
+        }
+    });
+}
+function shortcutsSave(){
+    var data={
+            shortcutID:$("#shortcutID").val(),
+            name:$("#name").val(),
+            icon:$("#icon").val(),
+            newtab:$("#newtab").prop("checked"),
+            link:$("#link").val()
+        };
+    $.ajax({
+        url:"http://localhost:3434/shortcuts/save",
+        data,
+        success:function(response){
+            // console.log(response);
+            // $("#link").val(response.uri);
+            // $("#name").val(response.name);
+            // $("#icon").val(response.icon);
+            // $("#shortcutID").val(id);
+            // $("#newtab").prop("checked",response.blank);
+            $("#"+data.shortcutID+" .txt-shadow").text(data.name);
         }
     });
 }
 </script>
         <div id="editLink">
-            <form action="">
+            <form>
                 <table>
+                    <input id="shortcutID" name="shortcutID" type="hidden">
                     <tr>
-                        <td><label class="txt-shadow" for="">Name</label></td>
-                        <td><input type=""></td>
+                        <td><label class="txt-shadow" for="link">link</label></td>
+                        <td><input id="link" name="link" type=""></td>
                     </tr>
                     <tr>
-                        <td><label class="txt-shadow" for="">icon</label></td>
-                        <td><input type=""></td>
+                        <td><label class="txt-shadow" for="name">Name</label></td>
+                        <td><input id="name" name="name" type=""></td>
                     </tr>
                     <tr>
-                        <td><label class="txt-shadow" for="">uri</label></td>
-                        <td><input type=""></td>
+                        <td><label class="txt-shadow" for="icon">icon</label></td>
+                        <td><input id="icon" name="icon" type=""></td>
                     </tr>
                     <tr>
-                        <td><label class="txt-shadow" for="">New tab</label></td>
-                        <td><input type=""></td>
+                        <td><label class="txt-shadow" for="newtab">New tab</label></td>
+                        <td><input id="newtab" name="newtab" type="checkbox"></td>
                     </tr>
                     <tr>
                         <td>
                             <span>
-                                <button>Save</button>
-                                <input type="reset" value="cancelar" onclick='$("#editLink").fadeOut()'>
+                                <!-- <button>Save</button> -->
+                                <input type="button" value="Save" onclick='shortcutsSave()'>
+                                <input type="reset" value="Cancel" onclick='$("#editLink").fadeOut(0)'>
                             </span>
                         </td>
                     </tr>
