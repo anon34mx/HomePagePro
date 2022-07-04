@@ -305,7 +305,7 @@ function renderUri(id,uri,icon,name,blank){
         </a>
         <ol class="submenu">
             <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();showEdit(${id});">edit</li>
+            <li onclick="event.preventDefault();edit(${id},'edit');">edit</li>
         </ol>
     </div>`;
     }

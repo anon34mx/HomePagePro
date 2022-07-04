@@ -43,9 +43,11 @@
             <h5 class="txt-shadow">Shortcuts</h5>
             <div class="container">
                 <%-shortcuts%>
+
+                <!-- ADD SHORTCUT -->
                 <div class="elementContainer" id="`+id+`">
                     <a class="element uri"
-                        href="${uri}">
+                    onclick="edit('','new')">
                         <div class="bgBlur"></div>
                         <div class="imgContainer">
                             <!-- <img src="`+icon+`"> -->
@@ -57,11 +59,8 @@
                         </div>
                         <span class="txt-shadow">Add</span>
                     </a>
-                    <ol class="submenu">
-                        <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-                        <li onclick="event.preventDefault();showEdit(${id});">edit</li>
-                    </ol>
                 </div>
+                <!-- ADD SHORTCUT (END) -->
             </div>
         </section>
         <section>
@@ -95,49 +94,82 @@
             pointer-events: none;
         "></div>
 <script>
-function shortcutsRead(id){
-    $.ajax({
-        url:"http://localhost:3434/shortcuts/read",
-        data:{
-            shortcutID:id
-        },
-        success:function(response){
-            console.log(response);
-            $("#link").val(response.uri);
-            $("#name").val(response.name);
-            $("#icon").val(response.icon);
-            $("#shortcutID").val(id);
-            $("#newtab").prop("checked",response.blank);
-        }
-    });
-}
-function shortcutsSave(){
-    var data={
-            shortcutID:$("#shortcutID").val(),
-            name:$("#name").val(),
-            icon:$("#icon").val(),
-            newtab:$("#newtab").prop("checked"),
-            link:$("#link").val()
-        };
-    $.ajax({
-        url:"http://localhost:3434/shortcuts/save",
-        data,
-        success:function(response){
-            // console.log(response);
-            // $("#link").val(response.uri);
-            // $("#name").val(response.name);
-            // $("#icon").val(response.icon);
-            // $("#shortcutID").val(id);
-            // $("#newtab").prop("checked",response.blank);
-            $("#"+data.shortcutID+" .txt-shadow").text(data.name);
-        }
-    });
-}
+    function newShortcut(){
+        // saber si es un enlace valido
+        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}
+        // Quitar prefijos
+        // ^((https|ftp|http):\/\/)?(www\.)?
+        // showEdit();
+
+        // no admite puntos juntos
+        //funciona mejor
+        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}(\.{1})[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+    }
+
+    function autocompleteShortcut(){
+
+    }
+    function edit(id,mode){
+        showEdit(id);
+        $("#mode").val(mode);
+    }
+    function cancelEdit(){
+        $("#editLink").fadeOut(333);
+        setTimeout(() => {
+            $("#editShort")[0].reset();
+        }, 334);
+    }
+    function shortcutsRead(id){
+        $.ajax({
+            url:"http://localhost:3434/shortcuts/read",
+            data:{
+                shortcutID:id
+            },
+            success:function(response){
+                console.log(response);
+                $("#link").val(response.uri);
+                $("#name").val(response.name);
+                $("#icon").val(response.icon);
+                $("#shortcutID").val(id);
+                $("#newtab").prop("checked",response.blank);
+            }
+        });
+    }
+    function shortcutsSave(){
+        var data={
+                shortcutID:$("#shortcutID").val(),
+                name:$("#name").val(),
+                icon:$("#icon").val(),
+                newtab:$("#newtab").prop("checked"),
+                link:$("#link").val()
+            };
+        $.ajax({
+            url:"http://localhost:3434/shortcuts/save",
+            data,
+            success:function(response){
+                // console.log(response);
+                // $("#link").val(response.uri);
+                // $("#name").val(response.name);
+                // $("#icon").val(response.icon);
+                // $("#shortcutID").val(id);
+                // $("#newtab").prop("checked",response.blank);
+                $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+            }
+        });
+    }
 </script>
         <div id="editLink">
-            <form>
+            <form id="editShort">
                 <table>
-                    <input id="shortcutID" name="shortcutID" type="hidden">
+                    <tr>
+                        <td><label class="txt-shadow" for="mode">mode</label></td>
+                        <td><input id="mode" name="mode" type="text" value=""></td>
+                    </tr>
+                    <tr>
+                        <td><label class="txt-shadow" for="shortcutID">ID</label></td>
+                        <td><input id="shortcutID" name="shortcutID" type=""></td>
+                    </tr>
                     <tr>
                         <td><label class="txt-shadow" for="link">link</label></td>
                         <td><input id="link" name="link" type=""></td>
@@ -159,7 +191,7 @@ function shortcutsSave(){
                             <span>
                                 <!-- <button>Save</button> -->
                                 <input type="button" value="Save" onclick='shortcutsSave()'>
-                                <input type="reset" value="Cancel" onclick='$("#editLink").fadeOut(0)'>
+                                <input type="reset" value="Cancel" onclick='cancelEdit();'>
                             </span>
                         </td>
                     </tr>
