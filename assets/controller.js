@@ -125,6 +125,10 @@ $(document).ready(()=>{
 			console.log(e);
 		}
 	});
+	// --
+	$("#editShort #link").bind("paste", function(e){
+		autocompleteShortcut(e.originalEvent.clipboardData.getData('text'));
+	});
 });
 
 //funciones
@@ -256,5 +260,5 @@ function autocomplete(){
 }
 
 function showEdit(){
-	$("#editLink").fadeIn();
+	$("#editLink").fadeIn(333);
 }

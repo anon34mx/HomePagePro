@@ -105,10 +105,54 @@
         // no admite puntos juntos
         //funciona mejor
         // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}(\.{1})[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+
+        // obtener solo nombre del dominio intento 1
+        // (?<=((https|ftp|http):\/\/)).*(?=\.[a-zA-Z]{1,6})
+
+        //quitar protocolo y asi
+        // ((https|ftp|http):\/\/)(www.)?
+        //quitar dominio
+        // ((\.{1})[a-zA-Z0-9()]{1,6}){1}\b
     }
 
-    function autocompleteShortcut(){
+    async function autocompleteShortcut(value){
+        if(
+			value.match(/^((https|ftp|http|tel):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)
+			||
+			value.match(/^mailto:(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+		){
+            var name=await value.replace(/((https|ftp|http):\/\/)(www.)?/,'').replace(/((\.{1})[a-zA-Z0-9()]{1,6}){1}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,'');
 
+            if(name!=""){
+                $("#editShort #name").val(name);
+                $("#editShort #shortcutID").val(name);
+            }
+            // get favicon
+            //^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}
+            /// ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}
+            /*
+            var x=$("#link").val();
+            x.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]
+            */
+            var favicon=value.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]+"/favicon.ico";
+            console.log(favicon);
+            $("#editShort #sctIcon").attr("src",favicon);
+            $("#editShort #icon").val(favicon);
+            /*
+            $.ajax({
+                url:"https://www.instagram.com/favicon.ico",
+                headers: {
+
+                },
+                dataType:"jsonp",
+                type: 'GET',
+                crossDomain: true,
+                success:function(response){
+                    console.log(response);
+                }
+            });
+            */
+        }
     }
     function edit(id,mode){
         showEdit(id);
@@ -148,12 +192,6 @@
             url:"http://localhost:3434/shortcuts/save",
             data,
             success:function(response){
-                // console.log(response);
-                // $("#link").val(response.uri);
-                // $("#name").val(response.name);
-                // $("#icon").val(response.icon);
-                // $("#shortcutID").val(id);
-                // $("#newtab").prop("checked",response.blank);
                 $("#"+data.shortcutID+" .txt-shadow").text(data.name);
             }
         });
@@ -172,7 +210,11 @@
                     </tr>
                     <tr>
                         <td><label class="txt-shadow" for="link">link</label></td>
-                        <td><input id="link" name="link" type=""></td>
+                        <!-- <td><input id="link" name="link" type=""></td> -->
+                        <td>
+                            <textarea name="link" id="link" style="width:100%" rows="4"
+                            ></textarea>
+                        </td>
                     </tr>
                     <tr>
                         <td><label class="txt-shadow" for="name">Name</label></td>
@@ -180,19 +222,18 @@
                     </tr>
                     <tr>
                         <td><label class="txt-shadow" for="icon">icon</label></td>
-                        <td><input id="icon" name="icon" type=""></td>
+                        <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
                     </tr>
                     <tr>
                         <td><label class="txt-shadow" for="newtab">New tab</label></td>
                         <td><input id="newtab" name="newtab" type="checkbox"></td>
                     </tr>
                     <tr>
-                        <td>
-                            <span>
-                                <!-- <button>Save</button> -->
-                                <input type="button" value="Save" onclick='shortcutsSave()'>
-                                <input type="reset" value="Cancel" onclick='cancelEdit();'>
-                            </span>
+                        <td colspan="2" style="
+                            display: inline-flex;
+                        ">
+                            <input type="button" value="Save" onclick='shortcutsSave()'>
+                            <input type="reset" value="Cancel" onclick='cancelEdit();'>
                         </td>
                     </tr>
                 </table>
@@ -206,6 +247,6 @@
     </body>
     <footer class="credits txt-shadow">
         <span>⚙</span>
-        <a href="https://twitter.com/a_non34">t/a_non34</a>
+        <a href="https://twitter.com/a_non34">Contact</a>
     </footer>
 </html>

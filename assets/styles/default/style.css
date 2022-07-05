@@ -424,7 +424,7 @@ a{
     transition: 0.3s;
 }
 #editLink form{
-    width: 50%;
+    width: 70%;
     height: 50%;
     position: absolute;
     background: var(--background);
