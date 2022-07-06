@@ -30,6 +30,10 @@ app.get('/shortcuts/save', async function(req, res) {
     var id=req.query.shortcutID;
     x= await readSavedShortcuts();
 
+    if(typeof x[id] === 'undefined'){
+        x[id]={};
+    }
+    x[id].type="link";
     x[id].blank=req.query.newtab;
     x[id].name=req.query.name;
     x[id].uri=req.query.link;
@@ -37,7 +41,32 @@ app.get('/shortcuts/save', async function(req, res) {
 
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     // myShortcuts
-    res.send(x).status(200);
+    switch (req.query.mode) {
+        case 'new':
+            res.send(
+                renderUri(
+                    id,
+                    x[id].uri,
+                    x[id].icon,
+                    x[id].name,
+                    x[id].blank
+                )).status(200);
+            break;
+        case 'edit':
+            res.send("saved").status(200);
+            break;
+    
+        default:
+            break;
+    }
+});
+app.get('/shortcuts/delete', async function(req, res) {
+    var id=req.query.shortcutID;
+    x= await readSavedShortcuts();
+
+    delete(x[id]);
+    fs.writeFileSync(myShortcuts, JSON.stringify(x));
+    res.send("deleted").status(200);
 });
 
 app.get('/', async function(req, res) {

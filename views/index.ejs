@@ -182,19 +182,45 @@
     }
     function shortcutsSave(){
         var data={
-                shortcutID:$("#shortcutID").val(),
-                name:$("#name").val(),
-                icon:$("#icon").val(),
-                newtab:$("#newtab").prop("checked"),
-                link:$("#link").val()
+                mode:$("#editShort #mode").val(),
+                shortcutID:$("#editShort #shortcutID").val(),
+                name:$("#editShort #name").val(),
+                icon:$("#editShort #icon").val(),
+                newtab:$("#editShort #newtab").prop("checked"),
+                link:$("#editShort #link").val()
             };
         $.ajax({
             url:"http://localhost:3434/shortcuts/save",
             data,
             success:function(response){
-                $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+                // $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+
+                console.log(response);
+                window.location.reload(true);
+                // if(data.mode=="new"){
+                //     $("#shortcuts .container").append(response);
+                // }else{
+                    
+                // }
             }
         });
+    }
+    function shortcutDelete(){
+        var data={
+                shortcutID:$("#editShort #shortcutID").val(),
+            };
+        if(confirm("delete?")){
+            $.ajax({
+            url:"http://localhost:3434/shortcuts/delete",
+            data,
+            success:function(response){
+                if(response=="deleted"){
+                    $("#shortcuts .container #"+data.shortcutID).remove();
+                    $("#editLink").fadeOut(333);
+                }
+            }
+        });
+        }
     }
 </script>
         <div id="editLink">
@@ -234,6 +260,11 @@
                         ">
                             <input type="button" value="Save" onclick='shortcutsSave()'>
                             <input type="reset" value="Cancel" onclick='cancelEdit();'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="button" onclick="shortcutDelete()" value="delete">
                         </td>
                     </tr>
                 </table>
