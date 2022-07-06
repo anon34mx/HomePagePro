@@ -25,7 +25,7 @@
                 <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()">
                     <input id="searchInput" type="text" value="" place holder="Search"
                         name="q" autofocus onkeyup="testApi();" class="txt-shadow"
-                        autocomplete="of-f" tabindex="1" >
+                        autocomplete="ñÑñÑ" tabindex="1" >
                     <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
                     <label for="searchBtn" style="background: var(--background);" tabindex="1">
                         <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
@@ -47,7 +47,7 @@
                 <!-- ADD SHORTCUT -->
                 <div class="elementContainer" id="`+id+`">
                     <a class="element uri"
-                    onclick="edit('','new')">
+                    onclick="edit(this.parentElement,'new')">
                         <div class="bgBlur"></div>
                         <div class="imgContainer">
                             <!-- <img src="`+icon+`"> -->
@@ -139,6 +139,9 @@
             $("#editShort #sctIcon").attr("src",favicon);
             $("#editShort #icon").val(favicon);
             /*
+            function setHeader(xhr) {
+                xhr.setRequestHeader('Authorization', token);
+            }
             $.ajax({
                 url:"https://www.instagram.com/favicon.ico",
                 headers: {
@@ -149,14 +152,17 @@
                 crossDomain: true,
                 success:function(response){
                     console.log(response);
-                }
+                },
+                beforeSend: setHeader
             });
             */
         }
     }
-    function edit(id,mode){
-        showEdit(id);
-        $("#mode").val(mode);
+    function edit(element,mode){
+        console.log(element)
+        showEdit();
+
+        // $("#mode").val(mode);
     }
     function cancelEdit(){
         $("#editLink").fadeOut(333);
@@ -164,112 +170,93 @@
             $("#editShort")[0].reset();
         }, 334);
     }
-    function shortcutsRead(id){
+    function shortcutsRead(element){
+        console.log(element);
         $.ajax({
             url:"http://localhost:3434/shortcuts/read",
             data:{
-                shortcutID:id
+                shortcutID:element.id
             },
             success:function(response){
                 console.log(response);
-                $("#link").val(response.uri);
-                $("#name").val(response.name);
-                $("#icon").val(response.icon);
-                $("#shortcutID").val(id);
-                $("#newtab").prop("checked",response.blank);
+                $("#editShort #type").val(element.attributes.type.value);
+                $("#editShort #link").val(response.uri);
+                $("#editShort #name").val(response.name);
+                $("#editShort #icon").val(response.icon);
+                $("#editShort #shortcutID").val(element.id);
+                $("#editShort #newtab").prop("checked",response.blank);
             }
         });
     }
     function shortcutsSave(){
         var data={
-                mode:$("#editShort #mode").val(),
-                shortcutID:$("#editShort #shortcutID").val(),
-                name:$("#editShort #name").val(),
-                icon:$("#editShort #icon").val(),
-                newtab:$("#editShort #newtab").prop("checked"),
-                link:$("#editShort #link").val()
+                shortcutID:$("#shortcutID").val(),
+                name:$("#name").val(),
+                icon:$("#icon").val(),
+                newtab:$("#newtab").prop("checked"),
+                link:$("#link").val()
             };
         $.ajax({
             url:"http://localhost:3434/shortcuts/save",
             data,
             success:function(response){
-                // $("#"+data.shortcutID+" .txt-shadow").text(data.name);
-
-                console.log(response);
-                window.location.reload(true);
-                // if(data.mode=="new"){
-                //     $("#shortcuts .container").append(response);
-                // }else{
-                    
-                // }
+                $("#"+data.shortcutID+" .txt-shadow").text(data.name);
             }
         });
-    }
-    function shortcutDelete(){
-        var data={
-                shortcutID:$("#editShort #shortcutID").val(),
-            };
-        if(confirm("delete?")){
-            $.ajax({
-            url:"http://localhost:3434/shortcuts/delete",
-            data,
-            success:function(response){
-                if(response=="deleted"){
-                    $("#shortcuts .container #"+data.shortcutID).remove();
-                    $("#editLink").fadeOut(333);
-                }
-            }
-        });
-        }
     }
 </script>
-        <div id="editLink">
-            <form id="editShort">
-                <table>
-                    <tr>
-                        <td><label class="txt-shadow" for="mode">mode</label></td>
-                        <td><input id="mode" name="mode" type="text" value=""></td>
-                    </tr>
-                    <tr>
-                        <td><label class="txt-shadow" for="shortcutID">ID</label></td>
-                        <td><input id="shortcutID" name="shortcutID" type=""></td>
-                    </tr>
-                    <tr>
-                        <td><label class="txt-shadow" for="link">link</label></td>
-                        <!-- <td><input id="link" name="link" type=""></td> -->
-                        <td>
-                            <textarea name="link" id="link" style="width:100%" rows="4"
-                            ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label class="txt-shadow" for="name">Name</label></td>
-                        <td><input id="name" name="name" type=""></td>
-                    </tr>
-                    <tr>
-                        <td><label class="txt-shadow" for="icon">icon</label></td>
-                        <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
-                    </tr>
-                    <tr>
-                        <td><label class="txt-shadow" for="newtab">New tab</label></td>
-                        <td><input id="newtab" name="newtab" type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="
-                            display: inline-flex;
-                        ">
-                            <input type="button" value="Save" onclick='shortcutsSave()'>
-                            <input type="reset" value="Cancel" onclick='cancelEdit();'>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="button" onclick="shortcutDelete()" value="delete">
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+<div id="editLink">
+    <form id="editShort">
+        <table>
+            <tr>
+                <td><label class="txt-shadow" for="type">type</label></td>
+                <td><input id="type" name="type" type="text" value=""></td>
+            </tr>
+                <td><label class="txt-shadow" for="mode">mode</label></td>
+                <td><input id="mode" name="mode" type="text" value=""></td>
+            </tr>
+            <tr>
+                <td><label class="txt-shadow" for="shortcutID">ID</label></td>
+                <td><input id="shortcutID" name="shortcutID" type=""></td>
+            </tr>
+            <tr>
+                <td><label class="txt-shadow" for="link">link</label></td>
+                <!-- <td><input id="link" name="link" type=""></td> -->
+                <td>
+                    <textarea name="link" id="link" style="width:100%" rows="4"
+                    ></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td><label class="txt-shadow" for="name">Name</label></td>
+                <td><input id="name" name="name" type=""></td>
+            </tr>
+            <tr>
+                <td><label class="txt-shadow" for="icon">icon</label></td>
+                <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
+            </tr>
+            <tr>
+                <td><label class="txt-shadow" for="newtab">New tab</label></td>
+                <td><input id="newtab" name="newtab" type="checkbox"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="
+                    display: inline-flex;
+                ">
+                    <input type="button" value="Save" onclick='shortcutsSave()'>
+                    <input type="reset" value="Cancel" onclick='cancelEdit();'>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="mdl-conf">
+    <table>
+        <tr>
+            <td>Theme</td>
+        </tr>
+    </table>
+</div>
         <!-- <script src="http://suggestqueries.google.com/complete/search?output=toolbar&hl=en&q=cotorrisa"></script> -->
         <!-- <script src="https://www.google.com/complete/search?client=hp&hl=en&sugexp=msedr&gs_rn=62&gs_ri=hp&cp=1&gs_id=9c&q=a&xhr=t&callback=hello&callback=testApi"></script> -->
         <!-- 
@@ -277,7 +264,9 @@
          -->
     </body>
     <footer class="credits txt-shadow">
-        <span>⚙</span>
+        <span
+        onclick=""
+        >⚙</span>
         <a href="https://twitter.com/a_non34">Contact</a>
     </footer>
 </html>

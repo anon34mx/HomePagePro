@@ -302,7 +302,7 @@ function renderFile(path,file){
 }
 function renderUriGroup(links,id){
     var html=`
-        <div class="element uriGroup" id=`+id+`>
+        <div class="element uriGroup" id=`+id+` type="group">
             <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
@@ -323,7 +323,7 @@ function renderUriGroup(links,id){
 }
 function renderUri(id,uri,icon,name,blank){
     return `
-    <div class="elementContainer" id="`+id+`">
+    <div class="elementContainer" id="`+id+`" type="uri">
         <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
             href="${uri}">
             <div class="bgBlur"></div>  
@@ -334,7 +334,7 @@ function renderUri(id,uri,icon,name,blank){
         </a>
         <ol class="submenu">
             <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();edit(${id},'edit');">edit</li>
+            <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
         </ol>
     </div>`;
     }
