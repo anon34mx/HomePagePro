@@ -107,6 +107,9 @@ $(document).ready(()=>{
 	$('.uriGroup').mouseenter(function () {
 		var container=$(this).find(".container")[0];
 		$(container).css("left","71px");
+		$(container).css("background","red");
+		// $(container).css("max-width","222px");
+		$(container).css("display","-webkit-inline-box");
 	}).mouseleave();//trigger in
 
 	document.onclick = hideMenu;
@@ -261,4 +264,8 @@ function autocomplete(){
 
 function showEdit(){
 	$("#editLink").fadeIn(333);
+}
+
+function idGenerator(){
+	return new Date().getTime().toString(16);
 }

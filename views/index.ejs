@@ -10,15 +10,63 @@
         <script src="assets/controller.js"></script>
         <link rel="stylesheet" href="assets/styles/default/style.css">
         <link rel="icon" type="image/png" href="assets/favicon.png">
+        <script>
+            $(document).ready(()=>{
+                $( ".elementContainer", $("#shortcuts") ).draggable({
+                    // cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+                    revert: "invalid", // when not dropped, the item will revert back to its initial position
+                    containment: "document",
+                    helper: "clone",
+                    cursor: "move"
+                });
+
+                // join link to group
+                $(".uriGroup").droppable({
+                    accept: "#shortcuts .container > .elementContainer",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: async function( event, ui ) {
+                        var origin=$(ui.draggable[0]).parent().parent()[0];
+                        var target=event.target;
+                        var elementCopy=ui.draggable[0];
+
+                        // if($(target).attr("type")=="group"){
+                            await $(target).children(".container").append(elementCopy);
+                        // }
+                    }
+                });
+
+                // remove link from group
+                $("#shortcuts").droppable({
+                    accept: ".uriGroup .container > .elementContainer",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: async function( event, ui ) {
+                        var origin=$(ui.draggable[0]).parent().parent()[0];
+                        var target=event.target;
+                        var elementCopy=ui.draggable[0];
+
+                        await $(event.target).children(".container").append(elementCopy);
+                        // $(ui.draggable[0]).remove();
+                        if($(origin).find(".container").children().length==0){
+                            document.getElementById("#sndFX-pop").play();
+                            $(origin).remove();
+                        }
+                    }
+                });
+            });
+        </script>
     </head>
     <body>
+        <audio id="#sndFX-pop" src="/assets/styles/default/audio/QKTA234-pop.mp3" preload="auto"></audio>
         <div id="background"></div>
         <nav>
             <div>
                 <ul class="menu2">
                     <a class="txt-shadow" href="#shortcuts"><li>Shortcuts</li></a>
-                    <a class="txt-shadow" href="#"><li>Localhost</li></a>
-                    <!-- <a class="txt-shadow" href="#"><li>Projects</li></a> -->
+                    <a class="txt-shadow" href="#localhost"><li>Localhost</li></a>
                 </ul>
             </div>
             <div>
@@ -50,7 +98,6 @@
                     onclick="edit(this.parentElement,'new')">
                         <div class="bgBlur"></div>
                         <div class="imgContainer">
-                            <!-- <img src="`+icon+`"> -->
                             <p style="width: 48px;
                             height: 48px;"
                             >
@@ -63,7 +110,7 @@
                 <!-- ADD SHORTCUT (END) -->
             </div>
         </section>
-        <section>
+        <section id="localhost">
             <% if(filesFound!="" || folders!=""){ %>
             <h5 class="txt-shadow">Localhost</h5>
             <%
@@ -75,12 +122,10 @@
             </div>
         </section>
         <section>
-            <!-- <h5 class="txt-shadow">Folders</h5> -->
             <div class="container">
                 <%-folders%>
             </div>
         </section>
-        <!-- <img id="configIcon" src="assets/styles/default/config.png" alt=""> -->
 
         <div id="testClick" style="
             display: block;
@@ -139,22 +184,8 @@
             $("#editShort #sctIcon").attr("src",favicon);
             $("#editShort #icon").val(favicon);
             /*
-            function setHeader(xhr) {
-                xhr.setRequestHeader('Authorization', token);
-            }
-            $.ajax({
-                url:"https://www.instagram.com/favicon.ico",
-                headers: {
-
-                },
-                dataType:"jsonp",
-                type: 'GET',
-                crossDomain: true,
-                success:function(response){
-                    console.log(response);
-                },
-                beforeSend: setHeader
-            });
+            //get favicon
+            // (?=<link)(.*)(rel="shortcut icon")(.*)>
             */
         }
     }
@@ -163,6 +194,14 @@
         showEdit();
 
         $("#mode").val(mode);
+        if(mode=="new"){
+            $("#shortcutID").val(idGenerator());
+            $("#link").parent().parent().hide(1);
+            $("#newtab").parent().parent().hide(1);
+        }else{
+            $("#link").parent().parent().show(1);
+            $("#newtab").parent().parent().show(1);
+        }
     }
     function cancelEdit(){
         $("#editLink").fadeOut(333);
@@ -209,7 +248,6 @@
         <table>
             <tr>
                 <td><label class="txt-shadow" for="type">type</label></td>
-                <!-- <td><input id="type" name="type" type="text" value=""></td> -->
                 <td>
                     <select name="type" id="type">
                         <option value="uri">link</option>
@@ -226,7 +264,6 @@
             </tr>
             <tr>
                 <td><label class="txt-shadow" for="link">link</label></td>
-                <!-- <td><input id="link" name="link" type=""></td> -->
                 <td>
                     <textarea name="link" id="link" style="width:100%" rows="4"
                     ></textarea>
@@ -262,11 +299,7 @@
         </tr>
     </table>
 </div>
-        <!-- <script src="http://suggestqueries.google.com/complete/search?output=toolbar&hl=en&q=cotorrisa"></script> -->
-        <!-- <script src="https://www.google.com/complete/search?client=hp&hl=en&sugexp=msedr&gs_rn=62&gs_ri=hp&cp=1&gs_id=9c&q=a&xhr=t&callback=hello&callback=testApi"></script> -->
-        <!-- 
-            https://simplestepscode.com/autocomplete-data-tutorial/
-         -->
+
     </body>
     <footer class="credits txt-shadow">
         <span
