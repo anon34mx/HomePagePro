@@ -240,28 +240,6 @@ async function validateSearch(searchEngine){
 }
 
 function autocomplete(){
-	//get icon
-	/*
-	var faviconFound;
-	$.ajax({
-		url:"https://phantomjs.org/",
-		success:function(response){
-			var page=response+``;
-
-			// page=$(page)
-			page.match(/head/);
-			// (?=(<link) (rel=\"shortcut icon\" | id=\"favicon\")).*(?<=\>)
-			// (?=rel=\"shortcut icon\").*(?=>)
-			// (?=<link).*>
-			// este
-			// (?=<link)(.*)(rel="shortcut icon")(.*)>
-			faviconFound=page.toString().match(/(?=<link)(.*)(rel="shortcut icon")(.*)>/)[0];
-			console.log($(faviconFound).attr("href"));
-		}
-	});
-
-	*/
-
 // http://suggestqueries.google.com/complete/search?client=firefox&q=YOURQUERY
 	$.ajax({
 		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
