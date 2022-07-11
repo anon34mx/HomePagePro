@@ -12,51 +12,162 @@
         <link rel="icon" type="image/png" href="assets/favicon.png">
         <script>
             $(document).ready(()=>{
-                $( ".elementContainer", $("#shortcuts") ).draggable({
+                $("#editShort input[name='type']").change(()=>{
+                    // console.log("asd"); 
+                    // $("#editShort input[name='type'][value='group']").attr('checked', true);
+                    console.log(this);
+                    var val=$("#editShort input[name='type']:checked").val();
+                    if(val=="uri"){
+                        $("#editShort #link").parent().parent().show(1);
+                        $("#editShort #newtab").parent().parent().show(1);
+                        $("#editShort #icon").parent().parent().show(1);
+                    }else{
+                        $("#editShort #link").parent().parent().hide(1);
+                        $("#editShort #newtab").parent().parent().hide(1);
+                        $("#editShort #icon").parent().parent().hide(1);
+                        // $("#editShort #name").val("New group");
+                    }
+                });
+            });
+            function editMode(){
+                linkDraggable(".linkDraggable", $("#shortcuts"));
+                linksContainerDroppable("#shortcuts");
+                groupDroppable(".uriGroup");
+                // mergeLinks(".linkDraggable");
+            }
+            function stopEditMode(){
+                $(".linkDraggable").draggable("destroy")
+                $("#shortcuts").droppable("destroy");
+                $(".uriGroup").droppable("destroy");
+            }
+
+            // LINKS
+            function linkDraggable(elementSelector, containerElement){
+                $( elementSelector, containerElement ).draggable({
                     // cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-                    revert: "invalid", // when not dropped, the item will revert back to its initial position
+                    revert: false, // when not dropped, the item will revert back to its initial position
                     containment: "document",
                     helper: "clone",
-                    cursor: "move"
+                    cursor: "move",
                 });
+            }
 
-                // join link to group
-                $(".uriGroup").droppable({
+            // REMOVE LINK FROM GROUP
+            function linksContainerDroppable(elementSelector){
+                $(elementSelector).droppable({
+                    accept: ".uriGroup .container > .linkDraggable",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: async function( event, ui ) {
+                        var origin=$(ui.draggable[0]).parent().parent()[0];
+                        var target=event.target;
+                        var elementCopy=ui.draggable[0];
+
+                        $.ajax({
+                            url:"/shortcuts/removeFromGroup",
+                            timeout: 666,
+                            data:{
+                                element:elementCopy.id,
+                                group:origin.id
+                            },
+                            success:(response)=>{
+                                if(response=="saved"){
+                                    alert("saved");
+                                    // $(target).children(".container").append(elementCopy);
+                                    $(event.target).children(".container").append(elementCopy);
+                                    if($(origin).find(".container").children().length==0){
+                                        if(confirm("delete empty group?")){
+                                            document.getElementById("#sndFX-pop").play();
+                                            $(origin).remove();
+                                            // $(origin).droppable( "destroy" );
+                                        }
+                                    }
+                                }else{
+                                    alert("couldn't save\n"+response);
+                                }
+                            }
+                        }).fail((jqXHR, textStatus, errorThrown)=>{
+                            alert("couldn't save\n"+textStatus);
+                        });
+
+
+
+
+
+
+                    }
+                });
+            }
+            // ADD LINK TO GROUP
+            function groupDroppable(elementSelector){
+                $(elementSelector).droppable({
+                    tolerance:"pointer",
+                    accept: "#shortcuts .container > .linkDraggable",
+                    classes: {
+                        "ui-droppable-active": "ui-state-highlight"
+                    },
+                    drop: async function( event, ui ) {
+                        var origin=$(ui.draggable[0]).parent().parent()[0];
+                        var target=event.target;
+                        var elementCopy=ui.draggable[0];
+                        
+                        $.ajax({
+                            url:"/shortcuts/addToGroup",
+                            timeout: 666,
+                            data:{
+                                element:elementCopy.id,
+                                group:target.id
+                            },
+                            success:(response)=>{
+                                if(response=="saved"){
+                                    alert("saved");
+                                    $(target).children(".container").append(elementCopy);
+                                }else{
+                                    alert("couldn't save");
+                                }
+                            }
+                        }).fail((jqXHR, textStatus, errorThrown)=>{
+                            alert("couldn't save\n"+textStatus);
+                        });
+                    }
+                });
+            }
+            //MERGE LINKS TO CREATE GROUP
+            //TESTING
+            /*
+            async function mergeLinks(selector){
+                $(selector).droppable({
+                    tolerance:"pointer",
                     accept: "#shortcuts .container > .elementContainer",
                     classes: {
                         "ui-droppable-active": "ui-state-highlight"
                     },
                     drop: async function( event, ui ) {
-                        var origin=$(ui.draggable[0]).parent().parent()[0];
+                        // var origin=$(ui.draggable[0]).parent().parent()[0];
                         var target=event.target;
                         var elementCopy=ui.draggable[0];
 
-                        // if($(target).attr("type")=="group"){
-                            await $(target).children(".container").append(elementCopy);
-                        // }
+                        
+                        console.log("merge");
+                        // console.log(origin, target, elementCopy);
+
+                        var newId=idGenerator();
+                        await $("#shortcuts > .container").append(`<div class="element uriGroup" id=${newId} type="group">
+                            <div class="bgBlur"></div>
+                            <div class="imgContainer">
+                                <img src="/assets/styles/default/IMG" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+                            </div>
+                            <span class="text-shadow">New Group</span>
+                            <div class="container">`);
+                        await groupDroppable("#"+newId);
+                        $(target).droppable("disable");
+                        $(elementCopy).droppable("disable");
+                        $("#"+newId+" .container").append(target,elementCopy);
                     }
                 });
-
-                // remove link from group
-                $("#shortcuts").droppable({
-                    accept: ".uriGroup .container > .elementContainer",
-                    classes: {
-                        "ui-droppable-active": "ui-state-highlight"
-                    },
-                    drop: async function( event, ui ) {
-                        var origin=$(ui.draggable[0]).parent().parent()[0];
-                        var target=event.target;
-                        var elementCopy=ui.draggable[0];
-
-                        await $(event.target).children(".container").append(elementCopy);
-                        // $(ui.draggable[0]).remove();
-                        if($(origin).find(".container").children().length==0){
-                            document.getElementById("#sndFX-pop").play();
-                            $(origin).remove();
-                        }
-                    }
-                });
-            });
+            }
+            */
         </script>
     </head>
     <body>
@@ -89,11 +200,11 @@
         </nav>
         <section id="shortcuts">
             <h5 class="txt-shadow">Shortcuts</h5>
+            <div><button onclick="editMode()">edit</button></div>
+            <div><button onclick="stopEditMode()()">done</button></div>
             <div class="container">
-                <%-shortcuts%>
-
                 <!-- ADD SHORTCUT -->
-                <div class="elementContainer" id="`+id+`">
+                <div class="elementContainer" id="addNew">
                     <a class="element uri"
                     onclick="edit(this.parentElement,'new')">
                         <div class="bgBlur"></div>
@@ -108,6 +219,8 @@
                     </a>
                 </div>
                 <!-- ADD SHORTCUT (END) -->
+                <%-shortcuts%>
+
             </div>
         </section>
         <section id="localhost">
@@ -190,17 +303,15 @@
         }
     }
     function edit(element,mode){
-        console.log(element)
         showEdit();
 
         $("#mode").val(mode);
         if(mode=="new"){
             $("#shortcutID").val(idGenerator());
-            $("#link").parent().parent().hide(1);
-            $("#newtab").parent().parent().hide(1);
+            
         }else{
-            $("#link").parent().parent().show(1);
-            $("#newtab").parent().parent().show(1);
+            // $("#link").parent().parent().show(1);
+            // $("#newtab").parent().parent().show(1);
         }
     }
     function cancelEdit(){
@@ -210,9 +321,8 @@
         }, 334);
     }
     function shortcutsRead(element){
-        console.log(element);
         $.ajax({
-            url:"http://localhost:3434/shortcuts/read",
+            url:"/shortcuts/read",
             data:{
                 shortcutID:element.id
             },
@@ -235,7 +345,7 @@
                 link:$("#link").val()
             };
         $.ajax({
-            url:"http://localhost:3434/shortcuts/save",
+            url:"/shortcuts/save",
             data,
             success:function(response){
                 $("#"+data.shortcutID+" .txt-shadow").text(data.name);
@@ -244,21 +354,26 @@
     }
 </script>
 <div id="editLink">
+    <div style="background-color: transparent;width: 100%;height: 100%;"></div>
     <form id="editShort">
         <table>
             <tr>
                 <td><label class="txt-shadow" for="type">type</label></td>
                 <td>
-                    <select name="type" id="type">
+                    <!-- <select name="type" id="type">
                         <option value="uri">link</option>
                         <option value="group">group</option>
-                    </select>
+                    </select> -->
+                    <label for="uri">Link</label>
+                    <input type="radio" id="uri" value="uri" name="type">
+                    <label for="group">Group</label>
+                    <input type="radio" id="group" value="group" name="type">
                 </td>
-            </tr>
+            <tr class="hidden">
                 <td><label class="txt-shadow" for="mode">mode</label></td>
                 <td><input id="mode" name="mode" type="text" value=""></td>
             </tr>
-            <tr>
+            <tr class="hidden">
                 <td><label class="txt-shadow" for="shortcutID">ID</label></td>
                 <td><input id="shortcutID" name="shortcutID" type=""></td>
             </tr>
@@ -305,6 +420,6 @@
         <span
         onclick=""
         >⚙</span>
-        shortcutsRead        <a href="https://twitter.com/a_non34">Contact</a>
+        <a href="https://twitter.com/a_non34">Contact</a>
     </footer>
 </html>

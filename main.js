@@ -68,6 +68,28 @@ app.get('/shortcuts/delete', async function(req, res) {
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     res.send("deleted").status(200);
 });
+app.get('/shortcuts/addToGroup', async function(req, res) {
+    var x= await readSavedShortcuts();
+    try {
+        x[req.query.group]["content"][req.query.element]=x[req.query.element];
+        delete(x[req.query.element]);
+        fs.writeFileSync(myShortcuts, JSON.stringify(x));
+        res.send("saved").status(200);
+    } catch (error) {
+        res.send(error).status(200);
+    }
+});
+app.get('/shortcuts/removeFromGroup', async function(req, res) {
+    var x= await readSavedShortcuts();
+    try {
+        x[req.query.element]=x[req.query.group]["content"][req.query.element];
+        delete(x[req.query.group]["content"][req.query.element]);
+        fs.writeFileSync(myShortcuts, JSON.stringify(x));
+        res.send("saved").status(200);
+    } catch (error) {
+        res.send(error).status(200);
+    }
+});
 
 app.get('/', async function(req, res) {
     // console.log("START___"+new Date().getTime());
@@ -152,7 +174,7 @@ app.get('/openPath', function(req, res) {
 //     });
 //     res.status(200).send();
 // });
-app.listen(3434,()=>{
+app.listen(34,()=>{
     console.log("running");
 });
 
@@ -323,7 +345,7 @@ function renderUriGroup(links,id){
 }
 function renderUri(id,uri,icon,name,blank){
     return `
-    <div class="elementContainer" id="`+id+`" type="uri">
+    <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
         <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
             href="${uri}">
             <div class="bgBlur"></div>  

@@ -1,5 +1,4 @@
 $(document).ready(()=>{
-
 	//$("#searchEngines li:hover").click()
 	$("#searchEngines").focus(()=>{
 		enginesShow(true);
@@ -107,7 +106,7 @@ $(document).ready(()=>{
 	$('.uriGroup').mouseenter(function () {
 		var container=$(this).find(".container")[0];
 		$(container).css("left","71px");
-		$(container).css("background","red");
+		// $(container).css("background","red");
 		// $(container).css("max-width","222px");
 		$(container).css("display","-webkit-inline-box");
 	}).mouseleave();//trigger in
@@ -148,7 +147,7 @@ function openElement(file){
 
 function launchFolder(folder){
 	$.ajax({
-		url:"http://localhost:3434/openPath?folder"+folder
+		url:"/openPath?folder"+folder
 	});
 }
 
