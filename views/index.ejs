@@ -317,6 +317,7 @@
     function cancelEdit(){
         $("#editLink").fadeOut(333);
         setTimeout(() => {
+            // $("#editShort").trigger("reset");
             $("#editShort")[0].reset();
         }, 334);
     }
@@ -337,75 +338,99 @@
         });
     }
     function shortcutsSave(){
+        var error="";
         var data={
+                type:$("#editLink input[name='type']").val(),
                 shortcutID:$("#shortcutID").val(),
                 name:$("#name").val(),
                 icon:$("#icon").val(),
                 newtab:$("#newtab").prop("checked"),
                 link:$("#link").val()
             };
-        $.ajax({
-            url:"/shortcuts/save",
-            data,
-            success:function(response){
-                $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+        console.log(data);
+        if(data.type=="uri"){
+            if(data.link==""){
+                error+="Add a link\n";
             }
-        });
+            if(data.name==""){
+                error+="Add a name\n";
+            }
+        }else{
+            if(data.name==""){
+                error+="Add a name\n";
+            }
+        }
+        
+        if(error!=""){
+            // $.ajax({
+            //     url:"/shortcuts/save",
+            //     data,
+            //     success:function(response){
+            //         $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+            //     }
+            // });
+        }else{
+            alert(error);
+        }
     }
 </script>
-<div id="editLink">
-    <div style="background-color: transparent;width: 100%;height: 100%;"></div>
-    <form id="editShort">
-        <table>
-            <tr>
-                <td><label class="txt-shadow" for="type">type</label></td>
-                <td>
-                    <!-- <select name="type" id="type">
-                        <option value="uri">link</option>
-                        <option value="group">group</option>
-                    </select> -->
-                    <label for="uri">Link</label>
-                    <input type="radio" id="uri" value="uri" name="type">
-                    <label for="group">Group</label>
-                    <input type="radio" id="group" value="group" name="type">
-                </td>
-            <tr class="hidden">
-                <td><label class="txt-shadow" for="mode">mode</label></td>
-                <td><input id="mode" name="mode" type="text" value=""></td>
-            </tr>
-            <tr class="hidden">
-                <td><label class="txt-shadow" for="shortcutID">ID</label></td>
-                <td><input id="shortcutID" name="shortcutID" type=""></td>
-            </tr>
-            <tr>
-                <td><label class="txt-shadow" for="link">link</label></td>
-                <td>
-                    <textarea name="link" id="link" style="width:100%" rows="4"
-                    ></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td><label class="txt-shadow" for="name">Name</label></td>
-                <td><input id="name" name="name" type=""></td>
-            </tr>
-            <tr>
-                <td><label class="txt-shadow" for="icon">icon</label></td>
-                <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
-            </tr>
-            <tr>
-                <td><label class="txt-shadow" for="newtab">New tab</label></td>
-                <td><input id="newtab" name="newtab" type="checkbox"></td>
-            </tr>
-            <tr>
-                <td colspan="2" style="
-                    display: inline-flex;
-                ">
-                    <input type="button" value="Save" onclick='shortcutsSave()'>
-                    <input type="reset" value="Cancel" onclick='cancelEdit();'>
-                </td>
-            </tr>
-        </table>
-    </form>
+<div id="editLink" class="modal" >
+    <div class="bg" onclick="console.log('close modal');"></div>
+    <div class="container">
+        <form id="editShort">
+            <table>
+                <tr>
+                    <td><label class="txt-shadow" for="type">type</label></td>
+                    <td>
+                        <input type="radio" id="uri" value="uri" name="type" checked>
+                        <label for="uri" class="txt-shadow">Link</label>
+                        <input type="radio" id="group" value="group" name="type">
+                        <label for="group" class="txt-shadow">Group</label>
+                    </td>
+                <tr class="hidden">
+                    <td><label class="txt-shadow" for="mode">mode</label></td>
+                    <td><input id="mode" name="mode" type="text" value=""></td>
+                </tr>
+                <tr class="hidden">
+                    <td><label class="txt-shadow" for="shortcutID">ID</label></td>
+                    <td><input id="shortcutID" name="shortcutID" type=""></td>
+                </tr>
+                <tr>
+                    <td><label class="txt-shadow" for="link">link</label></td>
+                    <td>
+                        <textarea name="link" id="link" style="width:100%" rows="4"
+                        ></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="txt-shadow" for="name">Name</label></td>
+                    <td><input id="name" name="name" type=""></td>
+                </tr>
+                <tr class="hidden">
+                    <td><label class="txt-shadow" for="icon">icon</label></td>
+                    <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
+                </tr>
+                <tr>
+                    <td><label class="txt-shadow" for="newtab">New tab</label></td>
+                    <!-- <td><input id="newtab" name="newtab" type="checkbox"></td> -->
+                    <td>
+                        <input type="radio" id="newTabTrue" value="1" name="newtab">
+                        <label for="newTabTrue" class="txt-shadow">Yes</label>
+                        <input type="radio" id="newTabFalse" value="0" name="newtab" checked>
+                        <label for="newTabFalse" class="txt-shadow">No</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            <input type="button" value="Save" onclick='shortcutsSave()'>
+                            <input type="button" value="Cancel" onclick='cancelEdit();'>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 <div id="mdl-conf">
     <table>
