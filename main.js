@@ -31,34 +31,67 @@ app.get('/shortcuts/save', async function(req, res) {
     x= await readSavedShortcuts();
 
     if(typeof x[id] === 'undefined'){
+        // If id does not exist, then create element
         x[id]={};
     }
-    x[id].type="link";
-    x[id].blank=req.query.newtab;
+    x[id].type=req.query.type;
     x[id].name=req.query.name;
-    x[id].uri=req.query.link;
-    x[id].icon=req.query.icon;
+    
+    switch (req.query.type) {
+        case "group":
+            x[id].content=[]; // links in this group
+            break;
+        case "uri":
+            x[id].blank=req.query.newtab;
+            x[id].uri=req.query.link;
+            x[id].icon=req.query.icon;
+            break;
+    }
 
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     // myShortcuts
-    switch (req.query.mode) {
-        case 'new':
-            res.send(
-                renderUri(
-                    id,
-                    x[id].uri,
-                    x[id].icon,
-                    x[id].name,
-                    x[id].blank
-                )).status(200);
-            break;
-        case 'edit':
-            res.send("saved").status(200);
-            break;
-    
-        default:
-            break;
+    if(req.query.type=="uri" && req.query.mode=="new"){
+        res.send(
+            renderUri(
+                id,
+                x[id].uri,
+                x[id].icon,
+                x[id].name,
+                x[id].blank
+            )
+        ).status(200);
+    }else if(req.query.type=="uri" && req.query.mode=="edit"){
+        res.send("uri updated").status(200);
+    }else if(req.query.type=="group" && req.query.mode=="new"){
+        res.send(
+            renderUriGroup(
+                x[id],
+                id
+            )
+        ).status(200);
+    }else if(req.query.type=="group" && req.query.mode=="edit"){
+        res.send("group updated").status(200);
     }
+    // switch (req.query.mode) {
+    //     case 'new':
+    //         res.send(
+    //             renderUri(
+    //                 id,
+    //                 x[id].uri,
+    //                 x[id].icon,
+    //                 x[id].name,
+    //                 x[id].blank
+    //             )).status(200);
+    //         break;
+    //     case 'edit':
+    //         res.send("saved").status(200);
+    //         break;
+    
+    //     default:
+    //         break;
+    // }
+
+    // res.send("saved").status(200);
 });
 app.get('/shortcuts/delete', async function(req, res) {
     var id=req.query.shortcutID;
@@ -242,7 +275,8 @@ async function renderEngines(){
             onkeypress="$(this).click()" class="searchEngine txt-shadow"
             >
             <img src="${element.icon}" class="noselect">
-                <span>${element.name}</span>
+            <span>${element.name}</span>
+            <div></div>
             </li>`;
         contTabIndex++;
         if(element.default==true){
@@ -325,6 +359,9 @@ function renderFile(path,file){
 function renderUriGroup(links,id){
     var html=`
         <div class="element uriGroup" id=`+id+` type="group">
+            <ol class="submenu">
+                <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
+            </ol>
             <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">

@@ -19,11 +19,11 @@
                     var val=$("#editShort input[name='type']:checked").val();
                     if(val=="uri"){
                         $("#editShort #link").parent().parent().show(1);
-                        $("#editShort #newtab").parent().parent().show(1);
+                        $("#editShort input[name='newtab']").parent().parent().show(1);
                         $("#editShort #icon").parent().parent().show(1);
                     }else{
                         $("#editShort #link").parent().parent().hide(1);
-                        $("#editShort #newtab").parent().parent().hide(1);
+                        $("#editShort input[name='newtab']").parent().parent().hide(1);
                         $("#editShort #icon").parent().parent().hide(1);
                         // $("#editShort #name").val("New group");
                     }
@@ -34,11 +34,15 @@
                 linksContainerDroppable("#shortcuts");
                 groupDroppable(".uriGroup");
                 // mergeLinks(".linkDraggable");
+                $("#stopEditMode").show()
+                $("#editMode").hide()
             }
             function stopEditMode(){
                 $(".linkDraggable").draggable("destroy")
                 $("#shortcuts").droppable("destroy");
                 $(".uriGroup").droppable("destroy");
+                $("#stopEditMode").hide()
+                $("#editMode").show()
             }
 
             // LINKS
@@ -135,7 +139,7 @@
             }
             //MERGE LINKS TO CREATE GROUP
             //TESTING
-            /*
+            
             async function mergeLinks(selector){
                 $(selector).droppable({
                     tolerance:"pointer",
@@ -167,7 +171,7 @@
                     }
                 });
             }
-            */
+            
         </script>
     </head>
     <body>
@@ -181,27 +185,36 @@
                 </ul>
             </div>
             <div>
-                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()">
+                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()" autocomplete="off">
                     <input id="searchInput" type="text" value="" place holder="Search"
                         name="q" autofocus onkeyup="testApi();" class="txt-shadow"
-                        autocomplete="ñÑñÑ" tabindex="1" >
+                        autocomplete="off" autocorrect="off" tabindex="1" >
                     <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
                     <label for="searchBtn" style="background: var(--background);" tabindex="1">
                         <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
                     </label>
                     <ul id="searchEngines" class="engines" tabindex="2">
+                        <!-- <div class="bg">x</div> -->
                         <div class="desp noselect" style="pointer-events: none;">▼</div>
-                        <div style="margin-top: 22px;width: 0px;height: 0px;" class="noselect">
+                        <div style="margin-top: 22px;width: 0px;height: 0px; z-index: 1;" class="noselect">
                             <%-engines%>
                         </div>
                     </ul>
                 </form>
             </div>
         </nav>
-        <section id="shortcuts">
-            <h5 class="txt-shadow">Shortcuts</h5>
-            <div><button onclick="editMode()">edit</button></div>
-            <div><button onclick="stopEditMode()()">done</button></div>
+        <section id="shortcuts" class="">
+            <!-- <h5 class="txt-shadow"></h5> -->
+            <div class="title txt-shadow">
+                <div class="bg"></div>
+                <h5>Shortcuts</h5>
+                <div>
+                    <button id="editMode" onclick="editMode()">edit</button>
+                    <button id="stopEditMode" onclick="stopEditMode()">done</button>
+                </div>
+            </div>
+            <!-- <div><button id="editMode" onclick="editMode()">edit</button></div>
+            <div><button id="stopEditMode" onclick="stopEditMode()">done</button></div> -->
             <div class="container">
                 <!-- ADD SHORTCUT -->
                 <div class="elementContainer" id="addNew">
@@ -225,7 +238,13 @@
         </section>
         <section id="localhost">
             <% if(filesFound!="" || folders!=""){ %>
-            <h5 class="txt-shadow">Localhost</h5>
+                <!-- <div class="title txt-shadow"> -->
+                <!-- <h5 class="title">Localhost</h5> -->
+                <!-- </div> -->
+                <div class="title txt-shadow">
+                    <div class="bg"></div>
+                    <h5>Localhost</h5>
+                </div>
             <%
                 }
             %>
@@ -302,14 +321,31 @@
             */
         }
     }
+    function deleteElement(){
+        if(confirm("delete element and its content?")){
+            var shortcutID=$("#editShort #shortcutID").val();
+            $.ajax({
+                url:"/shortcuts/delete",
+                data:{
+                    shortcutID
+                },success:function(){
+                    $("#"+shortcutID).remove();
+                    $("#editLink").fadeOut(333);
+                }
+            });
+        }
+    }
     function edit(element,mode){
         showEdit();
 
         $("#mode").val(mode);
         if(mode=="new"){
             $("#shortcutID").val(idGenerator());
-            
+            $("#editShort input[name='type']").parent().parent().show()
+            $("#btn-del").hide();
         }else{
+            $("#editShort input[name='type']").parent().parent().hide()
+            $("#btn-del").show();
             // $("#link").parent().parent().show(1);
             // $("#newtab").parent().parent().show(1);
         }
@@ -338,39 +374,54 @@
         });
     }
     function shortcutsSave(){
-        var error="";
+        var validationError="";
         var data={
-                type:$("#editLink input[name='type']").val(),
+                mode:$("#mode").val(),
+                type:$("#editLink input[name='type']:checked").val(),
                 shortcutID:$("#shortcutID").val(),
                 name:$("#name").val(),
                 icon:$("#icon").val(),
-                newtab:$("#newtab").prop("checked"),
+                newtab:$("#editlink input[name='newtab']:checked").val(),
                 link:$("#link").val()
             };
         console.log(data);
         if(data.type=="uri"){
             if(data.link==""){
-                error+="Add a link\n";
+                validationError+="Add a link\n";
             }
             if(data.name==""){
-                error+="Add a name\n";
+                validationError+="Add a name\n";
             }
         }else{
             if(data.name==""){
-                error+="Add a name\n";
+                validationError+="Add a name\n";
             }
         }
         
-        if(error!=""){
-            // $.ajax({
-            //     url:"/shortcuts/save",
-            //     data,
-            //     success:function(response){
-            //         $("#"+data.shortcutID+" .txt-shadow").text(data.name);
-            //     }
-            // });
+        if(validationError==""){
+            $.ajax({
+                url:"/shortcuts/save",
+                data,
+                success:async function(response){
+                    // $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+                    if(data.mode=="new"){
+                        await $("#shortcuts .container").append(response)
+                        rightClick("#"+data.shortcutID);
+                        $("#"+data.shortcutID).contextmenu(function() {
+                            return false;
+                        });
+                        cancelEdit();
+                    }else if(data.mode=="edit"){
+                        if(response=="group updated"){
+                            console.log(response);
+                        }else if(response=="uri updated"){
+                            console.log(response);
+                        }
+                    }
+                }
+            });
         }else{
-            alert(error);
+            alert(validationError);
         }
     }
 </script>
@@ -423,8 +474,9 @@
                 <tr>
                     <td colspan="2">
                         <div>
-                            <input type="button" value="Save" onclick='shortcutsSave()'>
-                            <input type="button" value="Cancel" onclick='cancelEdit();'>
+                            <input id="" type="button" value="Save" onclick='shortcutsSave()'>
+                            <input id="" type="button" value="Cancel" onclick='cancelEdit();'>
+                            <input id="btn-del" type="button" value="Delete" onclick='deleteElement();'>
                         </div>
                     </td>
                 </tr>

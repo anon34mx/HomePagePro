@@ -1,5 +1,4 @@
 $(document).ready(()=>{
-	//$("#searchEngines li:hover").click()
 	$("#searchEngines").focus(()=>{
 		enginesShow(true);
 	});
@@ -10,10 +9,6 @@ $(document).ready(()=>{
 		}
 	});
 	$("#searchEngines").mouseout((e)=>{
-		// console.log("salio owo");
-		// console.log(e)
-		// console.log($("#searchEngines li:hover").length)
-
 		if($("#searchEngines li:hover").length < 1){
 			enginesShow(false)
 			console.log("asd")
@@ -36,7 +31,38 @@ $(document).ready(()=>{
 		return false;
 	});
 
-	$('.elementContainer, .folder, .uriGroup').mousedown(async function(event) {
+	rightClick('.elementContainer, .folder, .uriGroup');
+	
+	$('.uriGroup').mouseenter(function () {
+		var container=$(this).find(".container")[0];
+		$(container).css("left","71px");
+		$(container).css("display","-webkit-inline-box");
+	}).mouseleave();//trigger in
+
+	document.onclick = hideMenu;
+	function hideMenu() {
+		$(".submenu").css("opacity","0");
+		setTimeout(()=>{
+			$(".submenu").css("pointerEvents","none");
+		},100);
+	}
+
+	$('.ui-menu-item').on('click', function (e) {
+		if(e.which === 13){
+			console.log(e);
+		}
+	});
+	// --
+	$("#editShort #link").bind("paste", function(e){
+		autocompleteShortcut(e.originalEvent.clipboardData.getData('text'));
+	});
+});
+
+//funciones
+// secondary click functions
+function rightClick(applyTo){
+	// actualizar para elementos nuevos
+	$(applyTo).mousedown(async function(event) {
 		event.preventDefault();
 		
 		switch (event.which) {
@@ -47,36 +73,26 @@ $(document).ready(()=>{
 			case 2:
 				// alert('Middle Mouse button pressed.');
 				break;
-				case 3:
+			case 3:
 				// console.log('Right Mouse button pressed.');
 				$(".submenu").css("opacity","0");
 				$(".submenu").css("pointerEvents","none");
 				context=$(this).find(".submenu")[0];
 				context.style.opacity="1";
 				context.style.pointerEvents="initial";
-
-				console.log("\n\n___________________\n");
+				// console.log("\n\n___________________\n");
 				// console.log(context.style.opacity);
 				// context.offsetHeight // ALTO DEL MENU
 				////
-				// context.style.top=(event.pageY); // POSICION DEL CLICK
-				// context.style.left=(event.pageX); // POSICION DEL CLICK
 				posX=(event.pageX); // POSICION DEL CLICK
 				posY=(event.pageY); // POSICION DEL CLICK
-
-				console.log("click"); // POSICION DEL CLICK
-				console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
-				console.log("X->"+event.pageX+"_Y->"+event.pageY); // POSICION DEL CLICK
-				console.log("W->"+window.innerWidth+"_H->"+window.innerHeight); // POSICION DEL CLICK
-				console.log("T->"+document.getElementsByTagName("body")[0].scrollTop+"_H->"+document.getElementsByTagName("body")[0].scrollLeft); // POSICION DEL CLICK
-				// console.log("\n");
-				// console.log(event.pageX + posX); // POSICION DEL CLICK
-				// console.log(event.pageY + posY); // POSICION DEL CLICK
-				// console.log("\n");
-				
+				// console.log("click"); // POSICION DEL CLICK
+				// console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
+				// console.log("X->"+event.pageX+"_Y->"+event.pageY); // POSICION DEL CLICK
+				// console.log("W->"+window.innerWidth+"_H->"+window.innerHeight); // POSICION DEL CLICK
+				// console.log("T->"+document.getElementsByTagName("body")[0].scrollTop+"_H->"+document.getElementsByTagName("body")[0].scrollLeft); // POSICION DEL CLICK
 				// console.log(window.innerWidth); // TAMAÑO DE LA VENTANA
 				// console.log(window.innerHeight); // TAMAÑO DE LA VENTANA
-
 				//document.getElementsByTagName("body")[0].scrollTop
 				if(posX+context.offsetWidth > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
 					// console.log(event.pageX + posX);
@@ -101,39 +117,10 @@ $(document).ready(()=>{
 				break;
 			default:
 				// alert('You have a strange Mouse!');
+				break;
 		}
 	});
-	$('.uriGroup').mouseenter(function () {
-		var container=$(this).find(".container")[0];
-		$(container).css("left","71px");
-		// $(container).css("background","red");
-		// $(container).css("max-width","222px");
-		$(container).css("display","-webkit-inline-box");
-	}).mouseleave();//trigger in
-
-	document.onclick = hideMenu;
-	function hideMenu() {
-		$(".submenu").css("opacity","0");
-		setTimeout(()=>{
-			$(".submenu").css("pointerEvents","none");
-		},100);
-	}
-
-	// $(".ui-menu-item").trigger((event)=>{
-	// 	console.log(event);
-	// });
-	$('.ui-menu-item').on('click', function (e) {
-		if(e.which === 13){
-			console.log(e);
-		}
-	});
-	// --
-	$("#editShort #link").bind("paste", function(e){
-		autocompleteShortcut(e.originalEvent.clipboardData.getData('text'));
-	});
-});
-
-//funciones
+}
 
 function openElement(file){
 	console.log(file);
@@ -157,8 +144,9 @@ function searchss(uri, parameter){
 }
 
 async function testApi(){
+	console.log("testApi")
 	$("#suggestions").empty()
-	https://stackoverflow.com/questions/21549516/how-to-work-with-google-suggest-queries-using-jquery
+	// https://stackoverflow.com/questions/21549516/how-to-work-with-google-suggest-queries-using-jquery
 	// console.log($("#searchInput").val());
 	await $.ajax({
 		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
@@ -239,26 +227,6 @@ async function validateSearch(searchEngine){
 			$("#searchForm").submit();
 		}
 	}
-}
-
-function autocomplete(){
-// http://suggestqueries.google.com/complete/search?client=firefox&q=YOURQUERY
-	$.ajax({
-		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
-		type: 'GET',
-		dataType: 'jsonp',
-		success: function (data) {
-		  console.log(data);
-		  $( "#searchInput" ).autocomplete({
-			source: availableTags
-		  });
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-		  console.log(jqXHR);
-		  console.log(textStatus);
-		  console.log(errorThrown);
-		}
-	});
 }
 
 function showEdit(){
