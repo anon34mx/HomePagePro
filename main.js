@@ -29,6 +29,7 @@ app.get('/shortcuts/read', async function(req, res) {
 app.get('/shortcuts/save', async function(req, res) {
     var id=req.query.shortcutID;
     x= await readSavedShortcuts();
+    // res.send(req.query);
 
     if(typeof x[id] === 'undefined'){
         // If id does not exist, then create element
@@ -41,7 +42,7 @@ app.get('/shortcuts/save', async function(req, res) {
         case "group":
             x[id].content=[]; // links in this group
             break;
-        case "uri":
+        case "link":
             x[id].blank=req.query.newtab;
             x[id].uri=req.query.link;
             x[id].icon=req.query.icon;
@@ -50,7 +51,7 @@ app.get('/shortcuts/save', async function(req, res) {
 
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     // myShortcuts
-    if(req.query.type=="uri" && req.query.mode=="new"){
+    if(req.query.type=="link" && req.query.mode=="new"){
         res.send(
             renderUri(
                 id,
@@ -60,8 +61,8 @@ app.get('/shortcuts/save', async function(req, res) {
                 x[id].blank
             )
         ).status(200);
-    }else if(req.query.type=="uri" && req.query.mode=="edit"){
-        res.send("uri updated").status(200);
+    }else if(req.query.type=="link" && req.query.mode=="edit"){
+        res.send("link updated").status(200);
     }else if(req.query.type=="group" && req.query.mode=="new"){
         res.send(
             renderUriGroup(
@@ -72,26 +73,6 @@ app.get('/shortcuts/save', async function(req, res) {
     }else if(req.query.type=="group" && req.query.mode=="edit"){
         res.send("group updated").status(200);
     }
-    // switch (req.query.mode) {
-    //     case 'new':
-    //         res.send(
-    //             renderUri(
-    //                 id,
-    //                 x[id].uri,
-    //                 x[id].icon,
-    //                 x[id].name,
-    //                 x[id].blank
-    //             )).status(200);
-    //         break;
-    //     case 'edit':
-    //         res.send("saved").status(200);
-    //         break;
-    
-    //     default:
-    //         break;
-    // }
-
-    // res.send("saved").status(200);
 });
 app.get('/shortcuts/delete', async function(req, res) {
     var id=req.query.shortcutID;
@@ -194,19 +175,6 @@ app.get('/openPath', function(req, res) {
 });
 
 
-// app.get('/openPath', function(req, res) {
-//     f=String(req.query.file);
-//     f=f.replace(/\//g,"\\");
-//     openExplorer(f, err => {
-//         if(err) {
-//             console.error(err);
-//         }
-//         else {
-//             //Do Something
-//         }
-//     });
-//     res.status(200).send();
-// });
 app.listen(34,()=>{
     console.log("running");
 });

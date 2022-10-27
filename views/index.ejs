@@ -311,7 +311,7 @@
             var x=$("#link").val();
             x.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]
             */
-            var favicon=value.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]+"/favicon.ico";
+            var favicon=value.match(/^((https|ftp|http|tel):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}/)[0]+"/favicon.ico";
             console.log(favicon);
             $("#editShort #sctIcon").attr("src",favicon);
             $("#editShort #icon").val(favicon);
@@ -377,8 +377,8 @@
         var validationError="";
         var data={
                 mode:$("#mode").val(),
-                type:$("#editLink input[name='type']:checked").val(),
-                shortcutID:$("#shortcutID").val(),
+                type:$("input[name='type']:checked", "#editLink").val(),
+                shortcutID:$("#shortcutID").val()+idGenerator(),
                 name:$("#name").val(),
                 icon:$("#icon").val(),
                 newtab:$("#editlink input[name='newtab']:checked").val(),
@@ -403,7 +403,7 @@
                 url:"/shortcuts/save",
                 data,
                 success:async function(response){
-                    // $("#"+data.shortcutID+" .txt-shadow").text(data.name);
+                    $("#"+data.shortcutID+" .txt-shadow").text(data.name);
                     if(data.mode=="new"){
                         await $("#shortcuts .container").append(response)
                         rightClick("#"+data.shortcutID);
@@ -433,10 +433,11 @@
                 <tr>
                     <td><label class="txt-shadow" for="type">type</label></td>
                     <td>
-                        <input type="radio" id="uri" value="uri" name="type" checked>
-                        <label for="uri" class="txt-shadow">Link</label>
+                        <input type="radio" id="typeLink" value="link" name="type" checked>
+                        <label for="typeLink" class="">Link</label>
+
                         <input type="radio" id="group" value="group" name="type">
-                        <label for="group" class="txt-shadow">Group</label>
+                        <label for="group" class="">Group</label>
                     </td>
                 <tr class="hidden">
                     <td><label class="txt-shadow" for="mode">mode</label></td>
@@ -466,16 +467,16 @@
                     <!-- <td><input id="newtab" name="newtab" type="checkbox"></td> -->
                     <td>
                         <input type="radio" id="newTabTrue" value="1" name="newtab">
-                        <label for="newTabTrue" class="txt-shadow">Yes</label>
+                        <label for="newTabTrue" class="">Yes</label>
                         <input type="radio" id="newTabFalse" value="0" name="newtab" checked>
-                        <label for="newTabFalse" class="txt-shadow">No</label>
+                        <label for="newTabFalse" class="">No</label>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <div>
-                            <input id="" type="button" value="Save" onclick='shortcutsSave()'>
-                            <input id="" type="button" value="Cancel" onclick='cancelEdit();'>
+                            <button id="" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
+                            <button id="" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
                             <input id="btn-del" type="button" value="Delete" onclick='deleteElement();'>
                         </div>
                     </td>
