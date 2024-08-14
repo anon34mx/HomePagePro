@@ -2,7 +2,7 @@ var http = require('http');
 var https = require('https');
 const path = require('path');
 const fs = require('fs');
-const lhl="D:/xampp/htdocs";
+const lhl="c:/xampp/htdocs";
 const myShortcuts="./config/shortcuts_test.json";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
@@ -301,7 +301,7 @@ function renderFolder(path,file){
         console.error(err)
       }
     return `
-    <div class='element folder' onclick="window.location.href='http://localhost/`+file+`'">
+    <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
         <div class="bgBlur"></div>
         
             <div class="imgContainer">
@@ -321,7 +321,7 @@ function renderFolder(path,file){
 function renderFile(path,file){
     try{
         var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-        return `<a class="element file" href="http://localhost/${file}">
+        return `<a class="element file" href="http://localhost/${file}" title="${file}">
             <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
             <div class="bgBlur"></div>
             <div class="imgContainer">
@@ -337,7 +337,7 @@ function renderUriGroup(links,id){
     var html=`
         <div class="element uriGroup" id=`+id+` type="group">
             <ol class="submenu">
-                <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
+                <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
             </ol>
             <div class="bgBlur"></div>
             <div class="imgContainer">
@@ -370,7 +370,7 @@ function renderUri(id,uri,icon,name,blank){
         </a>
         <ol class="submenu">
             <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
+            <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
         </ol>
     </div>`;
     }

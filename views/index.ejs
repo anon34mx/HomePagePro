@@ -334,7 +334,7 @@
             });
         }
     }
-    function edit(element,mode){
+    function edit(element,mode,type){
         showEdit();
 
         $("#mode").val(mode);
@@ -342,11 +342,24 @@
             $("#shortcutID").val(idGenerator());
             $("#editShort input[name='type']").parent().parent().show()
             $("#btn-del").hide();
-        }else{
-            $("#editShort input[name='type']").parent().parent().hide()
+        }
+        else{
+            $("#editShort input[name='type']").parent().parent().hide(); // hide type selector (folder/link)
             $("#btn-del").show();
             // $("#link").parent().parent().show(1);
             // $("#newtab").parent().parent().show(1);
+            console.log("editar", type);
+            $("#editShort #"+type).prop("checked", true);
+            if (type == "uri") {
+                $("#editShort #link").parent().parent().show(1);
+                $("#editShort input[name='newtab']").parent().parent().show(1);
+                $("#editShort #icon").parent().parent().show(1);
+            } else {
+                $("#editShort #link").parent().parent().hide(1);
+                $("#editShort input[name='newtab']").parent().parent().hide(1);
+                $("#editShort #icon").parent().parent().hide(1);
+                // $("#editShort #name").val("New group");
+            }
         }
     }
     function cancelEdit(){
@@ -413,10 +426,13 @@
                     }else if(data.mode=="edit"){
                         if(response=="group updated"){
                             console.log(response);
+                            $("#editLink").fadeOut();
                         }else if(response=="uri updated"){
                             console.log(response);
+                            $("#editLink").fadeOut();
                         }
                     }
+                    
                 }
             });
         }else{
