@@ -84,12 +84,17 @@ app.get('/shortcuts/delete', async function(req, res) {
 });
 app.get('/shortcuts/addToGroup', async function(req, res) {
     var x= await readSavedShortcuts();
+    // console.log(typeof(x));
     try {
-        x[req.query.group]["content"][req.query.element]=x[req.query.element];
-        delete(x[req.query.element]);
-        fs.writeFileSync(myShortcuts, JSON.stringify(x));
+        x[req.query.group]["content"][req.query.element]=new Array();
+        x[req.query.group]["content"][req.query.element]=await x[req.query.element];
+        // Object.assign(x[req.query.group]["content"][req.query.element], x[req.query.element]);
+        await delete(x[req.query.element]);
+        await fs.writeFileSync(myShortcuts, JSON.stringify(x));
         res.send("saved").status(200);
     } catch (error) {
+        console.log(error);
+        console.log(x[req.query.group]["content"][req.query.element]);
         res.send(error).status(200);
     }
 });
@@ -267,10 +272,14 @@ function scanFolder(path){
                 } 
                 //listing all files using forEach
                 files.forEach(function (file) {
-                    if(fs.lstatSync(path+"/"+file).isDirectory()){
-                        folders+=renderFolder(path,file);
-                    }else{
-                        filesFound+=renderFile(path,file);
+                    try {
+                        if(fs.lstatSync(path+"/"+file).isDirectory()){
+                            folders+=renderFolder(path,file);
+                        }else{
+                            filesFound+=renderFile(path,file);
+                        }
+                    } catch (error) {
+                        
                     }
                 });
                 resolve();
