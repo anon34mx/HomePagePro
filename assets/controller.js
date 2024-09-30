@@ -75,45 +75,39 @@ function rightClick(applyTo){
 				break;
 			case 3:
 				// console.log('Right Mouse button pressed.');
-				$(".submenu").css("opacity","0");
-				$(".submenu").css("pointerEvents","none");
-				context=$(this).find(".submenu")[0];
-				context.style.opacity="1";
-				context.style.pointerEvents="initial";
-				// console.log("\n\n___________________\n");
-				// console.log(context.style.opacity);
-				// context.offsetHeight // ALTO DEL MENU
-				////
+				// $(".submenu").css("opacity","0");
+				// $(".submenu").css("pointerEvents","none");
+				// context=$(this).find(".submenu")[0];
+				// context.style.opacity="1";
+				// context.style.pointerEvents="initial";
+
+				
 				posX=(event.pageX); // POSICION DEL CLICK
 				posY=(event.pageY); // POSICION DEL CLICK
-				// console.log("click"); // POSICION DEL CLICK
+				console.log(posX, posY);
+
+				$("#submenu").css("left", posX+"px")
+				$("#submenu").css("top", posY+"px")
+				$("#submenu").css("opacity", "1")
 				// console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
-				// console.log("X->"+event.pageX+"_Y->"+event.pageY); // POSICION DEL CLICK
-				// console.log("W->"+window.innerWidth+"_H->"+window.innerHeight); // POSICION DEL CLICK
-				// console.log("T->"+document.getElementsByTagName("body")[0].scrollTop+"_H->"+document.getElementsByTagName("body")[0].scrollLeft); // POSICION DEL CLICK
-				// console.log(window.innerWidth); // TAMAÑO DE LA VENTANA
-				// console.log(window.innerHeight); // TAMAÑO DE LA VENTANA
-				//document.getElementsByTagName("body")[0].scrollTop
-				if(posX+context.offsetWidth > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
-					// console.log(event.pageX + posX);
-					posX=posX-context.offsetWidth;
-				}else{
-					posX=posX+1;
-				}
-				if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
-					// console.log(event.pageY + posY);
-					posY=posY-context.offsetHeight;
-				}else{
-					posY=posY+1;
-				}
 
-				context.style.left=(posX); // POSICION DEL CLICK
-				context.style.top=(posY); // POSICION DEL CLICK
-				$("#testClick").css("left",event.pageX+"px");
-				$("#testClick").css("top",event.pageY+"px");
+				// if(posX+context.offsetWidth > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
+				// 	posX=posX-context.offsetWidth;
+				// }else{
+				// 	posX=posX+1;
+				// }
+				// if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
+				// 	posY=posY-context.offsetHeight;
+				// }else{
+				// 	posY=posY+1;
+				// }
 
-				// console.log($(this).attr("id"));
-				await shortcutsRead($(this)[0]);
+				// context.style.left=(posX); // POSICION DEL CLICK
+				// context.style.top=(posY); // POSICION DEL CLICK
+				// $("#testClick").css("left",event.pageX+"px");
+				// $("#testClick").css("top",event.pageY+"px");
+
+				// await shortcutsRead($(this)[0]);
 				break;
 			default:
 				// alert('You have a strange Mouse!');
@@ -236,3 +230,18 @@ function showEdit(){
 function idGenerator(){
 	return new Date().getTime().toString(16);
 }
+
+async function renderLinkTemplate(data){
+	let temp = document.getElementById("LinkTemplate");
+	let clon = temp.cloneNode(true);
+	clon.id = "wasap"
+	document.body.appendChild(clon);
+}
+/*
+let startTime = new Date();
+for(i=0; i<100; i++){
+	renderLinkTemplate();
+}
+let endTime = new Date();
+console.log(endTime - startTime);
+*/

@@ -3,6 +3,7 @@ var https = require('https');
 const path = require('path');
 const fs = require('fs');
 const lhl="c:/xampp/htdocs";
+const lhlPort=84;
 const myShortcuts="./config/shortcuts_test.json";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
@@ -14,9 +15,9 @@ var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSe
 
 
 //xml
-var parseString = require('xml2js').parseString;
-const { resolve } = require('path');
-const { json } = require('express/lib/response');
+// var parseString = require('xml2js').parseString;
+// const { resolve } = require('path');
+// const { json } = require('express/lib/response');
 
 app.get('/shortcuts/read', async function(req, res) {
     // x= await readSavedShortcuts("id001");
@@ -29,7 +30,6 @@ app.get('/shortcuts/read', async function(req, res) {
 app.get('/shortcuts/save', async function(req, res) {
     var id=req.query.shortcutID;
     x= await readSavedShortcuts();
-    // res.send(req.query);
 
     if(typeof x[id] === 'undefined'){
         // If id does not exist, then create element
@@ -84,7 +84,6 @@ app.get('/shortcuts/delete', async function(req, res) {
 });
 app.get('/shortcuts/addToGroup', async function(req, res) {
     var x= await readSavedShortcuts();
-    // console.log(typeof(x));
     try {
         x[req.query.group]["content"][req.query.element]=new Array();
         x[req.query.group]["content"][req.query.element]=await x[req.query.element];
@@ -93,8 +92,7 @@ app.get('/shortcuts/addToGroup', async function(req, res) {
         await fs.writeFileSync(myShortcuts, JSON.stringify(x));
         res.send("saved").status(200);
     } catch (error) {
-        console.log(error);
-        console.log(x[req.query.group]["content"][req.query.element]);
+        // console.log(x[req.query.group]["content"][req.query.element]);
         res.send(error).status(200);
     }
 });
@@ -111,14 +109,16 @@ app.get('/shortcuts/removeFromGroup', async function(req, res) {
 });
 
 app.get('/', async function(req, res) {
-    // console.log("START___"+new Date().getTime());
     filesFound="";
     folders="";
     engines="";
     
     await renderEngines();
     await Shortcuts();
+    let startTime = new Date();
     await scanFolder(lhl);
+    let endTime = new Date();
+    console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
     // console.log("END_____"+new Date().getTime());
 
     res.status(200).render('index', {
@@ -166,14 +166,14 @@ app.get('/openPath', function(req, res) {
 
     exec(`start explorer.exe /k "${f}"`, (error, stdout, stderr) => {
         if (error) {
-            console.log(`error: ${error.message}`);
+            console.error(`error: ${error.message}`);
             return;
         }
         if (stderr) {
-            console.log(`stderr: ${stderr}`);
+            console.error(`stderr: ${stderr}`);
             return;cursorTo()
         }
-        console.log(`stdout: ${stdout}`);
+        console.error(`stdout: ${stdout}`);
     });
 
     res.status(200).send();
@@ -300,9 +300,9 @@ function renderFolder(path,file){
       } catch(err) {
         console.error(err)
       }
+    //   <div class="bgBlur"></div>
     return `
     <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
-        <div class="bgBlur"></div>
         
             <div class="imgContainer">
                 <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
@@ -310,20 +310,18 @@ function renderFolder(path,file){
             <span class="txt-shadow">
             `+file+`
             </span>
-        
-        <ol class="submenu ">
-            <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
-        </ol>
-        
-    </div>`;
+            </div>`;
+            // <ol class="submenu ">
+            //     <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
+            //     <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
+            // </ol>
 }
 function renderFile(path,file){
     try{
         var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
+        // <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
+        // <div class="bgBlur"></div>
         return `<a class="element file" href="http://localhost/${file}" title="${file}">
-            <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
-            <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
@@ -334,12 +332,12 @@ function renderFile(path,file){
     }
 }
 function renderUriGroup(links,id){
+    // <div class="bgBlur"></div>
+    // <ol class="submenu">
+    //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
+    // </ol>
     var html=`
         <div class="element uriGroup" id=`+id+` type="group">
-            <ol class="submenu">
-                <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
-            </ol>
-            <div class="bgBlur"></div>
             <div class="imgContainer">
                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
@@ -358,20 +356,20 @@ function renderUriGroup(links,id){
     return html+=`</div></div>`;
 }
 function renderUri(id,uri,icon,name,blank){
+    // <div class="bgBlur"></div>  
+    // <ol class="submenu">
+    //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
+    //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
+    // </ol>
     return `
     <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
         <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
             href="${uri}">
-            <div class="bgBlur"></div>  
             <div class="imgContainer">
                 <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
             <span class="txt-shadow">`+name+`</span>
         </a>
-        <ol class="submenu">
-            <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
-        </ol>
     </div>`;
     }
 // window.open("https://www.geeksforgeeks.org", "_blank");

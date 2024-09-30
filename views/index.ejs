@@ -13,9 +13,7 @@
         <script>
             $(document).ready(()=>{
                 $("#editShort input[name='type']").change(()=>{
-                    // console.log("asd"); 
                     // $("#editShort input[name='type'][value='group']").attr('checked', true);
-                    console.log(this);
                     var val=$("#editShort input[name='type']:checked").val();
                     if(val=="uri"){
                         $("#editShort #link").parent().parent().show(1);
@@ -94,12 +92,6 @@
                         }).fail((jqXHR, textStatus, errorThrown)=>{
                             alert("couldn't save\n"+textStatus);
                         });
-
-
-
-
-
-
                     }
                 });
             }
@@ -150,14 +142,8 @@
                         // var origin=$(ui.draggable[0]).parent().parent()[0];
                         var target=event.target;
                         var elementCopy=ui.draggable[0];
-
-                        
-                        console.log("merge");
-                        // console.log(origin, target, elementCopy);
-
                         var newId=idGenerator();
                         await $("#shortcuts > .container").append(`<div class="element uriGroup" id=${newId} type="group">
-                            <div class="bgBlur"></div>
                             <div class="imgContainer">
                                 <img src="/assets/styles/default/IMG" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
                             </div>
@@ -175,7 +161,54 @@
     </head>
     <body>
         <audio id="#sndFX-pop" src="/assets/styles/default/audio/QKTA234-pop.mp3" preload="auto"></audio>
-        <div id="background"></div>
+        <div id="background">
+            <!-- future experiment -->
+            <!-- <div style="
+                width: 40px;
+                height: 40px;
+                display: block;
+                border-radius: 100%;
+                background: #ff830082;
+                position: absolute;
+                top: 50%;
+                border: 2px solid #ff830038;
+                filter: blur(1px);
+                backdrop-filter: blur(3px);
+                mix-blend-mode: screen;
+                transition: 1s;
+            "></div>
+            <div style="
+                width: 60px;
+                height: 60px;
+                display: block;
+                border-radius: 100%;
+                background: #ff840061;
+                position: absolute;
+                top: 50%;
+                left: 20px;
+                border: 2px solid #ff830038;
+                filter: blur(1px);
+                backdrop-filter: blur(3px);
+                mix-blend-mode: screen;
+                transition: 1s;
+            "></div>
+            <div style="
+                width: 80px;
+                height: 80px;
+                display: block;
+                border-radius: 100%;
+                background: #ff840061;
+                position: absolute;
+                top: 50%;
+                left: 30px;
+                border: 2px solid #ff830038;
+                filter: blur(1px);
+                backdrop-filter: blur(3px);
+                mix-blend-mode: screen;
+                transition: 1s;
+            "></div> -->
+
+        </div>
         <nav>
             <div>
                 <ul class="menu2">
@@ -219,7 +252,6 @@
                 <div class="elementContainer" id="addNew">
                     <a class="element uri"
                     onclick="edit(this.parentElement,'new')">
-                        <div class="bgBlur"></div>
                         <div class="imgContainer">
                             <p style="width: 48px;
                             height: 48px;"
@@ -311,7 +343,6 @@
             x.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]
             */
             var favicon=value.match(/^((https|ftp|http|tel):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}/)[0]+"/favicon.ico";
-            console.log(favicon);
             $("#editShort #sctIcon").attr("src",favicon);
             $("#editShort #icon").val(favicon);
             /*
@@ -346,9 +377,6 @@
         else{
             $("#editShort input[name='type']").parent().parent().hide(); // hide type selector (folder/link)
             $("#btn-del").show();
-            // $("#link").parent().parent().show(1);
-            // $("#newtab").parent().parent().show(1);
-            console.log("editar", type);
             $("#editShort #"+type).prop("checked", true);
             if (type == "uri") {
                 $("#editShort #link").parent().parent().show(1);
@@ -386,17 +414,17 @@
         });
     }
     function shortcutsSave(){
+        // shortcutID:$("#shortcutID").val()+idGenerator(),
         var validationError="";
         var data={
                 mode:$("#mode").val(),
                 type:$("input[name='type']:checked", "#editLink").val(),
-                shortcutID:$("#shortcutID").val()+idGenerator(),
+                shortcutID:$("#shortcutID").val(),
                 name:$("#name").val(),
                 icon:$("#icon").val(),
                 newtab:$("#editlink input[name='newtab']:checked").val(),
                 link:$("#link").val()
             };
-        console.log(data);
         if(data.type=="uri"){
             if(data.link==""){
                 validationError+="Add a link\n";
@@ -424,13 +452,13 @@
                         });
                         cancelEdit();
                     }else if(data.mode=="edit"){
-                        if(response=="group updated"){
-                            console.log(response);
-                            $("#editLink").fadeOut();
-                        }else if(response=="uri updated"){
-                            console.log(response);
-                            $("#editLink").fadeOut();
-                        }
+                        $("#editLink").fadeOut();
+                        alert("Updated");
+                        // if(response=="group updated"){
+                        // }else if(response=="uri updated"){
+                        //     $("#editLink").fadeOut();
+                        // }
+
                     }
                     
                 }
@@ -441,7 +469,7 @@
     }
 </script>
 <div id="editLink" class="modal" >
-    <div class="bg" onclick="console.log('close modal');"></div>
+    <div class="bg" onclick=""></div>
     <div class="container">
         <form id="editShort">
             <table>
@@ -492,7 +520,8 @@
                         <div>
                             <button id="" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
                             <button id="" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
-                            <input id="btn-del" type="button" value="Delete" onclick='deleteElement();'>
+                            <button id="" type="button" value="Delete" onclick='deleteElement();'>Delete</button>
+                            <!-- <input id="btn-del" type="button" value="Delete" onclick='deleteElement();'> -->
                         </div>
                     </td>
                 </tr>
@@ -510,9 +539,24 @@
 
     </body>
     <footer class="credits txt-shadow">
-        <span
+        <span title="Options will be here"
         onclick=""
         >⚙</span>
-        <a href="https://twitter.com/a_non34">Contact</a>
+        <a href="https://linkedin.com/in/aaron-aguilera">Contact</a>
     </footer>
+
+    <!-- <div class="elementContainer linkDraggable" id="LinkTemplate" type="__">
+        <a class="element uri" href="__">
+            <div class="imgContainer">
+                <img src="assets/styles/default/noIcon.png"
+                    onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+            </div>
+            <span class="txt-shadow">__</span>
+        </a>
+    </div> -->
+    <ol id="submenu" class="submenu ">
+        <li class="txt-shadow" onclick="event.preventDefault();window.location.href='https'">Execute
+        </li>
+        <li class="txt-shadow" onclick="event.preventDefault();launchFolder()">Open in explorer</li>
+    </ol>
 </html>
