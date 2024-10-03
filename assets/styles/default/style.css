@@ -19,7 +19,7 @@
     /* --background:#1f89ba52; */
 }
 *{
-    /* outline:1px solid tomato; */
+    outline:1px solid tomato;
 }
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -87,7 +87,7 @@ nav div{
     background-color: white;
     border:var(--border);
     outline: none;
-    color: white;
+    color: black;
     /* backdrop-filter: var(--background-blur); */
     font-size: 15px;
     /* border-radius: 4px 0px 0px 4px; */
@@ -251,6 +251,9 @@ section .container{
     padding-top: 20px;
 }
 
+.elementContainer{
+    
+}
 .element{
     width: 88px;
     height: 92px;
@@ -334,37 +337,31 @@ section .container{
     opacity: 1;
     pointer-events: initial;
 } */
-.submenu{
-    /* position: relative; */
-    top: -115px;
-    left: 69px;
-    /* background: beige; */
+.contenxtMenu{
+    display: block;
+    position: absolute;
+    z-index: 10;
     width: max-content;
     height: auto;
     color: white;
     list-style: none;
     padding: 0px;
     cursor: pointer;
-    opacity: 0;
-    /* display: none; */
-    position: fixed;
-    /* transition: 0.3s; */
+    /* opacity: 0; */
     z-index: 3;
-    pointer-events: none;
     margin: 0px;
     border: 2px solid var(--background-hover);
     background-color: var(--background);
+    backdrop-filter: var(--background-blur);
     font-family: Arial;
 }
-.submenu li{
-    /* border: 1px solid black; */
+.contenxtMenu li{
     padding: 3px 10px;
-    /* margin: 2px; */
     background-color: var(--background);
-    backdrop-filter: var(--background-blur);
+    border-bottom: 1px solid gray;
+    /* backdrop-filter: var(--background-blur); */
 }
-.submenu li:hover{
-    /* border: 1px solid black; */
+.contenxtMenu li:hover{
     background-color: var(--background-hover);
 }
 .uriGroup{

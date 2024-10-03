@@ -41,10 +41,7 @@ $(document).ready(()=>{
 
 	document.onclick = hideMenu;
 	function hideMenu() {
-		$(".submenu").css("opacity","0");
-		setTimeout(()=>{
-			$(".submenu").css("pointerEvents","none");
-		},100);
+		$("#contenxtMenu").css("display","none");
 	}
 
 	$('.ui-menu-item').on('click', function (e) {
@@ -75,39 +72,33 @@ function rightClick(applyTo){
 				break;
 			case 3:
 				// console.log('Right Mouse button pressed.');
-				// $(".submenu").css("opacity","0");
-				// $(".submenu").css("pointerEvents","none");
-				// context=$(this).find(".submenu")[0];
-				// context.style.opacity="1";
-				// context.style.pointerEvents="initial";
-
+				context = $("#contenxtMenu")[0];
 				
 				posX=(event.pageX); // POSICION DEL CLICK
-				posY=(event.pageY); // POSICION DEL CLICK
-				console.log(posX, posY);
-
-				$("#submenu").css("left", posX+"px")
-				$("#submenu").css("top", posY+"px")
-				$("#submenu").css("opacity", "1")
+				posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
+				
 				// console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
+				if(posX+context.offsetWidth+18 > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
+					posX=posX-context.offsetWidth;
+				}else{
+					posX=posX+1;
+				}
+				if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
+					posY=posY-context.offsetHeight;
+				}else{
+					posY=posY+1;
+				}
+				console.log($(this).attr("type"), posX, posY);
 
-				// if(posX+context.offsetWidth > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
-				// 	posX=posX-context.offsetWidth;
-				// }else{
-				// 	posX=posX+1;
-				// }
-				// if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
-				// 	posY=posY-context.offsetHeight;
-				// }else{
-				// 	posY=posY+1;
-				// }
+				$("#contenxtMenu").css("left", posX + "px")
+				$("#contenxtMenu").css("top", posY + "px")
+				$("#contenxtMenu").css("display", "block")
+				$("#contenxtMenu li").css("display", "none")
+				$("#contenxtMenu li." + $(this).attr("type")).css("display", "block")
 
-				// context.style.left=(posX); // POSICION DEL CLICK
-				// context.style.top=(posY); // POSICION DEL CLICK
-				// $("#testClick").css("left",event.pageX+"px");
-				// $("#testClick").css("top",event.pageY+"px");
-
-				// await shortcutsRead($(this)[0]);
+				$("#OpenLinkNewTab").attr("target", $(this).attr("id"))
+				$("#EditGroup").attr("target", $(this).attr("id"))
+				$("#EditLink").attr("target", $(this).attr("id"))
 				break;
 			default:
 				// alert('You have a strange Mouse!');

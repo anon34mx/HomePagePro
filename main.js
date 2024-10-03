@@ -113,13 +113,13 @@ app.get('/', async function(req, res) {
     folders="";
     engines="";
     
+    let startTime = new Date();
     await renderEngines();
     await Shortcuts();
-    let startTime = new Date();
     await scanFolder(lhl);
+
     let endTime = new Date();
     console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
-    // console.log("END_____"+new Date().getTime());
 
     res.status(200).render('index', {
         filesFound:filesFound,

@@ -219,7 +219,7 @@
             <div>
                 <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()" autocomplete="off">
                     <input id="searchInput" type="text" value="" place holder="Search"
-                        name="q" autofocus onkeyup="testApi();" class="txt-shadow"
+                        name="q" autofocus onkeyup="testApi();" class=""
                         autocomplete="off" autocorrect="off" tabindex="1" >
                     <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
                     <label for="searchBtn" style="background: var(--background);" tabindex="1">
@@ -365,7 +365,8 @@
             });
         }
     }
-    function edit(element,mode,type){
+    function edit(target,mode,type){
+        shortcutsRead(target);
         showEdit();
 
         $("#mode").val(mode);
@@ -386,7 +387,6 @@
                 $("#editShort #link").parent().parent().hide(1);
                 $("#editShort input[name='newtab']").parent().parent().hide(1);
                 $("#editShort #icon").parent().parent().hide(1);
-                // $("#editShort #name").val("New group");
             }
         }
     }
@@ -398,6 +398,7 @@
         }, 334);
     }
     function shortcutsRead(element){
+        element=document.getElementById(element)
         $.ajax({
             url:"/shortcuts/read",
             data:{
@@ -554,9 +555,16 @@
             <span class="txt-shadow">__</span>
         </a>
     </div> -->
-    <ol id="submenu" class="submenu ">
-        <li class="txt-shadow" onclick="event.preventDefault();window.location.href='https'">Execute
-        </li>
-        <li class="txt-shadow" onclick="event.preventDefault();launchFolder()">Open in explorer</li>
+    <ol id="contenxtMenu" class="contenxtMenu" oncontextmenu="return false;">
+        <!-- SHORTCUTS -->
+        <li id="OpenLinkNewTab" class="uri txt-shadow" onclick="window.open(this.target, '_blank')" target="">Open in new tab</li>
+        <li id="EditLink" class="uri txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
+        
+        <li id="EditGroup" class="group txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
+        <!-- FOLDERS -->
+        <li id="" class="txt-shadow" onclick="event.preventDefault();console.log('asd3');launchFolder()">Open in new tab</li>
+        <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd2');launchFolder()">Open in explorer</li>
+        <!-- FILES -->
+        <li id="" class="file txt-shadow" onclick="event.preventDefault();console.log('asd1');window.location.href='https'">Execute</li>
     </ol>
 </html>
