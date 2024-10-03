@@ -11,8 +11,12 @@ var app = express();
 let ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use('/assets', express.static('assets')); 
+app.use('/themes', express.static('themes')); 
 var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSearchImg="";
 
+var currentTheme ="glass_default";
+var theme = require("./themes/" + currentTheme+"/renders.js");
+console.log(theme);
 
 //xml
 // var parseString = require('xml2js').parseString;
@@ -53,7 +57,7 @@ app.get('/shortcuts/save', async function(req, res) {
     // myShortcuts
     if(req.query.type=="link" && req.query.mode=="new"){
         res.send(
-            renderUri(
+            theme.renderUri(
                 id,
                 x[id].uri,
                 x[id].icon,
@@ -65,10 +69,10 @@ app.get('/shortcuts/save', async function(req, res) {
         res.send("link updated").status(200);
     }else if(req.query.type=="group" && req.query.mode=="new"){
         res.send(
-            renderUriGroup(
-                x[id],
-                id
-            )
+            // renderUriGroup(
+            //     x[id],
+            //     id
+            // )
         ).status(200);
     }else if(req.query.type=="group" && req.query.mode=="edit"){
         res.send("group updated").status(200);
@@ -127,7 +131,8 @@ app.get('/', async function(req, res) {
         shortcuts:shortcuts,
         engines:engines,
         defaultSearch:defaultSearch,
-        defaultSearchImg:defaultSearchImg
+        defaultSearchImg:defaultSearchImg,
+        currentTheme
     });
 });
 
@@ -196,10 +201,10 @@ async function Shortcuts(){
             for(element in jsonString){
                 switch(jsonString[element].type){
                     case "group":
-                        shortcuts+=renderUriGroup(jsonString[element], element);
+                        // shortcuts+=renderUriGroup(jsonString[element], element);
                         break;
                     case "link":
-                        shortcuts+=renderUri(
+                        shortcuts+=theme.renderUri(
                             element,
                             jsonString[element]["uri"],
                             jsonString[element]["icon"],
@@ -331,47 +336,47 @@ function renderFile(path,file){
         return "";
     }
 }
-function renderUriGroup(links,id){
-    // <div class="bgBlur"></div>
-    // <ol class="submenu">
-    //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
-    // </ol>
-    var html=`
-        <div class="element uriGroup" id=`+id+` type="group">
-            <div class="imgContainer">
-                <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="text-shadow">`+links.name+`</span>
-            <div class="container">`;
-            for(var id in links.content){
-                html+=renderUri(
-                    id,
-                    links.content[id]["uri"],
-                    links.content[id]["icon"],
-                    links.content[id]["name"],
-                    links.content[id]["blank"]
-                    );
-            }
+// function renderUriGroup(links,id){
+//     // <div class="bgBlur"></div>
+//     // <ol class="submenu">
+//     //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
+//     // </ol>
+//     var html=`
+//         <div class="element uriGroup" id=`+id+` type="group">
+//             <div class="imgContainer">
+//                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+//             </div>
+//             <span class="text-shadow">`+links.name+`</span>
+//             <div class="container">`;
+//             for(var id in links.content){
+//                 html+=theme.renderUri(
+//                     id,
+//                     links.content[id]["uri"],
+//                     links.content[id]["icon"],
+//                     links.content[id]["name"],
+//                     links.content[id]["blank"]
+//                     );
+//             }
             
-    return html+=`</div></div>`;
-}
-function renderUri(id,uri,icon,name,blank){
-    // <div class="bgBlur"></div>  
-    // <ol class="submenu">
-    //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-    //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
-    // </ol>
-    return `
-    <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
-        <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
-            href="${uri}">
-            <div class="imgContainer">
-                <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">`+name+`</span>
-        </a>
-    </div>`;
-    }
+//     return html+=`</div></div>`;
+// }
+// function renderUri(id,uri,icon,name,blank){
+//     // <div class="bgBlur"></div>  
+//     // <ol class="submenu">
+//     //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
+//     //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
+//     // </ol>
+//     return `
+//     <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
+//         <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
+//             href="${uri}">
+//             <div class="imgContainer">
+//                 <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+//             </div>
+//             <span class="txt-shadow">`+name+`</span>
+//         </a>
+//     </div>`;
+//     }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">

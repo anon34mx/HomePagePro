@@ -2,14 +2,13 @@
     <head>
         <title>Home Pro</title>
         <script src="assets/jquery-3.6.0.min.js"></script>
-
-        <!-- <script src="assets/jquery-ui.min.js"></script> -->
         <script src="assets/jquery-ui.js"></script>
         <link rel="stylesheet" href="assets/jquery-ui.theme.min.css">
+        <link rel="icon" type="image/png" href="themes/<%-currentTheme%>/favicon.png">
 
+        <link rel="stylesheet" href="themes/<%-currentTheme%>/style.css">
+        
         <script src="assets/controller.js"></script>
-        <link rel="stylesheet" href="assets/styles/default/style.css">
-        <link rel="icon" type="image/png" href="assets/favicon.png">
         <script>
             $(document).ready(()=>{
                 $("#editShort input[name='type']").change(()=>{
@@ -209,14 +208,14 @@
             "></div> -->
 
         </div>
-        <nav>
-            <div>
-                <ul class="menu2">
+        <div id="topMenu">
+            <nav>
+                <ul class="menu">
                     <a class="txt-shadow" href="#shortcuts"><li>Shortcuts</li></a>
                     <a class="txt-shadow" href="#localhost"><li>Localhost</li></a>
                 </ul>
-            </div>
-            <div>
+            </nav>
+            <div id="search">
                 <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()" autocomplete="off">
                     <input id="searchInput" type="text" value="" place holder="Search"
                         name="q" autofocus onkeyup="testApi();" class=""
@@ -226,7 +225,6 @@
                         <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
                     </label>
                     <ul id="searchEngines" class="engines" tabindex="2">
-                        <!-- <div class="bg">x</div> -->
                         <div class="desp noselect" style="pointer-events: none;">▼</div>
                         <div style="margin-top: 22px;width: 0px;height: 0px; z-index: 1;" class="noselect">
                             <%-engines%>
@@ -234,11 +232,10 @@
                     </ul>
                 </form>
             </div>
-        </nav>
+        </div>
         <section id="shortcuts" class="">
             <!-- <h5 class="txt-shadow"></h5> -->
             <div class="title txt-shadow">
-                <div class="bg"></div>
                 <h5>Shortcuts</h5>
                 <div>
                     <button id="editMode" onclick="editMode()">edit</button>
@@ -249,7 +246,7 @@
             <div><button id="stopEditMode" onclick="stopEditMode()">done</button></div> -->
             <div class="container">
                 <!-- ADD SHORTCUT -->
-                <div class="elementContainer" id="addNew">
+                <!-- <div class="elementContainer" id="addNew">
                     <a class="element uri"
                     onclick="edit(this.parentElement,'new')">
                         <div class="imgContainer">
@@ -261,7 +258,7 @@
                         </div>
                         <span class="txt-shadow">Add</span>
                     </a>
-                </div>
+                </div> -->
                 <!-- ADD SHORTCUT (END) -->
                 <%-shortcuts%>
 
@@ -273,7 +270,6 @@
                 <!-- <h5 class="title">Localhost</h5> -->
                 <!-- </div> -->
                 <div class="title txt-shadow">
-                    <div class="bg"></div>
                     <h5>Localhost</h5>
                 </div>
             <%
