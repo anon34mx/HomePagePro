@@ -117,13 +117,13 @@ app.get('/', async function(req, res) {
     folders="";
     engines="";
     
-    let startTime = new Date();
     await renderEngines();
     await Shortcuts();
+    let startTime = new Date();
     await scanFolder(lhl);
-
     let endTime = new Date();
     console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
+    // console.log("END_____"+new Date().getTime());
 
     res.status(200).render('index', {
         filesFound:filesFound,
@@ -336,47 +336,47 @@ function renderFile(path,file){
         return "";
     }
 }
-// function renderUriGroup(links,id){
-//     // <div class="bgBlur"></div>
-//     // <ol class="submenu">
-//     //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
-//     // </ol>
-//     var html=`
-//         <div class="element uriGroup" id=`+id+` type="group">
-//             <div class="imgContainer">
-//                 <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-//             </div>
-//             <span class="text-shadow">`+links.name+`</span>
-//             <div class="container">`;
-//             for(var id in links.content){
-//                 html+=theme.renderUri(
-//                     id,
-//                     links.content[id]["uri"],
-//                     links.content[id]["icon"],
-//                     links.content[id]["name"],
-//                     links.content[id]["blank"]
-//                     );
-//             }
+function renderUriGroup(links,id){
+    // <div class="bgBlur"></div>
+    // <ol class="submenu">
+    //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
+    // </ol>
+    var html=`
+        <div class="element uriGroup" id=`+id+` type="group">
+            <div class="imgContainer">
+                <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+            </div>
+            <span class="text-shadow">`+links.name+`</span>
+            <div class="container">`;
+            for(var id in links.content){
+                html+=renderUri(
+                    id,
+                    links.content[id]["uri"],
+                    links.content[id]["icon"],
+                    links.content[id]["name"],
+                    links.content[id]["blank"]
+                    );
+            }
             
-//     return html+=`</div></div>`;
-// }
-// function renderUri(id,uri,icon,name,blank){
-//     // <div class="bgBlur"></div>  
-//     // <ol class="submenu">
-//     //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-//     //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
-//     // </ol>
-//     return `
-//     <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
-//         <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
-//             href="${uri}">
-//             <div class="imgContainer">
-//                 <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-//             </div>
-//             <span class="txt-shadow">`+name+`</span>
-//         </a>
-//     </div>`;
-//     }
+    return html+=`</div></div>`;
+}
+function renderUri(id,uri,icon,name,blank){
+    // <div class="bgBlur"></div>  
+    // <ol class="submenu">
+    //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
+    //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
+    // </ol>
+    return `
+    <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
+        <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
+            href="${uri}">
+            <div class="imgContainer">
+                <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+            </div>
+            <span class="txt-shadow">`+name+`</span>
+        </a>
+    </div>`;
+    }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
