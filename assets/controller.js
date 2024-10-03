@@ -72,7 +72,7 @@ function rightClick(applyTo){
 				break;
 			case 3:
 				// console.log('Right Mouse button pressed.');
-				context = $("#contenxtMenu")[0];
+				context = $("#contenxtMenu");
 				
 				posX=(event.pageX); // POSICION DEL CLICK
 				posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
@@ -88,7 +88,7 @@ function rightClick(applyTo){
 				}else{
 					posY=posY+1;
 				}
-				console.log($(this).attr("type"), posX, posY);
+				console.log($(this), posX, posY);
 
 				$("#contenxtMenu").css("left", posX + "px")
 				$("#contenxtMenu").css("top", posY + "px")

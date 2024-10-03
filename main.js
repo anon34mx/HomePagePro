@@ -113,13 +113,13 @@ app.get('/', async function(req, res) {
     folders="";
     engines="";
     
-    let startTime = new Date();
     await renderEngines();
     await Shortcuts();
+    let startTime = new Date();
     await scanFolder(lhl);
-
     let endTime = new Date();
     console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
+    // console.log("END_____"+new Date().getTime());
 
     res.status(200).render('index', {
         filesFound:filesFound,
@@ -339,7 +339,7 @@ function renderUriGroup(links,id){
     var html=`
         <div class="element uriGroup" id=`+id+` type="group">
             <div class="imgContainer">
-                <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+                <img src="`+links.icon+`" oner ror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
             </div>
             <span class="text-shadow">`+links.name+`</span>
             <div class="container">`;
@@ -353,7 +353,8 @@ function renderUriGroup(links,id){
                     );
             }
             
-    return html+=`</div></div>`;
+    return html+=`</div>
+        </div>`;
 }
 function renderUri(id,uri,icon,name,blank){
     // <div class="bgBlur"></div>  
