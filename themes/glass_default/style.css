@@ -1,16 +1,25 @@
+:root {
+    --blur2:blur(2px);
+    --background-gradient-glass: linear-gradient(0deg, rgba(0, 0, 0, 0.14609593837535018) 0%, rgba(255, 255, 255, 0.5158438375350141) 100%);
+}
+.txt-white-shadow{
+    color: white;
+    text-shadow: -1px -1px 2px #00000042, -1px 1px 3px #f7f7f742, 1px 1px 3px #00000042, 1px -1px 3px #f7f7f742;
+}
+
 html,body{
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 body{
     /* position: relative; */
 }
 *{
-    outline: 1px solid yellowgreen;
+    /* outline: 1px solid yellowgreen; */
 }
 
 #background{
-    background-color: gray;
     display: block;
     width: 100vw;
     height: 100vh;
@@ -24,16 +33,19 @@ body{
 }
 
 #topMenu{
-    display: inline-flex;
+    display: inline-block;
     position: sticky;
     top: 0px;
-    background-color: gray;
     width: 100%;
     height: 40px;
+
+    backdrop-filter: var(--blur2);
+    background: var(--background-gradient-glass);
+    z-index: 1;
 }
-#topMenu nav{
+#topMenu nav, #topMenu #search{
     width: 50%;
-    background-color: red;
+    float: left;
 }
 #topMenu nav .menu{
     padding: 0;
@@ -44,21 +56,26 @@ body{
     list-style: none;
 }
 #topMenu nav .menu a{
-    width: auto;
-    height: 100%;
     margin: 0px 5px;
-    background-color: gray;
+    padding: 6px;
+    background: red;
+    display: flex;
+    align-items: center;
 }
-#topMenu #search{
+/* #topMenu #search{
     width: 50%;
-    background-color: blue;
-}
+} */
 
 /*  */
 .title{
     width: 100%;
     height: 40px;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
+    backdrop-filter: var(--blur2);
+    background: var(--background-gradient-glass);
+    position: sticky;
+    top: 40px;
+    z-index: 1;
 }
 .title h5{
     padding: 0;
@@ -71,32 +88,106 @@ body{
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, 120px);
+    justify-content: space-between; */
     width: 90%;
     height: auto;
-    background: yellow;
     padding:0 5%;
+    padding-top: 40px;
+}
+.element .bg{
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: red;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: inherit;
+    background: var(--background-gradient-glass);
+}
+.element:hover{
+    /* background: linear-gradient(0deg, rgb(0 0 0 / 45%) 0%, rgb(246 246 246 / 80%) 100%); */
 }
 .element{
     display: flex;
-    width: 130px;
-    height: 130px;
-    background-color: red;
+    width: 6.0rem;
+    height: 6.5rem;
+    padding: 0.3rem;
     flex-direction: column;
     margin: 10px;
+    align-items: center;
+    border-radius: 0.6rem;
+    backdrop-filter: var(--blur2);
+    /* background: var(--background-gradient-glass); */
+    box-shadow: 
+            -1px 1px 0px #c9c9c9dc,
+            1px -1px 0px #ededed6e,
+            0px 6px 10px #0000008f;
+    outline: 1px solid #ffffff66;
+    transition: .4s;
 }
-.element img{
-    width: 80%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    background: pink;
-        margin: auto;
+.element .icon{
+    width: 100%;
+    height: 60%;
+    text-align: center;
+}
+.element .icon img{
+    max-width: 100%;
+    max-height: 100%;
+}
+.element label{
+    font-family: Arial, Helvetica, sans-serif;
+    width: calc(100% - 0.5rem);
+    max-height: 40%;
+    /* margin: 0 auto; */
+    padding:0 0.5rem;
+    overflow: hidden;
+    line-height: 0.9;
+    text-align: center;
+    border-radius: 0 0 0.4rem 0.4rem;
 }
 
 .imgContainer img{
     width: 150px;
     margin: 10px;
 }
+
 /*  */
 #testClick{
     display: none;
+}
+
+@media (max-width: 575px) {
+    #topMenu{
+        height: 80px;
+    }
+    #topMenu nav, #topMenu #search{
+        width: 100%;
+        height: 50%;
+    }
+}
+@media (min-width: 576px) {
+    /* ... */
+}
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    /* ... */
+}
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    /* ... */
+}
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    /* ... */
+}
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    /* ... */
 }
