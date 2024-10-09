@@ -127,6 +127,7 @@ body{
             0px 6px 10px #0000008f;
     outline: 1px solid #ffffff66;
     transition: .4s;
+    position: relative;
 }
 .element .icon{
     width: 100%;
