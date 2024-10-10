@@ -1,5 +1,5 @@
 $(document).ready(()=>{
-	$("#searchEngines").focus(()=>{
+	$(".showEngines").focus(()=>{
 		enginesShow(true);
 	});
 	$("#searchEngines li").blur((e)=>{

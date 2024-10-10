@@ -246,15 +246,20 @@ async function renderEngines(){
     await readFilePromise("./config/searchEngines.json").then(function(data) {
         x=JSON.parse(data)
     });
-    contTabIndex=3;
+    contTabIndex=4;
     x.forEach(element => {
+        // <button>test</button>
         ret+=`
             <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="${contTabIndex}" id="${element.name}"
             onkeypress="$(this).click()" class="searchEngine txt-shadow"
+            tabindex="1"
             >
+            <span style="
+                display: flex;
+            ">
             <img src="${element.icon}" class="noselect">
-            <span>${element.name}</span>
-            <div></div>
+                    ${element.name}
+                </span>
             </li>`;
         contTabIndex++;
         if(element.default==true){

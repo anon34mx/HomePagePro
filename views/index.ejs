@@ -209,38 +209,60 @@
             "></div> -->
 
         </div>
+        <div id="engineContainer">
+            <ul id="searchEngines" class="engines">
+                <%-engines%>
+                <!-- <div class="desp noselect" style="pointer-events: none;">▼</div> -->
+                <!-- <div style="" class="noselect">
+                </div> -->
+            </ul>
+        </div>
         <div id="topMenu">
             <nav>
                 <ul class="menu">
-                    <a class="txt-shadow" href="#shortcuts"><li>Shortcuts</li></a>
-                    <a class="txt-shadow" href="#localhost"><li>Localhost</li></a>
+                    <a class="txt-shadow button-light-trans" href="#shortcuts"><li>Shortcuts</li></a>
+                    <a class="txt-shadow button-light-trans" href="#localhost"><li>Localhost</li></a>
                 </ul>
             </nav>
             <div id="search">
                 <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()" autocomplete="off">
-                    <input id="searchInput" type="text" value="" place holder="Search"
-                        name="q" autofocus onkeyup="testApi();" class=""
-                        autocomplete="off" autocorrect="off" tabindex="1" >
-                    <input id="searchBtn" type="submit" value="Go!" onclick='event.preventDefault();validateSearch();'>
-                    <label for="searchBtn" style="background: var(--background);" tabindex="1">
-                        <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
-                    </label>
-                    <ul id="searchEngines" class="engines" tabindex="2">
-                        <div class="desp noselect" style="pointer-events: none;">▼</div>
-                        <div style="margin-top: 22px;width: 0px;height: 0px; z-index: 1;" class="noselect">
-                            <!-- <%-engines%> -->
-                        </div>
-                    </ul>
+                    <div id="searchFormC">
+                        <input id="searchInput" type="text" value="" place holder="Search"
+                            name="q" autofocus onkeyup="testApi();" class=""
+                            autocomplete="off" autocorrect="off" tabindex="1" >
+                        <input id="searchBtn" type="submit" value="Go!" class="button-light-trans"
+                            onclick='event.preventDefault();validateSearch();' tabindex="2">
+                        <label for="" style="background: var(--background);" >
+                            <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;">
+                        </label>
+                    </div>
                 </form>
+            </div>
+            <div style="
+                width: 40px;
+                height: 100%;
+                background: red;
+                position: absolute;
+                top: 0px;
+                right: 0px;
+            ">
+                <button class="showEngines" tabindex="3">
+                    E
+                </button>
             </div>
         </div>
         <section id="shortcuts" class="">
             <!-- <h5 class="txt-shadow"></h5> -->
             <div class="title txt-white-shadow">
                 <h5>Shortcuts</h5>
-                <div>
-                    <button id="editMode" onclick="editMode()">edit</button>
-                    <button id="stopEditMode" onclick="stopEditMode()">done</button>
+                <div style="
+                    width: 50%;
+                    display: inline-flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                ">
+                    <button id="editMode" class="button-light-trans" onclick="editMode()">edit</button>
+                    <button id="stopEditMode" class="button-light-trans" onclick="stopEditMode()">done</button>
                 </div>
             </div>
             <!-- <div><button id="editMode" onclick="editMode()">edit</button></div>
