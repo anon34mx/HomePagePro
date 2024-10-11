@@ -3,7 +3,7 @@ const renderUri=(id, uri, icon, name, blank)=>{
     // <div class="imgContainer">
     // </div>
     // http://localhost:34/assets/styles/default/html.svg
-    return `<a href="` + uri +`"class="element prevent-select linkDraggable uri">
+    return `<a href="` + uri +`"class="element prevent-select linkDraggable">
         <div class="icon">
             <img class="" src="`+ icon +`" onerror="this.src=null;this.src='./assets/styles/default/html.svg'"/>
         </div>

@@ -46,7 +46,7 @@ form{
     position: fixed;
     z-index: -1;
 
-    background-image: url(/themes/glass_default/background2.jpg);
+    background-image: url(/themes/frutero/background2.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -239,12 +239,12 @@ form{
 .element{
     display: flex;
     width: 6.0rem;
-    height: 6.5rem;
+    height: 6.0rem;
     padding: 0.3rem;
     flex-direction: column;
     margin: 10px;
     align-items: center;
-    border-radius: 0.6rem;
+    border-radius: 100%;
     backdrop-filter: var(--blur2);
     /* background: var(--background-gradient-glass); */
     box-shadow: 
@@ -258,7 +258,7 @@ form{
     text-decoration: none;
 }
 .element .icon{
-    width: 100%;
+    width: 60%;
     height: 60%;
     text-align: center;
 }
@@ -281,6 +281,7 @@ form{
     border-radius: 0 0 0.4rem 0.4rem;
     line-break: anywhere;
     pointer-events: none;
+    display: none;
 }
 
 .imgContainer img{
@@ -288,30 +289,15 @@ form{
     margin: 10px;
 }
 
-#editLink {
+#editLink{
     /* display: none; */
 }
-
-#contenxtMenu {
+#contenxtMenu{
     display: block;
-        position: absolute;
-        /* background-color: red; */
-        padding: 0.2rem;
-        margin: 0;
-        list-style: none;
-        background: var(--background-solid-dark);
-        backdrop-filter: var(--blur2);
-        text-shadow: var(--txt-shadow);
-        color: white;
-        font-family: arial;
+    position: absolute;
+    background-color: red;
 }
-#contenxtMenu li{
-    border-bottom: 1px solid lightgray;
-    cursor: pointer;
-}
-#contenxtMenu li:hover{
-    background-color: var(--background-solid-dark);
-}
+
 /*  */
 #testClick{
     display: none;

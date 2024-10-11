@@ -14,7 +14,7 @@ app.use('/assets', express.static('assets'));
 app.use('/themes', express.static('themes')); 
 var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSearchImg="";
 
-var currentTheme ="glass_default";
+var currentTheme = "glass_default";//glass_default/frutero/
 var theme = require("./themes/" + currentTheme+"/renders.js");
 console.log(theme);
 
@@ -284,9 +284,9 @@ function scanFolder(path){
                 files.forEach(function (file) {
                     try {
                         if(fs.lstatSync(path+"/"+file).isDirectory()){
-                            folders+=renderFolder(path,file);
+                            folders += theme.renderFolder(path,file);
                         }else{
-                            filesFound+=renderFile(path,file);
+                            filesFound +=theme.renderFile(path,file);
                         }
                     } catch (error) {
                         
@@ -300,47 +300,33 @@ function scanFolder(path){
         // }
     })
 }
-function renderFolder(path,file){
-    var project=false;
-    try {
-        if (fs.existsSync(path+"/"+file+"/index.php")) {
-        }else{
-            // console.error(path+"/"+file+"/index.php");
-        }
-      } catch(err) {
-        console.error(err)
-      }
-    //   <div class="bgBlur"></div>
-    return `
-    <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
+// function renderFolder(path,file){
+//     var project=false;
+//     try {
+//         if (fs.existsSync(path+"/"+file+"/index.php")) {
+//         }else{
+//             // console.error(path+"/"+file+"/index.php");
+//         }
+//       } catch(err) {
+//         console.error(err)
+//       }
+//     //   <div class="bgBlur"></div>
+//     return `
+//     <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
         
-            <div class="imgContainer">
-                <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">
-            `+file+`
-            </span>
-            </div>`;
-            // <ol class="submenu ">
-            //     <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            //     <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
-            // </ol>
-}
-function renderFile(path,file){
-    try{
-        var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-        // <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
-        // <div class="bgBlur"></div>
-        return `<a class="element file" href="http://localhost/${file}" title="${file}">
-            <div class="imgContainer">
-                <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">`+file+`</span>    
-        </a>`;
-    }catch(e){
-        return "";
-    }
-}
+//             <div class="imgContainer">
+//                 <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+//             </div>
+//             <span class="txt-shadow">
+//             `+file+`
+//             </span>
+//             </div>`;
+//             // <ol class="submenu ">
+//             //     <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
+//             //     <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
+//             // </ol>
+// }
+
 function renderUriGroup(links,id){
     // <div class="bgBlur"></div>
     // <ol class="submenu">
@@ -365,23 +351,6 @@ function renderUriGroup(links,id){
             
     return html+=`</div></div>`;
 }
-function renderUri(id,uri,icon,name,blank){
-    // <div class="bgBlur"></div>  
-    // <ol class="submenu">
-    //     <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-    //     <li onclick="event.preventDefault();edit(this,'edit','uri');">edit</li>
-    // </ol>
-    return `
-    <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
-        <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
-            href="${uri}">
-            <div class="imgContainer">
-                <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">`+name+`</span>
-        </a>
-    </div>`;
-    }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">

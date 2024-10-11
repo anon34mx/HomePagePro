@@ -27,11 +27,11 @@ $(document).ready(()=>{
 		}
 	}
 
-	$('.elementContainer, .folder, .uriGroup').contextmenu(function() {
+	$('.element, .folder, .uriGroup').contextmenu(function() {
 		return false;
 	});
 
-	rightClick('.elementContainer, .folder, .uriGroup');
+	rightClick('.element, .folder, .uriGroup');
 	
 	$('.uriGroup').mouseenter(function () {
 		var container=$(this).find(".container")[0];
@@ -93,7 +93,7 @@ function rightClick(applyTo){
 				$("#contenxtMenu").css("left", posX + "px")
 				$("#contenxtMenu").css("top", posY + "px")
 				$("#contenxtMenu").css("display", "block")
-				$("#contenxtMenu li").css("display", "none")
+				// $("#contenxtMenu li").css("display", "none")
 				$("#contenxtMenu li." + $(this).attr("type")).css("display", "block")
 
 				$("#OpenLinkNewTab").attr("target", $(this).attr("id"))
@@ -129,21 +129,15 @@ function searchss(uri, parameter){
 }
 
 async function testApi(){
-	console.log("testApi")
+	// console.log("testApi")
 	$("#suggestions").empty()
 	// https://stackoverflow.com/questions/21549516/how-to-work-with-google-suggest-queries-using-jquery
-	// console.log($("#searchInput").val());
 	await $.ajax({
 		url: 'http://suggestqueries.google.com/complete/search?client=chrome&q='+$("#searchInput").val(),
 		type: 'GET',
 		dataType: 'jsonp',
 		success: function (data) {
-			// availableTags=data[1];
 			console.log(data);
-			// data[1].forEach(function(sug){
-			// 	console.log(sug);
-			// 	$("#suggestions").append(`<option value="`+sug+`">`);
-			// });
 			$( "#searchInput" ).autocomplete({
 				source: data[1],
 				select: function( event, ui ) {
