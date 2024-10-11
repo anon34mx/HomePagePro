@@ -1,1 +1,1 @@
-pm2 start main.js
+npx pm2 start main.js
