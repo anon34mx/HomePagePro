@@ -3,7 +3,7 @@ const renderUri=(id, uri, icon, name, blank)=>{
     // <div class="imgContainer">
     // </div>
     // http://localhost:34/assets/styles/default/html.svg
-    return `<a href="` + uri +`"class="element prevent-select linkDraggable uri">
+    return `<a href="` + uri +`"class="element prevent-select linkDraggable uri" type="uri">
         <div class="icon">
             <img class="" src="`+ icon +`" onerror="this.src=null;this.src='./assets/styles/default/html.svg'"/>
         </div>
@@ -15,7 +15,7 @@ const renderUri=(id, uri, icon, name, blank)=>{
 }
 function renderFile(path, file) {
     var ext = (file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-    return `<a href="http://localhost/${file}" class="element prevent-select" title="${file}">
+    return `<a href="http://localhost/${file}" class="element prevent-select" title="${file}" type="file">
         <div class="icon">
             <img class="" src="/assets/styles/default/`+ ext + `.svg" onerror="this.src=null;this.src='./assets/styles/default/html.svg'"/>
         </div>
@@ -39,7 +39,7 @@ function renderFolder(path, file) {
     // return `
     // <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
     // </div>`;
-    return `<a href="http://localhost/${file}" class="element prevent-select" title="${file}">
+    return `<a href="http://localhost/${file}" class="element prevent-select" title="${file}" type="folder">
         <div class="icon">
             <img class="" src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.src=null;this.src='./assets/styles/default/html.svg'"/>
         </div>

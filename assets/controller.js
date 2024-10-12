@@ -77,14 +77,14 @@ function rightClick(applyTo){
 				posX=(event.pageX); // POSICION DEL CLICK
 				posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
 				
-				// console.log("w->"+context.offsetWidth+"_h->"+context.offsetHeight); // POSICION DEL CLICK
-				if(posX+context.offsetWidth+18 > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
-					posX=posX-context.offsetWidth;
+				console.log("w->"+context[0].offsetWidth+"_h->"+context[0].offsetHeight); // POSICION DEL CLICK
+				if(posX+context[0].offsetWidth+18 > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
+					posX=posX-context[0].offsetWidth;
 				}else{
 					posX=posX+1;
 				}
-				if(posY+context.offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
-					posY=posY-context.offsetHeight;
+				if(posY+context[0].offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
+					posY=posY-context[0].offsetHeight;
 				}else{
 					posY=posY+1;
 				}
@@ -93,7 +93,7 @@ function rightClick(applyTo){
 				$("#contenxtMenu").css("left", posX + "px")
 				$("#contenxtMenu").css("top", posY + "px")
 				$("#contenxtMenu").css("display", "block")
-				// $("#contenxtMenu li").css("display", "none")
+				$("#contenxtMenu li").css("display", "none")
 				$("#contenxtMenu li." + $(this).attr("type")).css("display", "block")
 
 				$("#OpenLinkNewTab").attr("target", $(this).attr("id"))
