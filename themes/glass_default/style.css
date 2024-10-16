@@ -208,7 +208,7 @@ form{
     flex-wrap: wrap;
     justify-content: space-around;
     /* display: grid;
-    grid-template-columns: repeat(auto-fill, 120px);
+    grid-template-columns: repeat|(auto-fill, 120px);
     justify-content: space-between; */
     width: 90%;
     height: auto;
@@ -288,12 +288,33 @@ form{
     margin: 10px;
 }
 
-#editLink {
-    /* display: none; */
+#modalEdition {
+    display: none;
+    /* display: block; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(3px);
+    z-index: 2;
+    /* background-color: red; */
+}
+#modalEdition .container{
+    /* background-color: green; */
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#modalEdition .container form{
+    font-family: arial;
 }
 
 #contenxtMenu {
-    display: block;
+    display: none;
     position: absolute;
     /* background-color: red; */
     padding: 0;
@@ -312,20 +333,21 @@ form{
 #contenxtMenu li:first-of-type{
     border-radius: .7rem .7rem 0 0;
 }
-#contenxtMenu li:nth-last-child(){
-    border: none;
-    background-color: red;
+#contenxtMenu li:last-child{
+    border: none !important;
+    /* background-color: red; */
     border-radius:0 0 .7rem .7rem;
 }
 #contenxtMenu li{
-    border-bottom: 1px solid lightgray;
+    /* border-bottom: 1px solid lightgray; */
     cursor: pointer;
     width: 100%;
     width: -webkit-fill-available;
-    margin: 0 10px;
+    padding: 4 12px;
 }
 #contenxtMenu li:hover{
     background-color: var(--background-solid-dark);
+    
 }
 /*  */
 #testClick{

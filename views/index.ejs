@@ -491,7 +491,7 @@
         }
     }
 </script>
-<div id="editLink" class="modal" >
+<div id="modalEdition" class="modal" >
     <div class="bg" onclick=""></div>
     <div class="container">
         <form id="editShort">
@@ -530,7 +530,6 @@
                 </tr>
                 <tr>
                     <td><label class="txt-shadow" for="newtab">New tab</label></td>
-                    <!-- <td><input id="newtab" name="newtab" type="checkbox"></td> -->
                     <td>
                         <input type="radio" id="newTabTrue" value="1" name="newtab">
                         <label for="newTabTrue" class="">Yes</label>
@@ -544,7 +543,6 @@
                             <button id="" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
                             <button id="" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
                             <button id="" type="button" value="Delete" onclick='deleteElement();'>Delete</button>
-                            <!-- <input id="btn-del" type="button" value="Delete" onclick='deleteElement();'> -->
                         </div>
                     </td>
                 </tr>
@@ -552,41 +550,25 @@
         </form>
     </div>
 </div>
-<!-- <div id="mdl-conf">
-    <table>
-        <tr>
-            <td>Theme</td>
-        </tr>
-    </table>
-</div> -->
 
+<footer class="credits txt-shadow">
+    <span title="Options will be here"
+    onclick=""
+    >⚙</span>
+    <a href="https://linkedin.com/in/aaron-aguilera">Contact</a>
+</footer>
+
+<ol id="contenxtMenu" class="contenxtMenu" oncontextmenu="return false;">
+    <!-- SHORTCUTS -->
+    <li id="OpenLinkNewTab" class="uri txt-shadow" onclick="openElement('uriNewTab')" target="">Open in new tab</li>
+    <li id="EditLink" class="uri txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
+    
+    <li id="EditGroup" class="group txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit group</li>
+    <!-- FOLDERS -->
+    <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd3');launchFolder()">Open in browser</li>
+    <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd2');launchFolder()">Open in explorer</li>
+    <!-- FILES -->
+    <li id="" class="file txt-shadow" onclick="event.preventDefault();console.log('asd1');window.location.href='https'">Execute</li>
+</ol>
     </body>
-    <footer class="credits txt-shadow">
-        <span title="Options will be here"
-        onclick=""
-        >⚙</span>
-        <a href="https://linkedin.com/in/aaron-aguilera">Contact</a>
-    </footer>
-
-    <!-- <div class="elementContainer linkDraggable" id="LinkTemplate" type="__">
-        <a class="element uri" href="__">
-            <div class="imgContainer">
-                <img src="assets/styles/default/noIcon.png"
-                    onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">__</span>
-        </a>
-    </div> -->
-    <ol id="contenxtMenu" class="contenxtMenu" oncontextmenu="return false;">
-        <!-- SHORTCUTS -->
-        <li id="OpenLinkNewTab" class="uri txt-shadow" onclick="window.open(this.target, '_blank')" target="">Open in new tab</li>
-        <li id="EditLink" class="uri txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
-        
-        <li id="EditGroup" class="group txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
-        <!-- FOLDERS -->
-        <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd3');launchFolder()">Open in new tab</li>
-        <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd2');launchFolder()">Open in explorer</li>
-        <!-- FILES -->
-        <li id="" class="file txt-shadow" onclick="event.preventDefault();console.log('asd1');window.location.href='https'">Execute</li>
-    </ol>
-</html>
+    </html>

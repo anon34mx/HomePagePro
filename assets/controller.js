@@ -1,3 +1,5 @@
+var lastElement="";
+
 $(document).ready(()=>{
 	$(".showEngines").focus(()=>{
 		enginesShow(true);
@@ -72,6 +74,7 @@ function rightClick(applyTo){
 				break;
 			case 3:
 				// console.log('Right Mouse button pressed.');
+				lastElement=this;
 				context = $("#contenxtMenu");
 				
 				posX=(event.pageX); // POSICION DEL CLICK
@@ -106,16 +109,34 @@ function rightClick(applyTo){
 		}
 	});
 }
-
-function openElement(file){
-	console.log(file);
-    $.ajax({
-        url:"http://localhost:8080/open",
-        data:{
-            file :file
-        }
-    });
+function openElement(action){
+	switch (action) {
+		case "uri":
+			lastElement.click();
+			break;
+		case "uriNewTab":
+			window.open(lastElement.href, '_blank');
+			break;
+		case "execute":
+			
+			break;
+		case "inExplorer":
+			
+			break;
+	
+		default:
+			break;
+	}
 }
+// function openElement(file){
+// 	console.log(file);
+//     $.ajax({
+//         url:"http://localhost:8080/open",
+//         data:{
+//             file :file
+//         }
+//     });
+// }
 
 function launchFolder(folder){
 	$.ajax({
