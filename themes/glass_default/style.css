@@ -19,6 +19,12 @@
     user-select: none;
     /* Standard syntax */
 }
+.hidden{
+    display: none;
+}
+#sctIcon[src='#']{
+    display: none;
+}
 
 html,body{
     margin: 0;
@@ -371,6 +377,7 @@ footer a{
 .ui-menu{
     position: absolute;
     top: 20px;
+    left: initial !important;
     right: 0;
     width: clamp(10px, 50%, 300px);
     display: block;
@@ -384,7 +391,8 @@ footer a{
 .ui-menu li{
     margin: 4px 0px;
     cursor: pointer;
-    text-shadow: var(--txt-shadow);     
+    text-shadow: var(--txt-shadow);
+    overflow: hidden;
 }
 .ui-helper-hidden-accessible{
     display: none !important;

@@ -13,18 +13,8 @@
         <script>
             $(document).ready(()=>{
                 $("#editShort input[name='type']").change(()=>{
-                    // $("#editShort input[name='type'][value='group']").attr('checked', true);
                     var val=$("#editShort input[name='type']:checked").val();
-                    if(val=="uri"){
-                        $("#editShort #link").parent().parent().show(1);
-                        $("#editShort input[name='newtab']").parent().parent().show(1);
-                        $("#editShort #icon").parent().parent().show(1);
-                    }else{
-                        $("#editShort #link").parent().parent().hide(1);
-                        $("#editShort input[name='newtab']").parent().parent().hide(1);
-                        $("#editShort #icon").parent().parent().hide(1);
-                        // $("#editShort #name").val("New group");
-                    }
+                    showEdit(val);
                 });
             });
             function editMode(){
@@ -225,7 +215,10 @@
                 </ul>
             </nav>
             <div id="search">
-                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm" onsubmit="validateSearch()" autocomplete="off">
+                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm"
+                    onsubmit="validateSearch(undefined,this)"
+                    autocomplete="off"
+                >
                     <div id="searchFormC">
                         <label for="" style="background: var(--background);" >
                             <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;"
@@ -235,8 +228,10 @@
                             name="q" autofocus onkeyup="testApi();" class=""
                             autocomplete="off" autocorrect="off" tabindex="1"
                             placeholder="Search">
-                        <input id="searchBtn" type="submit" value="Go!" class="button-light-trans"
-                            onclick='event.preventDefault();validateSearch();' tabindex="2">
+                        <input id="searchBtn" type="submit" value="Go!" 
+                            class="button-light-trans"
+                            tabindex="2"
+                        >
                     </div>
                 </form>
             </div>
@@ -265,6 +260,7 @@
                     flex-direction: row;
                     justify-content: flex-end;
                 ">
+                    <button id="addShortcut" class="button-light-trans" onclick="edit(null,'new','uri')">add</button>
                     <button id="editMode" class="button-light-trans" onclick="editMode()">edit</button>
                     <button id="stopEditMode" class="button-light-trans" onclick="stopEditMode()">done</button>
                 </div>
@@ -330,7 +326,6 @@
         // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}
         // Quitar prefijos
         // ^((https|ftp|http):\/\/)?(www\.)?
-        // showEdit();
 
         // no admite puntos juntos
         //funciona mejor
@@ -388,8 +383,10 @@
         }
     }
     function edit(target,mode,type){
-        shortcutsRead(target);
-        showEdit();
+        if(target!=null){
+            shortcutsRead(target);
+        }
+        showEdit(type);
 
         $("#mode").val(mode);
         if(mode=="new"){
@@ -397,23 +394,10 @@
             $("#editShort input[name='type']").parent().parent().show()
             $("#btn-del").hide();
         }
-        else{
-            $("#editShort input[name='type']").parent().parent().hide(); // hide type selector (folder/link)
-            $("#btn-del").show();
-            $("#editShort #"+type).prop("checked", true);
-            if (type == "uri") {
-                $("#editShort #link").parent().parent().show(1);
-                $("#editShort input[name='newtab']").parent().parent().show(1);
-                $("#editShort #icon").parent().parent().show(1);
-            } else {
-                $("#editShort #link").parent().parent().hide(1);
-                $("#editShort input[name='newtab']").parent().parent().hide(1);
-                $("#editShort #icon").parent().parent().hide(1);
-            }
-        }
     }
+
     function cancelEdit(){
-        $("#editLink").fadeOut(333);
+        $("#modalEdition").fadeOut(333);
         setTimeout(() => {
             // $("#editShort").trigger("reset");
             $("#editShort")[0].reset();
@@ -440,13 +424,13 @@
         // shortcutID:$("#shortcutID").val()+idGenerator(),
         var validationError="";
         var data={
-                mode:$("#mode").val(),
-                type:$("input[name='type']:checked", "#editLink").val(),
-                shortcutID:$("#shortcutID").val(),
-                name:$("#name").val(),
-                icon:$("#icon").val(),
-                newtab:$("#editlink input[name='newtab']:checked").val(),
-                link:$("#link").val()
+                mode:$("#editShort #mode").val(),
+                type: $("#editShort input[name='type']:checked").val(),
+                shortcutID:$("#editShort #shortcutID").val(),
+                name:$("#editShort #name").val(),
+                icon:$("#editShort #icon").val(),
+                newtab:$("#editShort input[name='newtab']:checked").val(),
+                link:$("#editShort #link").val()
             };
         if(data.type=="uri"){
             if(data.link==""){
@@ -496,39 +480,35 @@
     <div class="container">
         <form id="editShort">
             <table>
-                <tr>
+                <tr class="uri group">
                     <td><label class="txt-shadow" for="type">type</label></td>
                     <td>
-                        <input type="radio" id="typeLink" value="link" name="type" checked>
+                        <input type="radio" id="typeLink" value="uri" name="type" checked>
                         <label for="typeLink" class="">Link</label>
 
                         <input type="radio" id="group" value="group" name="type">
                         <label for="group" class="">Group</label>
                     </td>
-                <tr class="hidden">
-                    <td><label class="txt-shadow" for="mode">mode</label></td>
-                    <td><input id="mode" name="mode" type="text" value=""></td>
                 </tr>
-                <tr class="hidden">
-                    <td><label class="txt-shadow" for="shortcutID">ID</label></td>
-                    <td><input id="shortcutID" name="shortcutID" type=""></td>
-                </tr>
-                <tr>
+                <tr class="uri">
                     <td><label class="txt-shadow" for="link">link</label></td>
                     <td>
                         <textarea name="link" id="link" style="width:100%" rows="4"
                         ></textarea>
                     </td>
                 </tr>
-                <tr>
+                <tr class="uri">
+                    <td><label class="txt-shadow" for="icon">icon</label></td>
+                    <td>
+                        <img id="sctIcon" width="24" height="24" src="#">
+                        <input id="icon" name="icon" type="">
+                    </td>
+                </tr>
+                <tr class="uri group">
                     <td><label class="txt-shadow" for="name">Name</label></td>
                     <td><input id="name" name="name" type=""></td>
                 </tr>
-                <tr class="hidden">
-                    <td><label class="txt-shadow" for="icon">icon</label></td>
-                    <td><img id="sctIcon" width="24" height="24" src=""><input id="icon" name="icon" type=""></td>
-                </tr>
-                <tr>
+                <tr class="uri">
                     <td><label class="txt-shadow" for="newtab">New tab</label></td>
                     <td>
                         <input type="radio" id="newTabTrue" value="1" name="newtab">
@@ -537,15 +517,24 @@
                         <label for="newTabFalse" class="">No</label>
                     </td>
                 </tr>
-                <tr>
+                <tr class="uri group">
                     <td colspan="2">
                         <div>
-                            <button id="" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
-                            <button id="" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
-                            <button id="" type="button" value="Delete" onclick='deleteElement();'>Delete</button>
+                            <button id="btn-sav" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
+                            <button id="btn-can" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
+                            <button id="btn-del" type="button" value="Delete" onclick='deleteElement();'>Delete</button>
                         </div>
                     </td>
                 </tr>
+                                
+                                <tr class="hidden">
+                                    <td><label class="txt-shadow" for="mode">mode</label></td>
+                                    <td><input id="mode" name="mode" type="text" value=""></td>
+                                </tr>
+                                <tr class="hidden">
+                                    <td><label class="txt-shadow" for="shortcutID">ID</label></td>
+                                    <td><input id="shortcutID" name="shortcutID" type=""></td>
+                                </tr>
             </table>
         </form>
     </div>
@@ -565,10 +554,10 @@
     
     <li id="EditGroup" class="group txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit group</li>
     <!-- FOLDERS -->
-    <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd3');launchFolder()">Open in browser</li>
-    <li id="" class="folder txt-shadow" onclick="event.preventDefault();console.log('asd2');launchFolder()">Open in explorer</li>
+    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">Open in browser</li>
+    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">Open in explorer</li>
     <!-- FILES -->
-    <li id="" class="file txt-shadow" onclick="event.preventDefault();console.log('asd1');window.location.href='https'">Execute</li>
+    <li id="" class="file txt-shadow" onclick="event.preventDefault();window.location.href='https'">Execute</li>
 </ol>
-    </body>
-    </html>
+</body>
+</html>

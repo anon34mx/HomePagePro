@@ -25,7 +25,6 @@ function renderFile(path, file) {
         <div class="bg"></div>
     </a>`;
 }
-
 function renderFolder(path, file) {
     var project = false;
     try {
@@ -49,9 +48,23 @@ function renderFolder(path, file) {
         <div class="bg"></div>
     </a>`;
 }
+function renderUriGroup(links, id) {
+    console.log(links);
+    return `<div id="${id}" class="element prevent-select linkDraggable uri" type="uri">
+        <div class="icon">
+            <img class="" src="./assets/styles/default/folder_ByDinosoftLabs.png"/>
+        </div>
+        <label class="txt-white-shadow">
+           asd
+        </label>
+        <div class="bg"></div>
+        <div class="container" style="position:absolute;background:red;"></div>
+    </div>`;
+}
 
 module.exports={
     renderUri,
     renderFile,
-    renderFolder
+    renderFolder,
+    renderUriGroup
 }

@@ -13,11 +13,9 @@ $(document).ready(()=>{
 	$("#searchEngines").mouseout((e)=>{
 		if($("#searchEngines li:hover").length < 1){
 			enginesShow(false)
-			console.log("asd")
 		}
 	});
 	$("#searchEngines").mouseenter(()=>{
-		console.log("hover");
 		enginesShow(true);
 	});
 	//$( document.activeElement )
@@ -73,14 +71,14 @@ function rightClick(applyTo){
 				// alert('Middle Mouse button pressed.');
 				break;
 			case 3:
-				// console.log('Right Mouse button pressed.');
+				// alert('Right Mouse button pressed.');
 				lastElement=this;
 				context = $("#contenxtMenu");
 				
 				posX=(event.pageX); // POSICION DEL CLICK
-				posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
+				// posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
+				posY = (event.pageY); //- $("body").scrollTop(); // POSICION DEL CLICK
 				
-				console.log("w->"+context[0].offsetWidth+"_h->"+context[0].offsetHeight); // POSICION DEL CLICK
 				if(posX+context[0].offsetWidth+18 > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
 					posX=posX-context[0].offsetWidth;
 				}else{
@@ -91,7 +89,6 @@ function rightClick(applyTo){
 				}else{
 					posY=posY+1;
 				}
-				console.log($(this), posX, posY);
 
 				$("#contenxtMenu").css("left", posX + "px")
 				$("#contenxtMenu").css("top", posY + "px")
@@ -150,7 +147,6 @@ function searchss(uri, parameter){
 }
 
 async function testApi(){
-	// console.log("testApi")
 	$("#suggestions").empty()
 	// https://stackoverflow.com/questions/21549516/how-to-work-with-google-suggest-queries-using-jquery
 	await $.ajax({
@@ -158,7 +154,6 @@ async function testApi(){
 		type: 'GET',
 		dataType: 'jsonp',
 		success: function (data) {
-			console.log(data);
 			$( "#searchInput" ).autocomplete({
 				source: data[1],
 				select: function( event, ui ) {
@@ -167,9 +162,9 @@ async function testApi(){
 			  });
 		},
 		error: function(jqXHR, textStatus, errorThrown){
-		  console.log(jqXHR);
-		  console.log(textStatus);
-		  console.log(errorThrown);
+		  console.error(jqXHR);
+		  console.error(textStatus);
+		  console.error(errorThrown);
 		}
 	});
 }
@@ -187,12 +182,14 @@ $("#searchInput").val().match(/(www.?)+([A-z]{1,})(.+[A-z]{2,3})+(\/)?/)
 "amazon.com.mx/articulo/diagonal".match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/);
 
 */
-async function validateSearch(searchEngine){
+async function validateSearch(searchEngine,form){
+	form.preventDefault();
 	var search=$("#searchInput").val();
-	var x=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{1,5})?/);
-	if(x){
-		if(x[0].length == search.length){ // VALID IP
-			window.location.href="http://"+search;
+	var isIP=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{1,5})?/);
+	if(isIP){
+		if(isIP[0].length == search.length){ // VALID IP
+			console.log("http://"+search);
+			// window.location.href="http://"+search;
 		}else{
 			console.log("search2");
 		}
@@ -214,23 +211,24 @@ async function validateSearch(searchEngine){
 		//SEARCH
 		if(searchEngine!=undefined){
 			if(search==""){
-				// search=404;
 				search="";
+				window.location.href=searchEngine+"="+search;
+			}else{
+				window.location.href=searchEngineh;
 			}
-			window.location.href=searchEngine+"="+search;
-			console.log("search owo");
 		}else{
-			console.log("Submit");
 			if(search==""){
 				$("#searchInput").val()
 			}
-			$("#searchForm").submit();
+			form.submit();
 		}
 	}
 }
 
-function showEdit(){
-	$("#editLink").fadeIn(333);
+function showEdit(type){
+	$("#editShort tr").hide()
+	$("#editShort tr."+type).show()
+	$("#modalEdition").fadeIn(333);
 }
 
 function idGenerator(){
@@ -243,11 +241,3 @@ async function renderLinkTemplate(data){
 	clon.id = "wasap"
 	document.body.appendChild(clon);
 }
-/*
-let startTime = new Date();
-for(i=0; i<100; i++){
-	renderLinkTemplate();
-}
-let endTime = new Date();
-console.log(endTime - startTime);
-*/

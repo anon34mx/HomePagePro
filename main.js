@@ -16,7 +16,6 @@ var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSe
 
 var currentTheme = "glass_default";//glass_default/frutero/
 var theme = require("./themes/" + currentTheme+"/renders.js");
-console.log(theme);
 
 //xml
 // var parseString = require('xml2js').parseString;
@@ -52,7 +51,6 @@ app.get('/shortcuts/save', async function(req, res) {
             x[id].icon=req.query.icon;
             break;
     }
-
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     // myShortcuts
     if(req.query.type=="link" && req.query.mode=="new"){
@@ -96,7 +94,6 @@ app.get('/shortcuts/addToGroup', async function(req, res) {
         await fs.writeFileSync(myShortcuts, JSON.stringify(x));
         res.send("saved").status(200);
     } catch (error) {
-        // console.log(x[req.query.group]["content"][req.query.element]);
         res.send(error).status(200);
     }
 });
@@ -122,8 +119,7 @@ app.get('/', async function(req, res) {
     let startTime = new Date();
     await scanFolder(lhl);
     let endTime = new Date();
-    console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
-    // console.log("END_____"+new Date().getTime());
+    // console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
 
     res.status(200).render('index', {
         filesFound:filesFound,
@@ -201,7 +197,7 @@ async function Shortcuts(){
             for(element in jsonString){
                 switch(jsonString[element].type){
                     case "group":
-                        // shortcuts+=renderUriGroup(jsonString[element], element);
+                        shortcuts+=theme.renderUriGroup(jsonString[element], element);
                         break;
                     case "link":
                         shortcuts+=theme.renderUri(
@@ -272,85 +268,54 @@ async function renderEngines(){
 
 function scanFolder(path){
     return new Promise(async (resolve,reject)=>{
-        // try {
-            fs.readdir(path, async function (err, files) {
-                if (err) {
-                    // return console.error('Unable to scan directory: ' + err);
-                    // throw new Error();
-                    // return false;
-                    resolve();
-                } 
-                //listing all files using forEach
-                files.forEach(function (file) {
-                    try {
-                        if(fs.lstatSync(path+"/"+file).isDirectory()){
-                            folders += theme.renderFolder(path,file);
-                        }else{
-                            filesFound +=theme.renderFile(path,file);
-                        }
-                    } catch (error) {
-                        
-                    }
-                });
+        fs.readdir(path, async function (err, files) {
+            if (err) {
+                // return console.error('Unable to scan directory: ' + err);
+                // throw new Error();
+                // return false;
                 resolve();
+            } 
+            //listing all files using forEach
+            files.forEach(function (file) {
+                try {
+                    if(fs.lstatSync(path+"/"+file).isDirectory()){
+                        folders += theme.renderFolder(path,file);
+                    }else{
+                        filesFound +=theme.renderFile(path,file);
+                    }
+                } catch (error) {
+                    
+                }
             });
-            
-        // } catch (error) {
-            
-        // }
+            resolve();
+        });
     })
 }
-// function renderFolder(path,file){
-//     var project=false;
-//     try {
-//         if (fs.existsSync(path+"/"+file+"/index.php")) {
-//         }else{
-//             // console.error(path+"/"+file+"/index.php");
-//         }
-//       } catch(err) {
-//         console.error(err)
-//       }
-//     //   <div class="bgBlur"></div>
-//     return `
-//     <div class='element folder' onclick="window.location.href='http://localhost/${file}'" title="${file}">
-        
-//             <div class="imgContainer">
-//                 <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-//             </div>
-//             <span class="txt-shadow">
-//             `+file+`
-//             </span>
-//             </div>`;
-//             // <ol class="submenu ">
-//             //     <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-//             //     <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
-//             // </ol>
-// }
 
-function renderUriGroup(links,id){
+// function renderUriGroup(links,id){
     // <div class="bgBlur"></div>
     // <ol class="submenu">
     //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
     // </ol>
-    var html=`
-        <div class="element uriGroup" id=`+id+` type="group">
-            <div class="imgContainer">
-                <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="text-shadow">`+links.name+`</span>
-            <div class="container">`;
-            for(var id in links.content){
-                html+=renderUri(
-                    id,
-                    links.content[id]["uri"],
-                    links.content[id]["icon"],
-                    links.content[id]["name"],
-                    links.content[id]["blank"]
-                    );
-            }
+    // var html=`
+    //     <div class="element uriGroup" id=`+id+` type="group">
+    //         <div class="imgContainer">
+    //             <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
+    //         </div>
+    //         <span class="text-shadow">`+links.name+`</span>
+    //         <div class="container">`;
+    //         for(var id in links.content){
+    //             html+=renderUri(
+    //                 id,
+    //                 links.content[id]["uri"],
+    //                 links.content[id]["icon"],
+    //                 links.content[id]["name"],
+    //                 links.content[id]["blank"]
+    //                 );
+    //         }
             
-    return html+=`</div></div>`;
-}
+    // return `<div>GROUP</div>`;
+// }
 // window.open("https://www.geeksforgeeks.org", "_blank");
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
