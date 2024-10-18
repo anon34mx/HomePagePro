@@ -49,8 +49,8 @@ function renderFolder(path, file) {
     </a>`;
 }
 function renderUriGroup(links, id) {
-    console.log(links);
-    return `<div id="${id}" class="element prevent-select linkDraggable uri" type="uri">
+    // console.log(links);
+    return `<div id="${id}" class="element folder prevent-select linkDraggable uri" type="uri">
         <div class="icon">
             <img class="" src="./assets/styles/default/folder_ByDinosoftLabs.png"/>
         </div>
@@ -58,7 +58,26 @@ function renderUriGroup(links, id) {
            asd
         </label>
         <div class="bg"></div>
-        <div class="container" style="position:absolute;background:red;"></div>
+        <div class="container">
+            <a id="speckyboy" href="https://speckyboy.com/" class="element prevent-select linkDraggable uri" type="uri">
+                <div class="icon">
+                    <img class="" src="https://speckyboy.com/favicon.ico" onerror="this.src=null;this.src='./assets/styles/default/html.svg'">
+                </div>
+                <label class="txt-white-shadow">
+                speckyboy
+                </label>
+                <div class="bg"></div>
+            </a>
+            <a id="twitter" href="http://twitter.com/" class="element prevent-select linkDraggable uri" type="uri">
+                <div class="icon">
+                    <img class="" src="http://twitter.com/favicon.ico" onerror="this.src=null;this.src='./assets/styles/default/html.svg'">
+                </div>
+                <label class="txt-white-shadow">
+                x-Twitter
+                </label>
+                <div class="bg"></div>
+            </a>
+        </div>
     </div>`;
 }
 

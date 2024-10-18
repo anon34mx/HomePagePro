@@ -2,6 +2,7 @@
     --blur2:blur(3px);
     --background-gradient-glass: linear-gradient(0deg, rgba(0, 0, 0, 0.14609593837535018) 0%, rgba(255, 255, 255, 0.5158438375350141) 100%);
     --background-solid-dark: #00000025;
+    --background-solid-darker: #00000025;
     --txt-shadow:-1px -1px 2px #0000008f,
         -1px 1px 3px #cccccc78,
         1px 1px 3px #0000008f,
@@ -38,7 +39,7 @@ form{
     margin: 0;
 }
 *{
-    /* outline: 1px solid yellowgreen; */
+    outline: 1px solid yellowgreen;
 }
 *:focus{
     outline: 1px solid gray;
@@ -68,7 +69,7 @@ form{
     backdrop-filter: var(--blur2);
     background-color: var(--background-solid-dark);
     /* background: var(--background-gradient-glass); */
-    z-index: 2;
+    z-index: 10;
     /* border-top: 1px solid #ffffff66; */
     border-bottom: 1px solid #ffffff66;
 }
@@ -220,6 +221,7 @@ form{
     height: auto;
     padding:40px 5% 20px 5%;
     z-index: -1;
+    /* overflow: hidden; */
 }
 .element .bg{
     display: block;
@@ -288,6 +290,62 @@ form{
     line-break: anywhere;
     pointer-events: none;
 }
+
+.folder{
+    z-index: 2;
+}
+.folder .container{
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* background: red; */
+    padding: 0;
+    transition: .5s;
+
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    width: initial;
+}
+.folder:hover > .container{
+    display: block;
+    opacity: 1;
+    pointer-events: initial;
+    left: -100%;
+    /* left: calc(-100% + 0rem); */
+}
+.folder .container .element{
+    margin: 0;
+    margin-bottom:10px;
+    background-color: red;
+}
+/* .folder .container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    padding: 0;
+
+    transition: 1s;
+    opacity: 0;
+    display: block;
+    pointer-events: none;
+    background-color: red;
+    overflow: initial;
+}
+.folder:hover > .container{
+    display: block;
+    opacity: 1;
+    left: 100%;
+    pointer-events: initial;
+}
+.folder .container.show{
+    display: block;
+    opacity: 1;
+    left: 100%;
+    left: calc(-100% - 1.2rem);
+    pointer-events: initial;
+} */
 
 .imgContainer img{
     width: 150px;
@@ -381,12 +439,12 @@ footer a{
     right: 0;
     width: clamp(10px, 50%, 300px);
     display: block;
-    z-index: 2;
+    z-index: 10;
     list-style: none;
     padding: 0px 8px;
     background-color: var(--background-solid-dark);
     backdrop-filter: blur(8px);
-    color: white;
+    color: #ffffff;
 }
 .ui-menu li{
     margin: 4px 0px;
