@@ -194,6 +194,8 @@ async function Shortcuts(){
             }catch(e){
                 console.error("error ALV");
             }
+
+            let contador=0;
             for(element in jsonString){
                 switch(jsonString[element].type){
                     case "group":
@@ -209,8 +211,9 @@ async function Shortcuts(){
                             );
                         break;
                 }
+                contador++;
             };
-            resolve();
+            resolve();// repeats it
         });
     });
 }
@@ -292,31 +295,6 @@ function scanFolder(path){
     })
 }
 
-// function renderUriGroup(links,id){
-    // <div class="bgBlur"></div>
-    // <ol class="submenu">
-    //     <li onclick="event.preventDefault();edit(this,'edit','group');">edit</li>
-    // </ol>
-    // var html=`
-    //     <div class="element uriGroup" id=`+id+` type="group">
-    //         <div class="imgContainer">
-    //             <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-    //         </div>
-    //         <span class="text-shadow">`+links.name+`</span>
-    //         <div class="container">`;
-    //         for(var id in links.content){
-    //             html+=renderUri(
-    //                 id,
-    //                 links.content[id]["uri"],
-    //                 links.content[id]["icon"],
-    //                 links.content[id]["name"],
-    //                 links.content[id]["blank"]
-    //                 );
-    //         }
-            
-    // return `<div>GROUP</div>`;
-// }
-// window.open("https://www.geeksforgeeks.org", "_blank");
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
         <img src="/assets/styles/default/folder_ByDinosoftLabs.png">

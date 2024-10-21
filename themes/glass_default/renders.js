@@ -49,8 +49,8 @@ function renderFolder(path, file) {
     </a>`;
 }
 function renderUriGroup(links, id) {
-    // console.log(links);
-    return `<div id="${id}" class="element folder prevent-select linkDraggable uri" type="uri">
+    // console.log(links.content);
+    var html= `<div id="${id}" class="element folder prevent-select linkDraggable uri" type="uri">
         <div class="icon">
             <img class="" src="./assets/styles/default/folder_ByDinosoftLabs.png"/>
         </div>
@@ -59,24 +59,19 @@ function renderUriGroup(links, id) {
         </label>
         <div class="bg"></div>
         <div class="container">
-            <a id="speckyboy" href="https://speckyboy.com/" class="element prevent-select linkDraggable uri" type="uri">
-                <div class="icon">
-                    <img class="" src="https://speckyboy.com/favicon.ico" onerror="this.src=null;this.src='./assets/styles/default/html.svg'">
-                </div>
-                <label class="txt-white-shadow">
-                speckyboy
-                </label>
-                <div class="bg"></div>
-            </a>
-            <a id="twitter" href="http://twitter.com/" class="element prevent-select linkDraggable uri" type="uri">
-                <div class="icon">
-                    <img class="" src="http://twitter.com/favicon.ico" onerror="this.src=null;this.src='./assets/styles/default/html.svg'">
-                </div>
-                <label class="txt-white-shadow">
-                x-Twitter
-                </label>
-                <div class="bg"></div>
-            </a>
+        `;
+    // console.log("id", id);
+    // console.log("id", id, "content", links);
+    for (var id in links.content) {
+        html += renderUri(
+            id,
+            links.content[id]["uri"],
+            links.content[id]["icon"],
+            links.content[id]["name"],
+            links.content[id]["blank"]
+        );
+    }
+    return html+=`
         </div>
     </div>`;
 }
