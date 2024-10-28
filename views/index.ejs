@@ -220,8 +220,8 @@
                     autocomplete="off"
                 >
                     <div id="searchFormC">
-                        <label for="" style="background: var(--background);" >
-                            <img src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;"
+                        <label class="prevent-select" style="background: var(--background);" >
+                            <img class="prevent-select" src="<%-defaultSearchImg%>" alt="Search" height="20" style="margin:5px;"
                                 onerror="this.src=null;this.src='/assets/images/busqueda.svg'">
                         </label>
                         <input id="searchInput" type="text" value="" place holder="Search"
@@ -235,19 +235,9 @@
                     </div>
                 </form>
             </div>
-            <div style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 30px;
-                height: 100%;
-                position: absolute;
-                top: 0px;
-                right: 0px;
-            ">
+            <div id="showEngines-trigger">
                 <button class="showEngines button-light-trans" tabindex="3">
-                    <img src="/assets/images/flecha.svg" style="
-                    ">
+                    <img src="/assets/images/flecha.svg" >
                 </button>
             </div>
         </div>

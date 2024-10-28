@@ -18,7 +18,6 @@ $(document).ready(()=>{
 	$("#searchEngines").mouseenter(()=>{
 		enginesShow(true);
 	});
-	//$( document.activeElement )
 	function enginesShow(show){
 		if(show){
 			$("#searchEngines li").fadeIn(199)
@@ -27,17 +26,35 @@ $(document).ready(()=>{
 		}
 	}
 
+	$('.uriGroup').hover(
+		function(){
+			$(this).addClass("showChildren");
+			console.log(
+				$(this).offset().left,
+				$(this).width()*2,
+				$(this).offset().left+$(this).width()*2+20
+			);
+			// if ($(this).offset().left < $(this).width()){
+			// 	console.log("no cabe");
+			// 	$(this).find(".container").css("left", "100%");
+			// }
+			if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
+				console.log("no cabe");
+				$(this).find(".container").css("left", "-100%");
+			}else{
+				$(this).find(".container").css("left", "100%");
+			}
+		},
+		function(){
+			$(this).removeClass("showChildren");
+			$(this).find(".container").css("left", "0");
+		}
+	);
 	$('.element, .folder, .uriGroup').contextmenu(function() {
 		return false;
 	});
 
 	rightClick('.element, .folder, .uriGroup');
-	
-	$('.uriGroup').mouseenter(function () {
-		var container=$(this).find(".container")[0];
-		$(container).css("left","71px");
-		$(container).css("display","-webkit-inline-box");
-	}).mouseleave();//trigger in
 
 	document.onclick = hideMenu;
 	function hideMenu() {

@@ -10,7 +10,6 @@ const renderUri=(id, uri, icon, name, blank)=>{
         <label class="txt-white-shadow">
            ${name}
         </label>
-        <div class="bg"></div>
     </a>`;
 }
 function renderFile(path, file) {
@@ -50,14 +49,13 @@ function renderFolder(path, file) {
 }
 function renderUriGroup(links, id) {
     // console.log(links.content);
-    var html= `<div id="${id}" class="element folder prevent-select linkDraggable uri" type="uri">
+    var html = `<div id="${id}" class="element uriGroup prevent-select linkDraggable uri" type="uriGroup">
         <div class="icon">
             <img class="" src="./assets/styles/default/folder_ByDinosoftLabs.png"/>
         </div>
         <label class="txt-white-shadow">
            asd
         </label>
-        <div class="bg"></div>
         <div class="container">
         `;
     // console.log("id", id);
