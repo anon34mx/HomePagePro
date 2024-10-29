@@ -1,30 +1,63 @@
 var lastElement="";
 
-$(document).ready(()=>{
-	$(".showEngines").focus(()=>{
-		enginesShow(true);
-	});
-	$("#searchEngines li").blur((e)=>{
-		var last=$("#searchEngines li:last").attr("tabindex");
-		if(e.currentTarget.tabIndex >= last){
-			enginesShow(false)
-		}
-	});
-	$("#searchEngines").mouseout((e)=>{
-		if($("#searchEngines li:hover").length < 1){
-			enginesShow(false)
-		}
-	});
-	$("#searchEngines").mouseenter(()=>{
-		enginesShow(true);
-	});
-	function enginesShow(show){
-		if(show){
-			$("#searchEngines li").fadeIn(199)
-		}else{
-			$("#searchEngines li").fadeOut(199)
-		}
+function enginesShow(show) {
+	if (show) {
+		$("#engineContainer").fadeIn(199)
+	} else {
+		$("#engineContainer").fadeOut(199)
 	}
+}
+
+$(document).ready(()=>{
+	// $(".showEngines").focus(()=>{
+	// 	enginesShow(true);
+	// });
+	// $("#searchEngines li").blur((e)=>{
+	// 	var last=$("#searchEngines li:last").attr("tabindex");
+	// 	if(e.currentTarget.tabIndex >= last){
+	// 		enginesShow(false)
+	// 	}
+	// });
+	// $("#searchEngines").mouseout((e)=>{
+	// 	if($("#searchEngines li:hover").length < 1){
+	// 		enginesShow(false)
+	// 	}
+	// });
+	// list in
+	$(".showEngines").mouseenter(()=>{
+		enginesShow(true);
+	}).focus(() => {
+		enginesShow(true);
+	});
+	// list out
+
+	$("#searchEngines lis").mouseleave(function(){
+		enginesShow(false);
+	}).blur();
+	/*
+	$("#searchEngines ul li").focusout(function(){
+		console.log("blur alv");
+	});
+	$("#searchEngines ul").off(function(){
+		console.log("blur alv");
+	});
+	$("#searchEngines ul").blur(function(){
+		console.log("blur alv");
+	});
+	$("#searchEngines ul").focusout(function () {
+		console.log("blur alv");
+	});
+
+
+	$("#searchEngines").off(function(){
+		console.log(this);
+	});
+	$("#searchEngines").mouseout(function(){
+		console.log(this);
+	});
+	*/
+
+
 
 	$('.uriGroup').hover(
 		function(){
@@ -34,10 +67,6 @@ $(document).ready(()=>{
 				$(this).width()*2,
 				$(this).offset().left+$(this).width()*2+20
 			);
-			// if ($(this).offset().left < $(this).width()){
-			// 	console.log("no cabe");
-			// 	$(this).find(".container").css("left", "100%");
-			// }
 			if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
 				console.log("no cabe");
 				$(this).find(".container").css("left", "-100%");
@@ -78,7 +107,6 @@ function rightClick(applyTo){
 	// actualizar para elementos nuevos
 	$(applyTo).mousedown(async function(event) {
 		event.preventDefault();
-		
 		switch (event.which) {
 			case 1:
 				// alert('Left Mouse button pressed.');
