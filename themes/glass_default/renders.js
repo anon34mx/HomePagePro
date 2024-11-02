@@ -54,7 +54,7 @@ function renderUriGroup(links, id) {
             <img class="" src="./assets/styles/default/folder_ByDinosoftLabs.png"/>
         </div>
         <label class="txt-white-shadow">
-           asd
+           ${links.name}
         </label>
         <div class="container">
         `;

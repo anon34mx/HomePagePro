@@ -98,7 +98,7 @@ form{
     background-color: var(--background-solid-dark);
     backdrop-filter: blur(3px);
     z-index: 11;
-    /* padding-top: 42px; */
+    /* margin-top:10px; */
     box-shadow:
             -1px 1px 0px #c9c9c9dc,
             1px -1px 0px #ededed6e,
@@ -107,8 +107,8 @@ form{
     display: none;
 }
 #engineContainer ul{
-    padding: 0;
-    margin: 0;
+    padding: 10px 0;
+    margin: 0px 0px;
     width: 180px;
     height: auto;
     list-style: none;
@@ -122,13 +122,22 @@ form{
     padding: 4px 2px;
     color: white;
     text-shadow: var(--txt-shadow);
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#engineContainer ul li:hover{
+    background-color: white;
+    color: black;
+    text-shadow: none;
+}
+#engineContainer ul li:hover>span img {
+    transform-style: preserve-3d;
+    transform: rotate3d(-2, 2, 1, -40deg);
+    transition: .333s;
 }
 #engineContainer ul li:focus{
     background-color: var(--background-solid-dark);
     color: white;
-}
-#engineContainer ul li:hover{
-    background-color: red;
 }
 #engineContainer ul li img{
     width: 20px;
@@ -200,6 +209,48 @@ form{
 #searchFormC input[type='text']::placeholder{
     color: rgba(255, 255, 255, 0.4);
 }
+.glass-button-solid{
+    border: 1px solid white;
+    background: white;
+    color: #3d3d3d;
+    border-radius: 0.2rem;
+    font-weight: bold;
+    box-shadow: 0px 0px 3px white;
+    margin: 2px 6px;
+}
+.glass-input{
+    width: 100%;
+    background: #ffffffe1;
+    color: black;
+    border-radius: .4rem;
+    border: none;
+    outline: 1px solid white;
+    margin: 4px 0px;
+}
+.glass-lbl{
+    color: white;
+    /* font-weight: bold; */
+    filter: drop-shadow(0px 0px 1px black);
+}
+.glass-radio input[type='radio']{
+    display: none;
+}
+.glass-radio label{
+    background-color: white;
+    padding: 2px 4px;
+    margin: 0;
+    cursor: pointer;
+}
+.glass-radio label:first-of-type{
+    border-radius: .4rem 0 0 .4rem;
+}
+.glass-radio label:last-of-type{
+    border-radius: 0 .4rem .4rem 0;
+}
+.glass-radio input[type="radio"]:checked+label{
+    background-color: gray;
+    color: white;
+}
 
 #stopEditMode{
     display: none;
@@ -269,13 +320,14 @@ form{
 }
 
 .element:hover{
-    /* background: linear-gradient(0deg, rgb(84 84 84 / 35%) 0%, rgb(246 246 246 / 60%) 100%); */
+    background: linear-gradient(0deg, rgb(84 84 84 / 35%) 0%, rgb(246 246 246 / 60%) 100%);
     z-index:1;
 }
 .element{
+    font-size: clamp(0.9rem, calc(0.6rem + 0.4vw), 1rem);
     display: flex;
-    width: 6.0rem;
-    height: 6.5rem;
+    width: 5.5rem;
+    height: 6.0rem;
     padding: 0.3rem;
     flex-direction: column;
     margin: 10px;
@@ -288,7 +340,7 @@ form{
             1px -1px 0px #ededed6e,
             0px 6px 10px #0000008f;
     outline: 1px solid #ffffff66;
-    transition: 10.4s;
+    transition: 0.666s;
     position: relative;
     cursor: pointer;
     text-decoration: none;
@@ -338,6 +390,9 @@ form{
     background: var(--background-solid-dark);
     opacity: 0;
     transition: 1s;
+}
+.uriGroup .container .element:hover{
+    background: linear-gradient(0deg, rgb(84 84 84 / 35%) 0%, rgb(246 246 246 / 60%) 100%);
 }
 .uriGroup.showChildren{
     z-index: 1;
@@ -405,13 +460,16 @@ form{
     z-index: 2;
 }
 #modalEdition .container{
-    /* background-color: green; */
-    width: auto;
+    width: 60%;
     height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    outline: 1px solid #ffffff66;
+    border-radius: 0.6rem;
+    background: var(--background-solid-darker);
 }
 #modalEdition .container form{
     font-family: arial;

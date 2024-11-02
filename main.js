@@ -245,13 +245,14 @@ async function renderEngines(){
     await readFilePromise("./config/searchEngines.json").then(function(data) {
         x=JSON.parse(data)
     });
+    engineCount=1;
     contTabIndex=4;
     x.forEach(element => {
         // <button>test</button>
         ret+=`
             <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="${contTabIndex}" id="${element.name}"
             onkeypress="$(this).click()" class="searchEngine txt-shadow"
-            tabindex="1"
+            tabindex="1" engineCount="${engineCount}"
             >
             <span style="
                 display: flex;
@@ -261,6 +262,7 @@ async function renderEngines(){
                 </span>
             </li>`;
         contTabIndex++;
+        engineCount++;
         if(element.default==true){
             defaultSearch=element.uri+element.parameter;
             defaultSearchImg=element.icon

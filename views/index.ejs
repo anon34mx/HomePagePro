@@ -152,6 +152,38 @@
     <body>
         <audio id="#sndFX-pop" src="/assets/styles/default/audio/QKTA234-pop.mp3" preload="auto"></audio>
         <div id="background">
+            <!-- <style>
+                @keyframes slide {
+                    0% {
+                        background-position-x: 0%;
+                    }
+                    100% {
+                        background-position-x: 100%;
+                    }
+                }
+            </style>
+            <div style="
+                background: red;
+                width: 100%;
+                height: 100%;
+                position: relative;
+            ">
+                <div class="bg1" style="
+                    background-image: url(/themes/glass_default/waves.svg);
+                    background-repeat: repeat-x;
+                    /* background-position: 0% bottom; */
+                    /* background-size: 100%; */
+                    background-position-x: 0%;
+                    background-position-y: bottom;
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    position: absolute;
+                    bottom: 0;
+                    animation: slide 10s linear infinite;
+                "></div>
+                -->
+            </div>
             <!-- future experiment -->
             <!-- <div style="
                 width: 40px;
@@ -263,6 +295,15 @@
             <% if(filesFound!="" || folders!=""){ %>
                 <div class="title txt-white-shadow">
                     <h5>Localhost</h5>
+                    <div style="
+                        width: 50%;
+                        display: inline-flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                    ">
+                        <button id="stopApache" class="button-light-trans" onclick="stopApache()">🛑</button>
+                        <button id="restartApache" class="button-light-trans" onclick="restartApache()">▶</button>
+                    </div>
                 </div>
             <%
                 }
@@ -451,36 +492,35 @@
         <form id="editShort">
             <table>
                 <tr class="uri group">
-                    <td><label class="txt-shadow" for="type">type</label></td>
-                    <td>
+                    <td><label class="glass-lbl" for="type">type</label></td>
+                    <td class="glass-radio">
                         <input type="radio" id="typeLink" value="uri" name="type" checked>
                         <label for="typeLink" class="">Link</label>
-
                         <input type="radio" id="group" value="group" name="type">
                         <label for="group" class="">Group</label>
                     </td>
                 </tr>
                 <tr class="uri">
-                    <td><label class="txt-shadow" for="link">link</label></td>
+                    <td><label class="glass-lbl" for="link">link</label></td>
                     <td>
-                        <textarea name="link" id="link" style="width:100%" rows="4"
+                        <textarea class="glass-input" name="link" id="link" style="width:100%" rows="4"
                         ></textarea>
                     </td>
                 </tr>
                 <tr class="uri">
-                    <td><label class="txt-shadow" for="icon">icon</label></td>
+                    <td><label class="glass-lbl" for="icon">icon</label></td>
                     <td>
                         <img id="sctIcon" width="24" height="24" src="#">
-                        <input id="icon" name="icon" type="">
+                        <input class="glass-input" id="icon" name="icon" type="">
                     </td>
                 </tr>
                 <tr class="uri group">
-                    <td><label class="txt-shadow" for="name">Name</label></td>
-                    <td><input id="name" name="name" type=""></td>
+                    <td><label class="glass-lbl" for="name">Name</label></td>
+                    <td><input id="name" class="glass-input" name="name" type=""></td>
                 </tr>
                 <tr class="uri">
-                    <td><label class="txt-shadow" for="newtab">New tab</label></td>
-                    <td>
+                    <td><label class="glass-lbl" for="newtab">New tab</label></td>
+                    <td class="glass-radio">
                         <input type="radio" id="newTabTrue" value="1" name="newtab">
                         <label for="newTabTrue" class="">Yes</label>
                         <input type="radio" id="newTabFalse" value="0" name="newtab" checked>
@@ -490,21 +530,24 @@
                 <tr class="uri group">
                     <td colspan="2">
                         <div>
-                            <button id="btn-sav" type="button" value="Save" onclick='shortcutsSave()'>Save</button>
-                            <button id="btn-can" type="button" value="Cancel" onclick='cancelEdit();'>Cancel</button>
-                            <button id="btn-del" type="button" value="Delete" onclick='deleteElement();'>Delete</button>
+                            <button id="btn-sav" type="button" value="Save" class="glass-button-solid"
+                                onclick='shortcutsSave()'>Save</button>
+                            <button id="btn-can" type="button" value="Cancel" class="glass-button-solid"
+                                onclick='cancelEdit();'>Cancel</button>
+                            <button id="btn-del" type="button" value="Delete" class="glass-button-solid"
+                                onclick='deleteElement();'>Delete</button>
                         </div>
                     </td>
                 </tr>
                                 
-                                <tr class="hidden">
-                                    <td><label class="txt-shadow" for="mode">mode</label></td>
-                                    <td><input id="mode" name="mode" type="text" value=""></td>
-                                </tr>
-                                <tr class="hidden">
-                                    <td><label class="txt-shadow" for="shortcutID">ID</label></td>
-                                    <td><input id="shortcutID" name="shortcutID" type=""></td>
-                                </tr>
+                    <tr class="hidden">
+                        <td><label class="glass-lbl" for="mode">mode</label></td>
+                        <td><input id="mode" name="mode" type="text" value=""></td>
+                    </tr>
+                    <tr class="hidden">
+                        <td><label class="glass-lbl" for="shortcutID">ID</label></td>
+                        <td><input id="shortcutID" name="shortcutID" type=""></td>
+                    </tr>
             </table>
         </form>
     </div>
@@ -522,12 +565,13 @@
     <li id="OpenLinkNewTab" class="uri txt-shadow" onclick="openElement('uriNewTab')" target="">Open in new tab</li>
     <li id="EditLink" class="uri txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
     
-    <li id="EditGroup" class="group txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit group</li>
+    <li id="EditGroup" class="uriGroup txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit group</li>
+
     <!-- FOLDERS -->
-    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">Open in browser</li>
-    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">Open in explorer</li>
+    <li id="" class="folder txt-shadow" onclick="window.location='lastElement.href'">Open in browser</li>
+    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">File Explorer</li>
     <!-- FILES -->
-    <li id="" class="file txt-shadow" onclick="event.preventDefault();window.location.href='https'">Execute</li>
+    <li id="" class="file txt-shadow" onclick="event.preventDefault();window.location.href='https'">Open in browser</li>
 </ol>
 </body>
 </html>

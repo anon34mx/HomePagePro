@@ -9,20 +9,6 @@ function enginesShow(show) {
 }
 
 $(document).ready(()=>{
-	// $(".showEngines").focus(()=>{
-	// 	enginesShow(true);
-	// });
-	// $("#searchEngines li").blur((e)=>{
-	// 	var last=$("#searchEngines li:last").attr("tabindex");
-	// 	if(e.currentTarget.tabIndex >= last){
-	// 		enginesShow(false)
-	// 	}
-	// });
-	// $("#searchEngines").mouseout((e)=>{
-	// 	if($("#searchEngines li:hover").length < 1){
-	// 		enginesShow(false)
-	// 	}
-	// });
 	// list in
 	$(".showEngines").mouseenter(()=>{
 		enginesShow(true);
@@ -31,9 +17,14 @@ $(document).ready(()=>{
 	});
 	// list out
 
-	$("#searchEngines lis").mouseleave(function(){
+	$("#searchEngines").mouseleave(function(){
 		enginesShow(false);
-	}).blur();
+	});
+	$("#searchEngines li").focusout(function(){
+		if ($(this).attr("engineCount") >= $("#searchEngines li").length){
+			enginesShow(false);
+		}
+	});
 	/*
 	$("#searchEngines ul li").focusout(function(){
 		console.log("blur alv");
@@ -62,11 +53,11 @@ $(document).ready(()=>{
 	$('.uriGroup').hover(
 		function(){
 			$(this).addClass("showChildren");
-			console.log(
-				$(this).offset().left,
-				$(this).width()*2,
-				$(this).offset().left+$(this).width()*2+20
-			);
+			// console.log(
+			// 	$(this).offset().left,
+			// 	$(this).width()*2,
+			// 	$(this).offset().left+$(this).width()*2+20
+			// );
 			if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
 				console.log("no cabe");
 				$(this).find(".container").css("left", "-100%");
@@ -121,21 +112,9 @@ function rightClick(applyTo){
 				context = $("#contenxtMenu");
 				
 				posX=(event.pageX); // POSICION DEL CLICK
-				// posY = (event.pageY) - $("body").scrollTop(); // POSICION DEL CLICK
 				posY = (event.pageY); //- $("body").scrollTop(); // POSICION DEL CLICK
-				
-				if(posX+context[0].offsetWidth+18 > (window.innerWidth + document.getElementsByTagName("body")[0].scrollLeft)){
-					posX=posX-context[0].offsetWidth;
-				}else{
-					posX=posX+1;
-				}
-				if(posY+context[0].offsetHeight > (window.innerHeight + document.getElementsByTagName("body")[0].scrollTop)){
-					posY=posY-context[0].offsetHeight;
-				}else{
-					posY=posY+1;
-				}
 
-				$("#contenxtMenu").css("left", posX + "px")
+
 				$("#contenxtMenu").css("top", posY + "px")
 				$("#contenxtMenu").css("display", "block")
 				$("#contenxtMenu li").css("display", "none")
@@ -144,6 +123,22 @@ function rightClick(applyTo){
 				$("#OpenLinkNewTab").attr("target", $(this).attr("id"))
 				$("#EditGroup").attr("target", $(this).attr("id"))
 				$("#EditLink").attr("target", $(this).attr("id"))
+
+
+				console.log(
+					posY,
+					context[0].offsetHeight,
+					window.innerHeight
+				);
+				
+				if (posX + context[0].offsetWidth + 18 > window.innerWidth + $("body").scrollLeft()){
+					posX=posX-context[0].offsetWidth;
+				}
+				if (posY + context[0].offsetHeight + 18 > window.innerHeight + $("body").scrollTop()){
+					posY = posY - context[0].offsetHeight;
+				}
+				$("#contenxtMenu").css("left", posX + "px")
+				$("#contenxtMenu").css("top", posY + "px")
 				break;
 			default:
 				// alert('You have a strange Mouse!');
@@ -228,7 +223,7 @@ $("#searchInput").val().match(/(www.?)+([A-z]{1,})(.+[A-z]{2,3})+(\/)?/)
 
 */
 async function validateSearch(searchEngine,form){
-	form.preventDefault();
+	// Event.preventDefault();
 	var search=$("#searchInput").val();
 	var isIP=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{1,5})?/);
 	if(isIP){
