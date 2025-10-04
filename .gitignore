@@ -8,3 +8,4 @@ start home pro.bat
 config/shortcuts_test.json
 start home pro.bat
 config/shortcuts_test.json
+/node_modules/*

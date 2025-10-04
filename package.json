@@ -1,9 +1,26 @@
 {
   "dependencies": {
+    "cjs": "^0.0.11",
     "ejs": "^3.1.9",
     "express": "^4.18.3",
     "open-file-explorer": "^1.0.2",
-    "pm2": "^5.3.1",
+    "pm2": "^6.0.13",
     "xml2js": "^0.6.2"
-  }
+  },
+  "name": "homepagepro",
+  "version": "1.0.0",
+  "description": "start page made better",
+  "main": "main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "7"
+  },
+  "author": "",
+  "license": "ISC"
 }

@@ -281,17 +281,17 @@ function scanFolder(path){
                 resolve();
             } 
             //listing all files using forEach
-            files.forEach(function (file) {
-                try {
-                    if(fs.lstatSync(path+"/"+file).isDirectory()){
-                        folders += theme.renderFolder(path,file);
-                    }else{
-                        filesFound +=theme.renderFile(path,file);
-                    }
-                } catch (error) {
+            // files.forEach(function (file) {
+            //     try {
+            //         if(fs.lstatSync(path+"/"+file).isDirectory()){
+            //             folders += theme.renderFolder(path,file);
+            //         }else{
+            //             filesFound +=theme.renderFile(path,file);
+            //         }
+            //     } catch (error) {
                     
-                }
-            });
+            //     }
+            // });
             resolve();
         });
     })
