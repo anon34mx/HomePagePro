@@ -2,7 +2,8 @@ var http = require('http');
 var https = require('https');
 const path = require('path');
 const fs = require('fs');
-const lhl="D:/xampp/htdocs";
+const lhl="c:/xampp/htdocs";
+const lhlPort=84;
 const myShortcuts="./config/shortcuts_test.json";
 const openExplorer = require('open-file-explorer');
 var express = require('express');
@@ -10,13 +11,16 @@ var app = express();
 let ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use('/assets', express.static('assets')); 
+app.use('/themes', express.static('themes')); 
 var filesFound="",folders="",shortcuts="x",engines="",defaultSearch="",defaultSearchImg="";
 
+var currentTheme = "glass_default";//glass_default/frutero/
+var theme = require("./themes/" + currentTheme+"/renders.js");
 
 //xml
-var parseString = require('xml2js').parseString;
-const { resolve } = require('path');
-const { json } = require('express/lib/response');
+// var parseString = require('xml2js').parseString;
+// const { resolve } = require('path');
+// const { json } = require('express/lib/response');
 
 app.get('/shortcuts/read', async function(req, res) {
     // x= await readSavedShortcuts("id001");
@@ -29,7 +33,6 @@ app.get('/shortcuts/read', async function(req, res) {
 app.get('/shortcuts/save', async function(req, res) {
     var id=req.query.shortcutID;
     x= await readSavedShortcuts();
-    // res.send(req.query);
 
     if(typeof x[id] === 'undefined'){
         // If id does not exist, then create element
@@ -48,12 +51,11 @@ app.get('/shortcuts/save', async function(req, res) {
             x[id].icon=req.query.icon;
             break;
     }
-
     fs.writeFileSync(myShortcuts, JSON.stringify(x));
     // myShortcuts
     if(req.query.type=="link" && req.query.mode=="new"){
         res.send(
-            renderUri(
+            theme.renderUri(
                 id,
                 x[id].uri,
                 x[id].icon,
@@ -65,10 +67,10 @@ app.get('/shortcuts/save', async function(req, res) {
         res.send("link updated").status(200);
     }else if(req.query.type=="group" && req.query.mode=="new"){
         res.send(
-            renderUriGroup(
-                x[id],
-                id
-            )
+            // renderUriGroup(
+            //     x[id],
+            //     id
+            // )
         ).status(200);
     }else if(req.query.type=="group" && req.query.mode=="edit"){
         res.send("group updated").status(200);
@@ -85,9 +87,11 @@ app.get('/shortcuts/delete', async function(req, res) {
 app.get('/shortcuts/addToGroup', async function(req, res) {
     var x= await readSavedShortcuts();
     try {
-        x[req.query.group]["content"][req.query.element]=x[req.query.element];
-        delete(x[req.query.element]);
-        fs.writeFileSync(myShortcuts, JSON.stringify(x));
+        x[req.query.group]["content"][req.query.element]=new Array();
+        x[req.query.group]["content"][req.query.element]=await x[req.query.element];
+        // Object.assign(x[req.query.group]["content"][req.query.element], x[req.query.element]);
+        await delete(x[req.query.element]);
+        await fs.writeFileSync(myShortcuts, JSON.stringify(x));
         res.send("saved").status(200);
     } catch (error) {
         res.send(error).status(200);
@@ -106,15 +110,16 @@ app.get('/shortcuts/removeFromGroup', async function(req, res) {
 });
 
 app.get('/', async function(req, res) {
-    // console.log("START___"+new Date().getTime());
     filesFound="";
     folders="";
     engines="";
     
     await renderEngines();
     await Shortcuts();
+    let startTime = new Date();
     await scanFolder(lhl);
-    // console.log("END_____"+new Date().getTime());
+    let endTime = new Date();
+    // console.log("render time", endTime.getMilliseconds() - startTime.getMilliseconds());
 
     res.status(200).render('index', {
         filesFound:filesFound,
@@ -122,7 +127,8 @@ app.get('/', async function(req, res) {
         shortcuts:shortcuts,
         engines:engines,
         defaultSearch:defaultSearch,
-        defaultSearchImg:defaultSearchImg
+        defaultSearchImg:defaultSearchImg,
+        currentTheme
     });
 });
 
@@ -161,14 +167,14 @@ app.get('/openPath', function(req, res) {
 
     exec(`start explorer.exe /k "${f}"`, (error, stdout, stderr) => {
         if (error) {
-            console.log(`error: ${error.message}`);
+            console.error(`error: ${error.message}`);
             return;
         }
         if (stderr) {
-            console.log(`stderr: ${stderr}`);
+            console.error(`stderr: ${stderr}`);
             return;cursorTo()
         }
-        console.log(`stdout: ${stdout}`);
+        console.error(`stdout: ${stdout}`);
     });
 
     res.status(200).send();
@@ -188,13 +194,15 @@ async function Shortcuts(){
             }catch(e){
                 console.error("error ALV");
             }
+
+            let contador=0;
             for(element in jsonString){
                 switch(jsonString[element].type){
                     case "group":
-                        shortcuts+=renderUriGroup(jsonString[element], element);
+                        shortcuts+=theme.renderUriGroup(jsonString[element], element);
                         break;
                     case "link":
-                        shortcuts+=renderUri(
+                        shortcuts+=theme.renderUri(
                             element,
                             jsonString[element]["uri"],
                             jsonString[element]["icon"],
@@ -203,8 +211,9 @@ async function Shortcuts(){
                             );
                         break;
                 }
+                contador++;
             };
-            resolve();
+            resolve();// repeats it
         });
     });
 }
@@ -236,17 +245,24 @@ async function renderEngines(){
     await readFilePromise("./config/searchEngines.json").then(function(data) {
         x=JSON.parse(data)
     });
-    contTabIndex=3;
+    engineCount=1;
+    contTabIndex=4;
     x.forEach(element => {
+        // <button>test</button>
         ret+=`
             <li onclick="searchss('${element.uri}', '${element.parameter}')" tabindex="${contTabIndex}" id="${element.name}"
             onkeypress="$(this).click()" class="searchEngine txt-shadow"
+            tabindex="1" engineCount="${engineCount}"
             >
+            <span style="
+                display: flex;
+            ">
             <img src="${element.icon}" class="noselect">
-            <span>${element.name}</span>
-            <div></div>
+                    ${element.name}
+                </span>
             </li>`;
         contTabIndex++;
+        engineCount++;
         if(element.default==true){
             defaultSearch=element.uri+element.parameter;
             defaultSearchImg=element.icon
@@ -257,115 +273,30 @@ async function renderEngines(){
 
 function scanFolder(path){
     return new Promise(async (resolve,reject)=>{
-        // try {
-            fs.readdir(path, async function (err, files) {
-                if (err) {
-                    // return console.error('Unable to scan directory: ' + err);
-                    // throw new Error();
-                    // return false;
-                    resolve();
-                } 
-                //listing all files using forEach
-                files.forEach(function (file) {
-                    if(fs.lstatSync(path+"/"+file).isDirectory()){
-                        folders+=renderFolder(path,file);
-                    }else{
-                        filesFound+=renderFile(path,file);
-                    }
-                });
+        fs.readdir(path, async function (err, files) {
+            if (err) {
+                // return console.error('Unable to scan directory: ' + err);
+                // throw new Error();
+                // return false;
                 resolve();
+            } 
+            //listing all files using forEach
+            files.forEach(function (file) {
+                try {
+                    if(fs.lstatSync(path+"/"+file).isDirectory()){
+                        folders += theme.renderFolder(path,file);
+                    }else{
+                        filesFound +=theme.renderFile(path,file);
+                    }
+                } catch (error) {
+                    
+                }
             });
-            
-        // } catch (error) {
-            
-        // }
+            resolve();
+        });
     })
 }
-function renderFolder(path,file){
-    var project=false;
-    try {
-        if (fs.existsSync(path+"/"+file+"/index.php")) {
-        }else{
-            // console.error(path+"/"+file+"/index.php");
-        }
-      } catch(err) {
-        console.error(err)
-      }
-    return `
-    <div class='element folder' onclick="window.location.href='http://localhost/`+file+`'">
-        <div class="bgBlur"></div>
-        
-            <div class="imgContainer">
-                <img src="/assets/styles/default/folder_ByDinosoftLabs.png" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">
-            `+file+`
-            </span>
-        
-        <ol class="submenu ">
-            <li class="txt-shadow" onclick="event.preventDefault();window.location.href='http://localhost/`+file+`'">Execute</li>
-            <li class="txt-shadow" onclick="event.preventDefault();launchFolder('${path}/${file}'">Open in explorer</li>
-        </ol>
-        
-    </div>`;
-}
-function renderFile(path,file){
-    try{
-        var ext=(file.match(/\.([a-zA-Z]{3,4})$/)[0]).substring(1);
-        return `<a class="element file" href="http://localhost/${file}">
-            <!-- onclick="openElement('`+(path+"/"+file)+`')" -->
-            <div class="bgBlur"></div>
-            <div class="imgContainer">
-                <img src="/assets/styles/default/`+ext+`.svg" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">`+file+`</span>    
-        </a>`;
-    }catch(e){
-        return "";
-    }
-}
-function renderUriGroup(links,id){
-    var html=`
-        <div class="element uriGroup" id=`+id+` type="group">
-            <ol class="submenu">
-                <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
-            </ol>
-            <div class="bgBlur"></div>
-            <div class="imgContainer">
-                <img src="/assets/styles/default/`+links.icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="text-shadow">`+links.name+`</span>
-            <div class="container">`;
-            for(var id in links.content){
-                html+=renderUri(
-                    id,
-                    links.content[id]["uri"],
-                    links.content[id]["icon"],
-                    links.content[id]["name"],
-                    links.content[id]["blank"]
-                    );
-            }
-            
-    return html+=`</div></div>`;
-}
-function renderUri(id,uri,icon,name,blank){
-    return `
-    <div class="elementContainer linkDraggable" id="`+id+`" type="uri">
-        <a class="element uri" `+(blank==true ? 'target="_blank"':'')+`
-            href="${uri}">
-            <div class="bgBlur"></div>  
-            <div class="imgContainer">
-                <img src="`+icon+`" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-            </div>
-            <span class="txt-shadow">`+name+`</span>
-        </a>
-        <ol class="submenu">
-            <li onclick="event.preventDefault();window.open('`+uri+`', '_blank');">Open in new tab</li>
-            <li onclick="event.preventDefault();edit(this,'edit');">edit</li>
-        </ol>
-    </div>`;
-    }
-// window.open("https://www.geeksforgeeks.org", "_blank");
+
 function renderExec(path,file){
     return `<div class='element folder' onclick="openElement('`+(path+"/"+file)+`')">
         <img src="/assets/styles/default/folder_ByDinosoftLabs.png">
