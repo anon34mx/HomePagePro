@@ -85,8 +85,12 @@ header{
 
 #search {
     width: calc(50% - 30px);
+    height:100%;
     float: right;
     padding-right: 30px;
+}
+#search form{
+    height:100%;
 }
 
 header nav .menu {
@@ -203,7 +207,7 @@ header nav .menu {
     flex-direction: row;
     justify-content: flex-end;
     width: calc(100% - 0.8rem);
-    height: calc(100% - 0.8rem);
+    height: 100%;
     padding: 0.4rem;
 }
 

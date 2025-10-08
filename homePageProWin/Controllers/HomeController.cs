@@ -15,6 +15,7 @@ namespace homePageProWin.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Message"] = "texto";
             return View();
         }
 
