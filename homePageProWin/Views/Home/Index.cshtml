@@ -1,8 +1,98 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<div id="background"></div>
+<header>
+    <nav>
+        <ul class="menu">
+            <a class="txt-shadow button-light-trans" href="#shortcuts">
+                <li>Shortcuts</li>
+            </a>
+            <a class="txt-shadow button-light-trans" href="#localhost">
+                <li>Localhost</li>
+            </a>
+        </ul>
+    </nav>
+        <div id="search">
+            <form action="" class="searchForm" id="searchForm"
+                  onsubmit="validateSearch(undefined,this)"
+                  autocomplete="off">
+                <div id="searchFormC">
+                    <label class="prevent-select" style="background: var(--background);">
+                        <img class="prevent-select" src="" alt="Search" height="20" style="margin:5px;"
+                             on_error="this.src=null;this.src='/assets/images/busqueda.svg'">
+                    </label>
+                    <input id="searchInput" type="text" value="" place holder="Search"
+                           name="q" autofocus onkeyup="testApi();" class=""
+                           autocomplete="off" autocorrect="off" tabindex="1"
+                           placeholder="Search">
+                    <input id="searchBtn" type="submit" value="Go!"
+                           class="button-light-trans"
+                           tabindex="2">
+                </div>
+            </form>
+        </div>
+        <div id="showEngines-trigger">
+            <button class="showEngines button-light-trans" tabindex="3">
+                <img src="~/themes">
+            </button>
+        </div>
+    
+    <section id="shortcuts" class="">
+        <div class="title txt-white-shadow">
+            <h5>Shortcuts</h5>
+            <div style="
+                    width: 50%;
+                    display: inline-flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                ">
+                <button id="addShortcut" class="button-light-trans" onclick="edit(null,'new','uri')">add</button>
+                <button id="editMode" class="button-light-trans" onclick="editMode()">edit</button>
+                <button id="stopEditMode" class="button-light-trans" onclick="stopEditMode()">done</button>
+            </div>
+        </div>
+        <div class="container">
+            <%-shortcuts%>
+        </div>
+    </section>
+    <section id="localhost">
+        <% if(filesFound!="" || folders!=""){ %>
+        <div class="title txt-white-shadow">
+            <h5>Localhost</h5>
+            <div style="
+                        width: 50%;
+                        display: inline-flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                    ">
+                <button id="stopApache" class="button-light-trans" onclick="stopApache()">🛑</button>
+                <button id="restartApache" class="button-light-trans" onclick="restartApache()">▶</button>
+            </div>
+        </div>
+        <%
+        }
+        %>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+        <div class="container">
+            <%-filesFound%>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <%-folders%>
+        </div>
+    </section>
+
+    <div id="testClick" style="
+            display: block;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            z-index: 9999999;
+            pointer-events: none;
+        "></div>
+</header>

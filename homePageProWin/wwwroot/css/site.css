@@ -19,4 +19,16 @@ html {
 
 body {
   margin-bottom: 60px;
+  color:white;
+}
+
+#background {
+    background-image: url('/themes/default/keita-senoh-eEqgTUnwbAk-unsplash.jpg');
+    background-position: center;
+    background-size: cover;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: -1;
 }
