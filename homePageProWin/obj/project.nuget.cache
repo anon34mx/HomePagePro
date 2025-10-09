@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1U8o9yGkJTt9iib42hsv+fPm7y+3dKaRoUwH756BndSkUBd3rYWYNAVK1LBsaLcuBpl7DtQQ6QelIzED9T5Reg==",
+  "dgSpecHash": "cmDiZ3qIo79/RL6IOzIVj0pJn+5oehWviAgLgK13L3D1fBudx8mgnvrwq1XFp8wq435fEdz8dBq+kH4bK4hzOw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\aaron\\Documents\\GitHub\\HomePagePro\\homePageProWin\\homePageProWin.csproj",
+  "projectFilePath": "C:\\Users\\aaron\\Documents\\HomePagePro\\homePageProWin\\homePageProWin.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.aspnetcore.authentication.negotiate\\7.0.5\\microsoft.aspnetcore.authentication.negotiate.7.0.5.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\7.0.5\\microsoft.aspnetcore.connections.abstractions.7.0.5.nupkg.sha512",
@@ -14,7 +14,11 @@
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\system.directoryservices.protocols\\7.0.0\\system.directoryservices.protocols.7.0.0.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512"
+    "C:\\Users\\aaron\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512",
+    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.18\\microsoft.windowsdesktop.app.ref.7.0.18.nupkg.sha512",
+    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.18\\microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
+    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.18\\microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
+    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.18\\microsoft.netcore.app.host.win-x64.7.0.18.nupkg.sha512"
   ],
   "logs": []
 }

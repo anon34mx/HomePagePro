@@ -12,3 +12,4 @@ config/shortcuts_test.json
 /homePageProWin/.vs
 /homePageProWin/bin/Debug
 /homePageProWin/obj/Debug
+/node/node_modules
