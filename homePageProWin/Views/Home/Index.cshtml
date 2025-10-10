@@ -2,7 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 <div id="background"></div>
-
+<div id="engineContainer" style="display: block;">
+    <ul id="searchEngines" class="engines">
+        @Html.Raw(ViewBag.engines)
+    </ul>
+</div>
 <header>
     <nav>
         <ul class="menu">

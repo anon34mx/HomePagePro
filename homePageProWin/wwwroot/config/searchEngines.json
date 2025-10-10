@@ -1,0 +1,37 @@
+[
+    {
+        "name":"ecosia",
+        "uri":"https://www.ecosia.org/search?",
+        "parameter":"q",
+        "icon":"https://cdn-static.ecosia.org/assets/images/ico/favicon.ico",
+        "default":false
+    },
+    {
+        "name":"Yandex",
+        "uri":"https://yandex.com/search/?",
+        "parameter":"text",
+        "icon":"https://yandex.st/lego/_/pDu9OWAQKB0s2J9IojKpiS_Eho.ico",
+        "default":false
+    },
+    {
+        "name":"google",
+        "uri":"https://www.google.com/search?",
+        "parameter":"q",
+        "icon":"https://www.google.com/favicon.ico",
+        "default":true
+    },
+    {
+        "name":"google translate",
+        "uri":"https://translate.google.com/?&sl=auto&tl=auto&op=translate&",
+        "parameter":"text",
+        "icon":"https://ssl.gstatic.com/translate/favicon.ico",
+        "default":false
+    },
+    {
+        "name":"Youtube",
+        "uri":"https://www.youtube.com/results?",
+        "parameter":"search_query",
+        "icon":"https://www.youtube.com/favicon.ico",
+        "default":false
+    }
+]

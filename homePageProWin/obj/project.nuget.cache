@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cmDiZ3qIo79/RL6IOzIVj0pJn+5oehWviAgLgK13L3D1fBudx8mgnvrwq1XFp8wq435fEdz8dBq+kH4bK4hzOw==",
+  "dgSpecHash": "8hOL+Z/93TNu/Qdfcgm/8fgaHzNwkby+e04HOi3YS79nm7rEJ1R+mRk8DxjKz8Ezb0MY+B08lrvw5CLEmf8Ujg==",
   "success": true,
   "projectFilePath": "C:\\Users\\aaron\\Documents\\HomePagePro\\homePageProWin\\homePageProWin.csproj",
   "expectedPackageFiles": [
@@ -13,12 +13,9 @@
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\aaron\\.nuget\\packages\\newtonsoft.json\\13.0.4\\newtonsoft.json.13.0.4.nupkg.sha512",
     "C:\\Users\\aaron\\.nuget\\packages\\system.directoryservices.protocols\\7.0.0\\system.directoryservices.protocols.7.0.0.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.18\\microsoft.windowsdesktop.app.ref.7.0.18.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.18\\microsoft.netcore.app.ref.7.0.18.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.18\\microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
-    "C:\\Users\\aaron\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.18\\microsoft.netcore.app.host.win-x64.7.0.18.nupkg.sha512"
+    "C:\\Users\\aaron\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

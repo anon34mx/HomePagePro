@@ -108,7 +108,7 @@ header nav .menu {
     background-color: var(--background-solid-dark);
     backdrop-filter: blur(3px);
     z-index: 11;
-    /* margin-top:10px; */
+    margin-top:40px;
     box-shadow: -1px 1px 0px #c9c9c9dc, 1px -1px 0px #ededed6e, 0px 6px 10px #0000008f;
     border-radius: 0.6rem;
     display: none;
