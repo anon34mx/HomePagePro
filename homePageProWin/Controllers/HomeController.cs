@@ -18,7 +18,7 @@ namespace homePageProWin.Controllers
         {
             ViewData["Message"] = "texto";
             ViewBag.engines = this.loadSearchEngines();
-            //ViewBag.shortcuts = this.loadShortcuts();
+            ViewBag.shortcuts = this.loadShortcuts();
             return View();
         }
 
@@ -69,10 +69,18 @@ namespace homePageProWin.Controllers
                 foreach (var shortcut in shortcutsList)
                 {
                     Console.WriteLine(shortcut.name);
+                    shortcuts += "<a id = \""+ shortcut.name + "\" href = \""+ shortcut.uri + "\" class=\"element prevent-select linkDraggable uri\" type=\""+ shortcut.type + "\">"
+                            +"<div class=\"icon\"><img class=\"\" src=\"" + shortcut.icon +"\" on_error=\"this.src=null;this.src='./assets/styles/default/html.svg'\"></div>"
+                    +"<label class=\"txt-white-shadow\">" + shortcut.name +"</label></a>";
                 }
 
                 return shortcuts;
             }
         }
+
+        //public String shortcutCast()
+        //{
+
+        //}
     }
 }
