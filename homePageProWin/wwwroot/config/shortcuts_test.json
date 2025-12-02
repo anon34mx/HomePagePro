@@ -1,23 +1,29 @@
 [
 	{
+		"id":"web_whatsapp_com",
 		"type":"link",
 		"blank":false,
 		"name":"whatsapp",
 		"uri":"https://web.whatsapp.com/",
-		"icon":"https://static.whatsapp.net/rsrc.php/v4/yP/r/rYZqPCBaG70.png"
+		"icon":"https://static.whatsapp.net/rsrc.php/v4/yP/r/rYZqPCBaG70.png",
+		"content":[]
 	},
 	{
+		"id":"outlook_com",
 		"type":"link",
 		"blank":false,
 		"name":"outlook",
 		"uri":"https://outlook.com/",
-		"icon":"https://outlook.office.com/favicon.ico"
+		"icon":"https://outlook.office.com/favicon.ico",
+		"content":[]
 	},
 	{
+		"id":"local_phpMyAdmin",
 		"type":"link",
 		"blank":false,
 		"name":"phpMyAdmin",
 		"uri":"http://localhost/phpmyadmin/",
-		"icon":"http://localhost/phpmyadmin/favicon.ico"
+		"icon":"http://localhost/phpmyadmin/favicon.ico",
+		"content":[]
 	}
 ]

@@ -69,9 +69,12 @@ namespace homePageProWin.Controllers
                 foreach (var shortcut in shortcutsList)
                 {
                     Console.WriteLine(shortcut.name);
-                    shortcuts += "<a id = \""+ shortcut.name + "\" href = \""+ shortcut.uri + "\" class=\"element prevent-select linkDraggable uri\" type=\""+ shortcut.type + "\">"
-                            +"<div class=\"icon\"><img class=\"\" src=\"" + shortcut.icon +"\" on_error=\"this.src=null;this.src='./assets/styles/default/html.svg'\"></div>"
-                    +"<label class=\"txt-white-shadow\">" + shortcut.name +"</label></a>";
+                    if (shortcut.type=="link")
+                    {
+                        shortcuts += "<a id = \""+ shortcut.id + "\" href = \""+ shortcut.uri + "\" class=\"element prevent-select linkDraggable uri\" type=\""+ shortcut.type + "\">"
+                                +"<div class=\"icon\"><img class=\"\" src=\"" + shortcut.icon +"\" on_error=\"this.src=null;this.src='./assets/styles/default/html.svg'\"></div>"
+                        +"<label class=\"txt-white-shadow\">" + shortcut.name +"</label></a>";
+                    }
                 }
 
                 return shortcuts;
