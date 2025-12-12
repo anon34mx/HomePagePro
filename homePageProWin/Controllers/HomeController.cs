@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Newtonsoft.Json;
 
+using Microsoft.Data.Sqlite;
+using System;
+using System.IO;
+
+
 namespace homePageProWin.Controllers
 {
     public class HomeController : Controller
@@ -59,31 +64,41 @@ namespace homePageProWin.Controllers
 
         public String loadShortcuts()
         {
-            using (StreamReader r = new StreamReader("wwwroot/config/shortcuts_test.json"))
-            {
-                Console.WriteLine("Read shortcuts list");
-                string json = r.ReadToEnd();
-                List<Shortcuts> shortcutsList = JsonConvert.DeserializeObject<List<Shortcuts>>(json);
+            string databasePath = Path.Combine(Environment.CurrentDirectory, "DB/shortcuts.db");
+            string connectionString = $"Data Source={databasePath}";
 
+            using (var connection = new SqliteConnection(connectionString))
+            {
                 String shortcuts = "";
-                foreach (var shortcut in shortcutsList)
+                connection.Open();
+                Console.WriteLine("Database connection opened successfully.");
+
+                String sql="SELECT * FROM shortcuts";
+                using var command = new SqliteCommand(sql, connection);
+                using var reader = command.ExecuteReader();
+                if (reader.HasRows)
                 {
-                    Console.WriteLine(shortcut.name);
-                    if (shortcut.type=="link")
+                    while (reader.Read())
                     {
-                        shortcuts += "<a id = \""+ shortcut.id + "\" href = \""+ shortcut.uri + "\" class=\"element prevent-select linkDraggable uri\" type=\""+ shortcut.type + "\">"
-                                +"<div class=\"icon\"><img class=\"\" src=\"" + shortcut.icon +"\" on_error=\"this.src=null;this.src='./assets/styles/default/html.svg'\"></div>"
-                        +"<label class=\"txt-white-shadow\">" + shortcut.name +"</label></a>";
+                        var id = reader.GetInt64(0);
+                        var name = reader.GetString(1);
+                        var uri = reader.GetString(2);
+                        var icon = reader.GetString(3);
+                        var blank = reader.GetBoolean(4);
+
+                        Console.WriteLine($"{id}\t{name}\t{uri}");
+                        shortcuts += "<a id = \"" + id + "\" href = \"" + uri + "\" class=\"element prevent-select linkDraggable uri\" type=\"link\">"
+                                + "<div class=\"icon\"><img class=\"\" src=\"" + icon + "\" on_error=\"this.src=null;this.src='./assets/styles/default/html.svg'\"></div>"
+                        + "<label class=\"txt-white-shadow\">" + name + "</label></a>";
                     }
                 }
-
                 return shortcuts;
             }
+            
         }
 
         //public String shortcutCast()
         //{
 
-        //}
     }
 }
