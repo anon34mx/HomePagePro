@@ -54,36 +54,47 @@
     <section id="shortcuts" class="listing">
         <h4 class="txt-white">Shortcuts</h4>
         
-        <div class="element glass folder">
-            <a title="shortcut to external website owo" target="_self"
-                href="#">
-                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" alt="">
-                <div class="name txt-shadow">
-                    FOLDER
-                </div>
-            </a>
-            <!-- content -->
-            <div class="content listing glass border">
-                <div class="element glass"
-                    th:each="i : ${#numbers.sequence(1, 8)}">
-                    <a title="shortcut to external website owo" target="_self"
-                        href="#">
-                        <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
-                        <div class="name txt-shadow">
-                            shortcut to external website owo but wont be completely shown
-                        </div>
-                    </a>
+    <!--   
+        <a th:each="i : ${#numbers.sequence(1, 10)}" href="#" target="_self" title="shortcut to external website owo" >
+            <div class="glass"></div>
+            <div class="element ">
+                <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
+                <div class="name txt-shadow"><
+                    shortcut to external website owo but wont be completely shown
                 </div>
             </div>
-        </div>
+        </a>
+        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+    -->
         
-        <a class="element glass"
+        
+        <a href="#" target="_self" title="asd" class="element"
+            th:each="i : ${#numbers.sequence(1, 1)}">
+            <div class="folder">
+                <div class="data">
+                    <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                    <span>shortcur name</span>
+                </div>
+                <div class="folder-content">
+        <a href="#" target="_self" title="asd" class="element"
             th:each="i : ${#numbers.sequence(1, 10)}">
-            <div title="shortcut to external website owo" target="_self"
-                href="#">
-                <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
-                <div class="name txt-shadow">
-                    shortcut to external website owo but wont be completely shown
+            <div class="shortcut">
+                <div class="data">
+                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                    <span>shortcur name</span>
+                </div>
+            </div>
+        </a>
+                </div>
+            </div>
+        </a>
+        
+        <a href="#" target="_self" title="asd" class="element"
+            th:each="i : ${#numbers.sequence(1, 10)}">
+            <div class="shortcut">
+                <div class="data">
+                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                    <span>shortcur name</span>
                 </div>
             </div>
         </a>

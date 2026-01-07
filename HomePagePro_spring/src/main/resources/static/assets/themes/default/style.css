@@ -1,8 +1,9 @@
 :root{
     --background:rgba(255, 255, 255, 0.2);
-    --background-gradient:linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
-    --background-hover:linear-gradient(0deg, rgba(238, 0, 0, 0.2) 0%, rgba(255, 255, 255, 0.5) 100%);
+    --background-gradient:linear-gradient(0deg,rgba(117, 117, 117, 1) 0%, rgba(117, 117, 117, 1) 6%, rgba(181, 181, 181, 1) 35%, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 100%);
+    --background-gradient-hover:linear-gradient(0deg,rgba(191, 191, 191, 1) 0%, rgba(191, 191, 191, 1) 6%, rgba(181, 181, 181, 1) 35%, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 100%);
     --background-blur:blur(3px);
+    --background-blur-hard:blur(6px);
     --border:2px solid #ffffffd3;
 }
 *{
@@ -60,6 +61,7 @@
 .py-2{padding:0.50rem 0;}
 .py-3{padding:0.75rem 0;}
 .py-4{padding:1.0rem 0;}
+
 /* ****************************** */
 html,body{
     padding: 0px;
@@ -147,99 +149,6 @@ section h4{
     padding-top: 56px;
 }
 
-.element{
-    display: block;
-    position: relative;
-    width: 134px;
-    height: 160px;
-    margin: 10px 10px;
-    border: var(--border);
-    border-radius: 1rem;
-    transition: transform 0.3s ease; 
-    box-shadow: 4px 4px 10px #00000066;
-}
-.element::before{
-    display: block;
-    position: absolute;
-    top: 0;
-    width: calc(100% - 0px);
-    height: calc(100% - 0px);
-    content: "";
-    background: var(--background-hover);
-    backdrop-filter: blur(3px);
-    z-index: -1;
-    border-radius: calc(1rem - 2px);
-    /* border: var(--border); */
-    transition: 0.5s;
-    opacity: 0;
-}
-.element:hover{
-    transform: scale(1.06); 
-    /* box-shadow: 2px 2px 10px #00000066; */
-}
-.element:hover::before{
-    /* background: var(--background-hover); */
-    opacity: 1;
-}
-.element a{
-    display: block;
-    width: 100%;
-    height: 100%;
-    /* background: var(--background-gradient); */
-    /* transition: .3s; */
-}
-
-.element img{
-    width: 80%;
-    margin: 5px 10%;
-    aspect-ratio: 1/1;
-}
-.element .name{
-    position: absolute;
-    bottom: 5px;
-    height: 31px;
-    width: calc(100% - 6px);
-    margin: 0px 3px;
-    text-align: center;
-    line-height: 0.95;
-    overflow: hidden;
-    color: white;
-    
-}
-
-.folder .content{
-    /* display: none; */
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    width: clamp(200px, 60vw, 90vw);
-    height: auto;
-    /* height: clamp(200px, 50vh, 55vh); */
-    left: 100%;
-    transition: 0.3s;
-    z-index: 1;
-    opacity: 0;
-    border-radius: calc(0.50rem + 10px);
-    background: var(--background-gradient);
-}
-.folder:hover .content{
-    /* display: block; */
-    pointer-events: initial;
-    opacity: 1;
-}
-
-/* .glass::before{
-    display:block;
-    position:absolute;
-    top: 0;
-    width: calc(100% + 0px);
-    height: calc(100% + 0px);
-    content:"";
-    background-color:rgba(228, 228, 228, 0.103);
-    backdrop-filter: blur(3px);
-    z-index: -1;
-    border-radius: inherit;
-} */
 
 .icon{
     width: 40px;
@@ -274,6 +183,38 @@ section h4{
     display: block;
     width: 100%;
 }
+
+/* shortcuts */
+.element .shortcut{
+    
+}
+.element .shortcut .data,
+.element .folder .data{
+    width: 120px;
+    height: 150px;
+    margin: 10px;
+    background: var(--background);
+    border: var(--border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+.element .shortcut .data:hover{
+    border-color: red;
+}
+.element .shortcut .data img{
+    width: 100px;
+    height: 100px;
+}
+.folder-content{
+    display: none;
+    position: absolute;
+    background: red;
+    top: 10px;
+    left: 100%;
+    width: 50vw;
+    height: 50vh;
+}
+
+
 footer{
     position: fixed;
     width: 100%;
