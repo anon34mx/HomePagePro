@@ -1,577 +1,102 @@
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.thymeleaf.org">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Home Pro</title>
-        <script src="/libs/jquery/jquery-3.7.1.min.js"></script>
-        <script src="/libs/jquery/jquery-ui.js"></script>
-        <link rel="stylesheet" href="/libs/jquery/jquery-ui.theme.min.css">
-        <link rel="icon" type="image/png" th:href="@{${'/assets/themes/'+currentTheme+'/favicon.png'}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Document</title>
 
-        <link rel="stylesheet"
-            th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
-        
-        <script src="/assets/controller.js"></script>
-        <script>
-            $(document).ready(()=>{
-                $("#editShort input[name='type']").change(()=>{
-                    var val=$("#editShort input[name='type']:checked").val();
-                    showEdit(val);
-                });
-            });
-            function editMode(){
-                linkDraggable(".linkDraggable", $("#shortcuts"));
-                linksContainerDroppable("#shortcuts");
-                groupDroppable(".uriGroup");
-                // mergeLinks(".linkDraggable");
-                $("#stopEditMode").show()
-                $("#editMode").hide()
-            }
-            function stopEditMode(){
-                $(".linkDraggable").draggable("destroy")
-                $("#shortcuts").droppable("destroy");
-                $(".uriGroup").droppable("destroy");
-                $("#stopEditMode").hide()
-                $("#editMode").show()
-            }
+    <script src="/libs/jquery/jquery-3.7.1.min.js"></script>
+    <script src="/libs/jquery/jquery-ui.js"></script>
 
-            // LINKS
-            function linkDraggable(elementSelector, containerElement){
-                $( elementSelector, containerElement ).draggable({
-                    // cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-                    revert: false, // when not dropped, the item will revert back to its initial position
-                    containment: "document",
-                    helper: "clone",
-                    cursor: "move",
-                });
-            }
+    <link rel="stylesheet" th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
 
-            // REMOVE LINK FROM GROUP
-            function linksContainerDroppable(elementSelector){
-                $(elementSelector).droppable({
-                    accept: ".uriGroup .container > .linkDraggable",
-                    classes: {
-                        "ui-droppable-active": "ui-state-highlight"
-                    },
-                    drop: async function( event, ui ) {
-                        var origin=$(ui.draggable[0]).parent().parent()[0];
-                        var target=event.target;
-                        var elementCopy=ui.draggable[0];
-
-                        $.ajax({
-                            url:"/shortcuts/removeFromGroup",
-                            timeout: 666,
-                            data:{
-                                element:elementCopy.id,
-                                group:origin.id
-                            },
-                            success:(response)=>{
-                                if(response=="saved"){
-                                    alert("saved");
-                                    // $(target).children(".container").append(elementCopy);
-                                    $(event.target).children(".container").append(elementCopy);
-                                    if($(origin).find(".container").children().length==0){
-                                        if(confirm("delete empty group?")){
-                                            document.getElementById("#sndFX-pop").play();
-                                            $(origin).remove();
-                                            // $(origin).droppable( "destroy" );
-                                        }
-                                    }
-                                }else{
-                                    alert("couldn't save\n"+response);
-                                }
-                            }
-                        }).fail((jqXHR, textStatus, errorThrown)=>{
-                            alert("couldn't save\n"+textStatus);
-                        });
-                    }
-                });
-            }
-            // ADD LINK TO GROUP
-            function groupDroppable(elementSelector){
-                $(elementSelector).droppable({
-                    tolerance:"pointer",
-                    accept: "#shortcuts .container > .linkDraggable",
-                    classes: {
-                        "ui-droppable-active": "ui-state-highlight"
-                    },
-                    drop: async function( event, ui ) {
-                        var origin=$(ui.draggable[0]).parent().parent()[0];
-                        var target=event.target;
-                        var elementCopy=ui.draggable[0];
-                        
-                        $.ajax({
-                            url:"/shortcuts/addToGroup",
-                            data:{
-                                element:elementCopy.id,
-                                group:target.id
-                            },
-                            success:(response)=>{
-                                if(response=="saved"){
-                                    alert("saved");
-                                    $(target).children(".container").append(elementCopy);
-                                }else{
-                                    alert("couldn't save");
-                                }
-                            }
-                        }).fail((jqXHR, textStatus, errorThrown)=>{
-                            alert("couldn't save\n"+textStatus);
-                        });
-                    }
-                });
-            }
-            //MERGE LINKS TO CREATE GROUP
-            //TESTING
-            
-            async function mergeLinks(selector){
-                $(selector).droppable({
-                    tolerance:"pointer",
-                    accept: "#shortcuts .container > .elementContainer",
-                    classes: {
-                        "ui-droppable-active": "ui-state-highlight"
-                    },
-                    drop: async function( event, ui ) {
-                        // var origin=$(ui.draggable[0]).parent().parent()[0];
-                        var target=event.target;
-                        var elementCopy=ui.draggable[0];
-                        var newId=idGenerator();
-                        await $("#shortcuts > .container").append(`<div class="element uriGroup" id=${newId} type="group">
-                            <div class="imgContainer">
-                                <img src="/assets/styles/default/IMG" onerror="this.onerror=null;this.src='assets/styles/default/noIcon.png';">
-                            </div>
-                            <span class="text-shadow">New Group</span>
-                            <div class="container">`);
-                        await groupDroppable("#"+newId);
-                        $(target).droppable("disable");
-                        $(elementCopy).droppable("disable");
-                        $("#"+newId+" .container").append(target,elementCopy);
-                    }
-                });
-            }
-            
-        </script>
-    </head>
-    <body>
-        <audio id="#sndFX-pop" src="/assets/styles/default/audio/QKTA234-pop.mp3" preload="auto"></audio>
-        <div id="background">
-            <!-- <style>
-                @keyframes slide {
-                    0% {
-                        background-position-x: 0%;
-                    }
-                    100% {
-                        background-position-x: 100%;
-                    }
-                }
-            </style>
-            <div style="
-                background: red;
-                width: 100%;
-                height: 100%;
-                position: relative;
-            ">
-                <div class="bg1" style="
-                    background-image: url(/themes/glass_default/waves.svg);
-                    background-repeat: repeat-x;
-                    /* background-position: 0% bottom; */
-                    /* background-size: 100%; */
-                    background-position-x: 0%;
-                    background-position-y: bottom;
-                    width: 100%;
-                    height: 100%;
-                    display: block;
-                    position: absolute;
-                    bottom: 0;
-                    animation: slide 10s linear infinite;
-                "></div>
-                -->
-            </div>
-            <!-- future experiment -->
-            <!-- <div style="
-                width: 40px;
-                height: 40px;
-                display: block;
-                border-radius: 100%;
-                background: #ff830082;
-                position: absolute;
-                top: 50%;
-                border: 2px solid #ff830038;
-                filter: blur(1px);
-                backdrop-filter: blur(3px);
-                mix-blend-mode: screen;
-                transition: 1s;
-            "></div>
-            <div style="
-                width: 60px;
-                height: 60px;
-                display: block;
-                border-radius: 100%;
-                background: #ff840061;
-                position: absolute;
-                top: 50%;
-                left: 20px;
-                border: 2px solid #ff830038;
-                filter: blur(1px);
-                backdrop-filter: blur(3px);
-                mix-blend-mode: screen;
-                transition: 1s;
-            "></div>
-            <div style="
-                width: 80px;
-                height: 80px;
-                display: block;
-                border-radius: 100%;
-                background: #ff840061;
-                position: absolute;
-                top: 50%;
-                left: 30px;
-                border: 2px solid #ff830038;
-                filter: blur(1px);
-                backdrop-filter: blur(3px);
-                mix-blend-mode: screen;
-                transition: 1s;
-            "></div> -->
-
-        </div>
-        <div id="engineContainer">
-            <ul id="searchEngines" class="engines">
-                <%-engines%>
-                <!-- <div class="desp noselect" style="pointer-events: none;">▼</div> -->
-                <!-- <div style="" class="noselect">
-                </div> -->
+    <script src="/js/controller.js"></script>
+</head>
+<body>
+    <div id="background"></div>
+    <header class="glass">
+        <nav>
+            <ul>
+                <li>
+                    <a href="#shortcuts" class="txt-white">shortcuts</a>
+                </li>
+                <li>
+                    <a href="#server" class="txt-white">server</a>
+                </li>
             </ul>
-        </div>
-        <div id="topMenu">
-            <nav>
-                <ul class="menu">
-                    <a class="txt-shadow button-light-trans" href="#shortcuts"><li>Shortcuts</li></a>
-                    <a class="txt-shadow button-light-trans" href="#localhost"><li>Localhost</li></a>
+        </nav>
+        <div class="search-bar">
+            <form action="https://www.google.com/search" method="get" class="py-1">
+                <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
+                <input type="text" autofocus="" placeholder="Search..." name="q" autocomplete="off" class="px-2 border">
+                <button class="mx-2">GO</button>
+                <ul class="searchEnginesList">
+                    <button class="mx-2">
+                        <img src="/arrow.svg" class="icon-sm">
+                    </button>
+                    <div class="container glass">
+                        <li class="">
+                            <a href="#" class="px-2">engine1</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="px-2">engine1</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="px-2">engine1</a>
+                        </li>
+                    </div>
                 </ul>
-            </nav>
-            <div id="search">
-                <form action="<%-defaultSearch%>=" class="searchForm" id="searchForm"
-                    onsubmit="validateSearch(undefined,this)"
-                    autocomplete="off"
-                >
-                    <div id="searchFormC">
-                        <label class="prevent-select" style="background: var(--background);" >
-                            <img class="prevent-select" src="./busqueda.svg" alt="Search" height="20" style="margin:5px;">
-                        </label>
-                        <input id="searchInput" type="text" value="" place holder="Search"
-                            name="q" autofocus onkeyup="testApi();" class=""
-                            autocomplete="off" autocorrect="off" tabindex="1"
-                            placeholder="Search">
-                        <input id="searchBtn" type="submit" value="Go!" 
-                            class="button-light-trans"
-                            tabindex="2"
-                        >
-                    </div>
-                </form>
-            </div>
-            <div id="showEngines-trigger">
-                <button class="showEngines button-light-trans" tabindex="3">
-                    <img src="./flecha.svg">
-                </button>
+            </form>
+        </div>
+    </header>
+    
+    <!-- Shortcuts -->
+    <section id="shortcuts" class="listing">
+        <h4 class="txt-white">Shortcuts</h4>
+        
+        <div class="element glass folder">
+            <a title="shortcut to external website owo" target="_self"
+                href="#">
+                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" alt="">
+                <div class="name txt-shadow">
+                    FOLDER
+                </div>
+            </a>
+            <!-- content -->
+            <div class="content listing glass border">
+                <div class="element glass"
+                    th:each="i : ${#numbers.sequence(1, 8)}">
+                    <a title="shortcut to external website owo" target="_self"
+                        href="#">
+                        <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
+                        <div class="name txt-shadow">
+                            shortcut to external website owo but wont be completely shown
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-        <section id="shortcuts" class="">
-            <div class="title txt-white-shadow">
-                <h5>Shortcuts</h5>
-                <div style="
-                    width: 50%;
-                    display: inline-flex;
-                    flex-direction: row;
-                    justify-content: flex-end;
-                ">
-                    <button id="addShortcut" class="button-light-trans" onclick="edit(null,'new','uri')">add</button>
-                    <button id="editMode" class="button-light-trans" onclick="editMode()">edit</button>
-                    <button id="stopEditMode" class="button-light-trans" onclick="stopEditMode()">done</button>
-                </div>
-            </div>
-            <div class="container">
-                <%-shortcuts%>
-            </div>
-        </section>
-        <section id="localhost">
-            <% if(filesFound!="" || folders!=""){ %>
-                <div class="title txt-white-shadow">
-                    <h5>Localhost</h5>
-                    <div style="
-                        width: 50%;
-                        display: inline-flex;
-                        flex-direction: row;
-                        justify-content: flex-end;
-                    ">
-                        <button id="stopApache" class="button-light-trans" onclick="stopApache()">🛑</button>
-                        <button id="restartApache" class="button-light-trans" onclick="restartApache()">▶</button>
-                    </div>
-                </div>
-            <%
-                }
-            %>
-
-            <div class="container">
-                <%-filesFound%>
-            </div>
-        </section>
-        <section>
-            <div class="container">
-                <%-folders%>
-            </div>
-        </section>
-
-        <div id="testClick" style="
-            display: block;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            width: 2px;
-            height: 2px;
-            background: transparent;
-            z-index: 9999999;
-            pointer-events: none;
-        "></div>
-<script>
-    function newShortcut(){
-        // saber si es un enlace valido
-        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
-        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}
-        // Quitar prefijos
-        // ^((https|ftp|http):\/\/)?(www\.)?
-
-        // no admite puntos juntos
-        //funciona mejor
-        // ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}(\.{1})[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
-
-        // obtener solo nombre del dominio intento 1
-        // (?<=((https|ftp|http):\/\/)).*(?=\.[a-zA-Z]{1,6})
-
-        //quitar protocolo y asi
-        // ((https|ftp|http):\/\/)(www.)?
-        //quitar dominio
-        // ((\.{1})[a-zA-Z0-9()]{1,6}){1}\b
-    }
-
-    async function autocompleteShortcut(value){
-        if(
-			value.match(/^((https|ftp|http|tel):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)
-			||
-			value.match(/^mailto:(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-		){
-            var name=await value.replace(/((https|ftp|http):\/\/)(www.)?/,'').replace(/((\.{1})[a-zA-Z0-9()]{1,6}){1}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,'');
-
-            if(name!=""){
-                $("#editShort #name").val(name);
-                $("#editShort #shortcutID").val(name);
-            }
-            // get favicon
-            //^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}
-            /// ^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}
-            /*
-            var x=$("#link").val();
-            x.match(/^((https|ftp|http):\/\/)?(www\.)?[-a-zA-Z0-9@:%_\+~#=]{1,256}((\.{1})[a-zA-Z0-9()]{1,6}){1,}/)[0]
-            */
-            var favicon=value.match(/^((https|ftp|http|tel):\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}/)[0]+"/favicon.ico";
-            $("#editShort #sctIcon").attr("src",favicon);
-            $("#editShort #icon").val(favicon);
-            /*
-            //get favicon
-            // (?=<link)(.*)(rel="shortcut icon")(.*)>
-            */
-        }
-    }
-    function deleteElement(){
-        if(confirm("delete element and its content?")){
-            var shortcutID=$("#editShort #shortcutID").val();
-            $.ajax({
-                url:"/shortcuts/delete",
-                data:{
-                    shortcutID
-                },success:function(){
-                    $("#"+shortcutID).remove();
-                    $("#editLink").fadeOut(333);
-                }
-            });
-        }
-    }
-    function edit(target,mode,type){
-        if(target!=null){
-            shortcutsRead(target);
-        }
-        showEdit(type);
-
-        $("#mode").val(mode);
-        if(mode=="new"){
-            $("#shortcutID").val(idGenerator());
-            $("#editShort input[name='type']").parent().parent().show()
-            $("#btn-del").hide();
-        }
-    }
-
-    function cancelEdit(){
-        $("#modalEdition").fadeOut(333);
-        setTimeout(() => {
-            // $("#editShort").trigger("reset");
-            $("#editShort")[0].reset();
-        }, 334);
-    }
-    function shortcutsRead(element){
-        element=document.getElementById(element)
-        $.ajax({
-            url:"/shortcuts/read",
-            data:{
-                shortcutID:element.id
-            },
-            success:function(response){
-                $("#editShort #type").val(element.attributes.type.value);
-                $("#editShort #link").val(response.uri);
-                $("#editShort #name").val(response.name);
-                $("#editShort #icon").val(response.icon);
-                $("#editShort #shortcutID").val(element.id);
-                $("#editShort #newtab").prop("checked",response.blank);
-            }
-        });
-    }
-    function shortcutsSave(){
-        // shortcutID:$("#shortcutID").val()+idGenerator(),
-        var validationError="";
-        var data={
-                mode:$("#editShort #mode").val(),
-                type: $("#editShort input[name='type']:checked").val(),
-                shortcutID:$("#editShort #shortcutID").val(),
-                name:$("#editShort #name").val(),
-                icon:$("#editShort #icon").val(),
-                newtab:$("#editShort input[name='newtab']:checked").val(),
-                link:$("#editShort #link").val()
-            };
-        if(data.type=="uri"){
-            if(data.link==""){
-                validationError+="Add a link\n";
-            }
-            if(data.name==""){
-                validationError+="Add a name\n";
-            }
-        }else{
-            if(data.name==""){
-                validationError+="Add a name\n";
-            }
-        }
         
-        if(validationError==""){
-            $.ajax({
-                url:"/shortcuts/save",
-                data,
-                success:async function(response){
-                    $("#"+data.shortcutID+" .txt-shadow").text(data.name);
-                    if(data.mode=="new"){
-                        await $("#shortcuts .container").append(response)
-                        rightClick("#"+data.shortcutID);
-                        $("#"+data.shortcutID).contextmenu(function() {
-                            return false;
-                        });
-                        cancelEdit();
-                    }else if(data.mode=="edit"){
-                        $("#editLink").fadeOut();
-                        alert("Updated");
-                        // if(response=="group updated"){
-                        // }else if(response=="uri updated"){
-                        //     $("#editLink").fadeOut();
-                        // }
+        <a class="element glass"
+            th:each="i : ${#numbers.sequence(1, 10)}">
+            <div title="shortcut to external website owo" target="_self"
+                href="#">
+                <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
+                <div class="name txt-shadow">
+                    shortcut to external website owo but wont be completely shown
+                </div>
+            </div>
+        </a>
+    </section>
 
-                    }
-                    
-                }
-            });
-        }else{
-            alert(validationError);
-        }
-    }
-</script>
-<div id="modalEdition" class="modal" >
-    <div class="bg" onclick=""></div>
-    <div class="container">
-        <form id="editShort">
-            <table>
-                <tr class="uri group">
-                    <td><label class="glass-lbl" for="type">type</label></td>
-                    <td class="glass-radio">
-                        <input type="radio" id="typeLink" value="uri" name="type" checked>
-                        <label for="typeLink" class="">Link</label>
-                        <input type="radio" id="group" value="group" name="type">
-                        <label for="group" class="">Group</label>
-                    </td>
-                </tr>
-                <tr class="uri">
-                    <td><label class="glass-lbl" for="link">link</label></td>
-                    <td>
-                        <textarea class="glass-input" name="link" id="link" style="width:100%" rows="4"
-                        ></textarea>
-                    </td>
-                </tr>
-                <tr class="uri">
-                    <td><label class="glass-lbl" for="icon">icon</label></td>
-                    <td>
-                        <img id="sctIcon" width="24" height="24" src="#">
-                        <input class="glass-input" id="icon" name="icon" type="">
-                    </td>
-                </tr>
-                <tr class="uri group">
-                    <td><label class="glass-lbl" for="name">Name</label></td>
-                    <td><input id="name" class="glass-input" name="name" type=""></td>
-                </tr>
-                <tr class="uri">
-                    <td><label class="glass-lbl" for="newtab">New tab</label></td>
-                    <td class="glass-radio">
-                        <input type="radio" id="newTabTrue" value="1" name="newtab">
-                        <label for="newTabTrue" class="">Yes</label>
-                        <input type="radio" id="newTabFalse" value="0" name="newtab" checked>
-                        <label for="newTabFalse" class="">No</label>
-                    </td>
-                </tr>
-                <tr class="uri group">
-                    <td colspan="2">
-                        <div>
-                            <button id="btn-sav" type="button" value="Save" class="glass-button-solid"
-                                onclick='shortcutsSave()'>Save</button>
-                            <button id="btn-can" type="button" value="Cancel" class="glass-button-solid"
-                                onclick='cancelEdit();'>Cancel</button>
-                            <button id="btn-del" type="button" value="Delete" class="glass-button-solid"
-                                onclick='deleteElement();'>Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                                
-                    <tr class="hidden">
-                        <td><label class="glass-lbl" for="mode">mode</label></td>
-                        <td><input id="mode" name="mode" type="text" value=""></td>
-                    </tr>
-                    <tr class="hidden">
-                        <td><label class="glass-lbl" for="shortcutID">ID</label></td>
-                        <td><input id="shortcutID" name="shortcutID" type=""></td>
-                    </tr>
-            </table>
-        </form>
-    </div>
-</div>
+    <!-- localhost -->
+    <section id="server" class="listing">
+        <h4 class="txt-white">Shortcuts</h4>
+    </section>
 
-<footer class="credits txt-shadow">
-    <span title="Options will be here"
-    onclick=""
-    >⚙</span>
-    <a href="https://linkedin.com/in/aaron-aguilera">Contact</a>
-</footer>
-
-<ol id="contenxtMenu" class="contenxtMenu" oncontextmenu="return false;">
-    <!-- SHORTCUTS -->
-    <li id="OpenLinkNewTab" class="uri txt-shadow" onclick="openElement('uriNewTab')" target="">Open in new tab</li>
-    <li id="EditLink" class="uri txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit</li>
-    
-    <li id="EditGroup" class="uriGroup txt-shadow" onclick="edit(this.attributes.target.value,'edit','uri');" target="">edit group</li>
-
-    <!-- FOLDERS -->
-    <li id="" class="folder txt-shadow" onclick="window.location='lastElement.href'">Open in browser</li>
-    <li id="" class="folder txt-shadow" onclick="event.preventDefault();launchFolder()">File Explorer</li>
-    <!-- FILES -->
-    <li id="" class="file txt-shadow" onclick="event.preventDefault();window.location.href='https'">Open in browser</li>
-</ol>
+    <footer>
+        <a href="anon34" class="txt-white">https://anon34mx.github.io/</a>
+        <button>conf</button>
+    </footer>
 </body>
 </html>

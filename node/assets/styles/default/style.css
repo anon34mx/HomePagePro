@@ -274,6 +274,9 @@ section .container{
     cursor: pointer;
     backdrop-filter: var(--background-blur);
 }
+.element::before{
+
+}
 .bgBlur{
     backdrop-filter: var(--background-blur);
     display: block;
