@@ -18,6 +18,8 @@ public class MainHppController {
         model.addAttribute("appName", appName);
         model.addAttribute("appVersion", appVersion);
         model.addAttribute("currentTheme", "default");
+        model.addAttribute("defaultSearchEngine", "https://www.google.com/search");
+        model.addAttribute("searchParameterName", "q");
         return "home";
     }
     

@@ -7,6 +7,7 @@
 
     <script src="/libs/jquery/jquery-3.7.1.min.js"></script>
     <script src="/libs/jquery/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/libs/jquery/jquery-ui.css">
 
     <link rel="stylesheet" th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
 
@@ -26,10 +27,14 @@
             </ul>
         </nav>
         <div class="search-bar">
-            <form action="https://www.google.com/search" method="get" class="py-1">
-                <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
-                <input type="text" autofocus="" placeholder="Search..." name="q" autocomplete="off" class="px-2 border">
-                <button class="mx-2">GO</button>
+            <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="py-1">
+                <div class="search ui-widget">
+                    <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
+                    <input id="searchInput" type="search" autofocus="" placeholder="Search..." th:name="${searchParameterName}" autocomplete="off" class="px-2 border">
+                    <label id="suggestions" for="searchInput"></label>
+                </div>
+                <!-- <button class="mx-2">GO</button> -->
+                 <input type="submit" value="GO" class="mx-2 btn-primary">
                 <ul class="searchEnginesList">
                     <button class="mx-2">
                         <img src="/arrow.svg" class="icon-sm">
@@ -66,38 +71,38 @@
         </a>
         <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
     -->
-        
-        
-        <a href="#" target="_self" title="asd" class="element"
-            th:each="i : ${#numbers.sequence(1, 1)}">
-            <div class="folder">
-                <div class="data">
-                    <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-                    <span>shortcur name</span>
-                </div>
-                <div class="folder-content">
-        <a href="#" target="_self" title="asd" class="element"
-            th:each="i : ${#numbers.sequence(1, 10)}">
-            <div class="shortcut">
-                <div class="data">
-                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                    <span>shortcur name</span>
-                </div>
-            </div>
-        </a>
-                </div>
-            </div>
-        </a>
-        
-        <a href="#" target="_self" title="asd" class="element"
-            th:each="i : ${#numbers.sequence(1, 10)}">
-            <div class="shortcut">
-                <div class="data">
-                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                    <span>shortcur name</span>
-                </div>
-            </div>
-        </a>
+    <div id="${id}" class="element uriGroup prevent-select linkDraggable uri " type="uriGroup">
+        <!-- showChildren -->
+        <div class="icon">
+            <img class="" src="assets/themes/default/icons/folder_ByDinosoftLabs.png"/>
+        </div>
+        <label class="txt-white-shadow">
+           ${links.name}
+        </label>
+        <div class="container ">
+            <!--  -->
+                <a id="${id}" href="${uri}" class="element prevent-select linkDraggable uri" type="uri"
+                target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 4)}">
+                    <div class="icon">
+                        <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                    </div>
+                    <label class="txt-white-shadow">
+                    ${name}
+                    </label>
+                </a>
+            <!--  -->
+        </div>
+    </div>
+
+    <a id="${id}" href="${uri}" class="element prevent-select linkDraggable uri" type="uri"
+       target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
+        <div class="icon">
+            <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+        </div>
+        <label class="txt-white-shadow">
+           ${name}
+        </label>
+    </a>
     </section>
 
     <!-- localhost -->
