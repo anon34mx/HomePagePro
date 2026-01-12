@@ -34,7 +34,7 @@
                     <label id="suggestions" for="searchInput"></label>
                 </div>
                 <!-- <button class="mx-2">GO</button> -->
-                 <input type="submit" value="GO" class="mx-2 btn-primary">
+                <input type="submit" value="GO" class="mx-2 btn-primary">
                 <ul class="searchEnginesList">
                     <button class="mx-2">
                         <img src="/arrow.svg" class="icon-sm">
@@ -71,7 +71,7 @@
         </a>
         <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
     -->
-    <div id="${id}" class="element uriGroup prevent-select linkDraggable uri " type="uriGroup">
+    <div id="${id}" class="element uriGroup prevent-select linkDraggable uri showChildren" type="uriGroup">
         <!-- showChildren -->
         <div class="icon">
             <img class="" src="assets/themes/default/icons/folder_ByDinosoftLabs.png"/>
@@ -94,14 +94,16 @@
         </div>
     </div>
 
-    <a id="${id}" href="${uri}" class="element prevent-select linkDraggable uri" type="uri"
+    <a id="${id}" href="${uri}" class="text"
        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
-        <div class="icon">
-            <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-        </div>
-        <label class="txt-white-shadow">
-           ${name}
-        </label>
+       <div class="element prevent-select linkDraggable uri shadow" type="uri">
+           <div class="icon">
+               <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+           </div>
+           <label class="txt-white-shadow">
+              ${name}
+           </label>
+       </div>
     </a>
     </section>
 
