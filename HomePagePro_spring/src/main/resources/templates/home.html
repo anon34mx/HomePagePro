@@ -12,6 +12,10 @@
     <link rel="stylesheet" th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
 
     <script src="/js/controller.js"></script>
+    <script>
+        const searchEngine = "[[${defaultSearchEngine}]]";
+        const searchParameterName = "[[${searchParameterName}]]";
+    </script>
 </head>
 <body>
     <div id="background"></div>
@@ -19,10 +23,10 @@
         <nav>
             <ul>
                 <li>
-                    <a href="#shortcuts" class="txt-white">shortcuts</a>
+                    <a href="#shortcuts" class="txt-white txt-shadow">shortcuts</a>
                 </li>
                 <li>
-                    <a href="#server" class="txt-white">server</a>
+                    <a href="#server" class="txt-white txt-shadow">server</a>
                 </li>
             </ul>
         </nav>
@@ -36,18 +40,27 @@
                 <!-- <button class="mx-2">GO</button> -->
                 <input type="submit" value="GO" class="mx-2 btn-primary">
                 <ul class="searchEnginesList">
-                    <button class="mx-2">
+                    <button id="enginesArrow" class="mx-2 btn-primary">
                         <img src="/arrow.svg" class="icon-sm">
                     </button>
                     <div class="container glass">
-                        <li class="">
-                            <a href="#" class="px-2">engine1</a>
+                        <li class="txt-shadow">
+                            <button href="#engine1" class="px-2 btn-primary py-1" style="width: 100%;">
+                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
+                                engine1
+                            </button>
                         </li>
-                        <li class="">
-                            <a href="#" class="px-2">engine1</a>
+                        <li class="txt-shadow">
+                            <button href="#engine2" class="px-2 btn-primary py-1" style="width: 100%;">
+                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
+                                engine2
+                            </button>
                         </li>
-                        <li class="">
-                            <a href="#" class="px-2">engine1</a>
+                        <li class="txt-shadow">
+                            <button href="#engine3" class="px-2 btn-primary py-1" style="width: 100%;">
+                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
+                                engine3
+                            </button>
                         </li>
                     </div>
                 </ul>
@@ -57,50 +70,45 @@
     
     <!-- Shortcuts -->
     <section id="shortcuts" class="listing">
-        <h4 class="txt-white">Shortcuts</h4>
-        
-    <!--   
-        <a th:each="i : ${#numbers.sequence(1, 10)}" href="#" target="_self" title="shortcut to external website owo" >
-            <div class="glass"></div>
-            <div class="element ">
-                <img src="assets/themes/default/icons/web-svgrepo-com.svg" alt="">
-                <div class="name txt-shadow"><
-                    shortcut to external website owo but wont be completely shown
-                </div>
+        <div class="title">
+            <h4 class="txt-white txt-shadow">Shortcuts</h4>
+            <div>
+                <button id="editShortcuts">edit</button>
             </div>
-        </a>
-        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-    -->
-    <div id="${id}" class="element uriGroup prevent-select linkDraggable uri showChildren" type="uriGroup">
-        <!-- showChildren -->
-        <div class="icon">
-            <img class="" src="assets/themes/default/icons/folder_ByDinosoftLabs.png"/>
         </div>
-        <label class="txt-white-shadow">
-           ${links.name}
-        </label>
-        <div class="container ">
-            <!--  -->
-                <a id="${id}" href="${uri}" class="element prevent-select linkDraggable uri" type="uri"
-                target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 4)}">
+    <!-- <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png"> -->
+    <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"
+       target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
+       <div class="content shadow">
+           <div class="icon">
+               <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+           </div>
+           <label class="txt-white-shadow">
+              FOLDER
+           </label>
+       </div>
+       <div class="children">
+            <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
+                target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
+                <div class="content shadow">
                     <div class="icon">
                         <img src="assets/themes/default/icons/web-svgrepo-com.svg">
                     </div>
-                    <label class="txt-white-shadow">
-                    ${name}
+                    <label class="txt-white txt-shadow">
+                        ${name}
                     </label>
-                </a>
-            <!--  -->
-        </div>
+                </div>
+            </a>
+       </div>
     </div>
 
-    <a id="${id}" href="${uri}" class="text"
+    <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
-       <div class="element prevent-select linkDraggable uri shadow" type="uri">
+       <div class="content shadow">
            <div class="icon">
                <img src="assets/themes/default/icons/web-svgrepo-com.svg">
            </div>
-           <label class="txt-white-shadow">
+           <label class="txt-white txt-shadow">
               ${name}
            </label>
        </div>
@@ -109,11 +117,13 @@
 
     <!-- localhost -->
     <section id="server" class="listing">
-        <h4 class="txt-white">Shortcuts</h4>
+        <div class="title">
+            <h4 class="txt-white txt-shadow">Server</h4>
+        </div>
     </section>
 
     <footer>
-        <a href="anon34" class="txt-white">https://anon34mx.github.io/</a>
+        <a href="https://anon34mx.github.io/" class="txt-white">anon34</a>
         <button>conf</button>
     </footer>
 </body>

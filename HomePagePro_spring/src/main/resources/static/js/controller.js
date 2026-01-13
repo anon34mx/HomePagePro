@@ -2,6 +2,43 @@ $(document).ready(function() {
     $('.uriGroup').hover(showFolderContent,hideFolderContent);
     $("#searchInput").on("keyup", googleAutocomplete);
 
+
+    $("#enginesArrow").on("click",
+        showSearchEnginesList
+    );
+    $("#enginesArrow").on("mouseenter",
+        showSearchEnginesList
+    );
+    $("#enginesArrow").on("focusin",
+        showSearchEnginesList
+    );
+
+    $(".searchEnginesList").on("mouseenter", function(){
+        console.log("mouse enter");
+        hideSearchEnginesList();
+    });
+    $(".searchEnginesList").on("mouseleave", function(){
+        console.log("mouse leave");
+        hideSearchEnginesList();
+    });
+    $(".searchEnginesList li button").on("focusout", function(){
+        // hideSearchEnginesList();
+        let element=this.parentElement;
+        let parent=this.parentElement.parentElement;
+        console.log(element, parent, element===parent.lastElementChild);
+        if (element===parent.lastElementChild){
+            hideSearchEnginesList();
+        }
+    });
+    $(".searchEnginesList li button").on("click", function(){
+        event.preventDefault();
+        validateSearch("custom", this.form);
+    });
+
+    $("#editShortcuts").on("click", function(){
+        event.preventDefault();
+        editGroups();
+    });
 });
 
 window.showFolderContent=function(){
@@ -78,19 +115,59 @@ window.validateSearch=async function(searchEngine,form){
 	}
 
     //SEARCH
+    console.log("search");
     if(searchEngine!=undefined){
-        // use default search engine
         $("#searchForm").attr("action","https://yandex.com/search/?");
         $("#searchInput").attr("name","text");
-        form.submit();//GO
-        // if(search==""){
-        //     search="";
-        //     window.location.href=searchEngine+"="+search;
-        // }else{
-        //     window.location.href=searchEngineh;
-        // }
+        form.submit();
     }else{
+        // use default search engine
+        $("#searchForm").attr("action",searchEngine);
+        $("#searchInput").attr("name",searchParameterName);
         form.submit();
     }
 	
+}
+
+window.showSearchEnginesList=function(){
+    event.preventDefault();
+    $(".searchEnginesList .container").show();
+}
+window.hideSearchEnginesList=function(){
+    event.preventDefault();
+    $(".searchEnginesList .container").hide();
+}
+
+
+window.editGroupsStop=function(){
+    $('.uri').draggable( "destroy" );
+}
+window.editGroups=function(){
+    $( ".uri" ).draggable({
+        containment: "parent",
+        revert: true,
+        // grid: [ 20, 20 ]
+        cursor: "grabbing",
+        cursorAt: { top: 34, left: 34 },
+        helper: function( event ) {
+            return $( "<img class='pendulum dragging-uri' src='assets/themes/default/icons/web-svgrepo-com.svg'>" );
+        }
+    });
+
+    $( ".uri" ).droppable({
+      accept: ".uri",
+      classes: {
+        // "ui-droppable-active": "ui-state-default"
+      },
+      drop: function( event, ui ) {
+        console.log(this, ui.draggable[0]);
+        $(this).remove();
+        $(ui.draggable).remove();
+      }
+        // $( this )
+        //     .addClass( "ui-state-highlight" )
+        //     .find( "p" )
+        //     .html( "Dropped!" );
+        // }
+    });
 }

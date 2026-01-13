@@ -17,7 +17,6 @@
         ;
 }
 *{
-    /* outline:1px solid tomato; */
     padding: 0;
     margin: 0;
 }
@@ -63,10 +62,30 @@
 .px-3{padding:0 0.75rem;}
 .px-4{padding:0 1.0rem;}
 
+.py-0{padding:0rem 0;}
 .py-1{padding:0.25rem 0;}
 .py-2{padding:0.50rem 0;}
 .py-3{padding:0.75rem 0;}
 .py-4{padding:1.0rem 0;}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  border-radius: calc(1rem + 8px);
+}
+::-webkit-scrollbar-thumb {
+  background-color: #d3d3d3; /* red color */
+  border-radius: 5px; /* rounded corners */
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: white; /* red color */
+  border-radius: 5px; /* rounded corners */
+}
+::-webkit-scrollbar-track {
+  background-color: #5a5a5a3a; /* light grey track */
+  border-radius: 1rem;
+  margin: 0.25rem 1rem;
+  padding: 2rem;
+}
 /* AUTOCOMPLETE */
 .ui-menu{
     position: absolute;
@@ -119,6 +138,8 @@ header{
     top: 0px;
     z-index: 1;
     border-bottom: var(--border);
+    z-index: 2;
+    backdrop-filter: var(--background-blur);
 }
 
 header nav{
@@ -126,6 +147,7 @@ header nav{
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     align-items: center;
+
 }
 
 header nav ul{
@@ -213,6 +235,9 @@ header div.search-bar form input[type="search"]:focus{
     
 }
 
+section .title{
+    width: 100%;;
+}
 section h4{
     width: 100%;
     padding-top: 56px;
@@ -228,33 +253,52 @@ section h4{
     height: 20px;
 }
 
+#enginesArrow img{
+    pointer-events: none;
+}
 .searchEnginesList{ /* <ul> */
     list-style: none;
 }
 .searchEnginesList.show{ /* <ul> */
     display: contents;
 }
+.searchEnginesList .container::after{
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: var(--background-blur-hard);
+}
 .searchEnginesList .container{
     position: absolute;
     display: none;
-    top: 20px;
+    top: 24px;
     width: 50%;
     right: 2px;
-    background: rgba(255, 174, 0, 0.342);
     margin-top: 10px;
     padding: 10px;
+    backdrop-filter: var(--background-blur-hard);
+    border: var(--border);
 }
 .searchEnginesList li{
     margin: 9px 0;
 }
-.searchEnginesList li a{
-    outline: 1px solid blue;
+.searchEnginesList li{
+    outline: 1px solid red;
     display: block;
-    width: 100%;
+    color: white;
+    text-decoration: none;
+}
+.searchEnginesList li:focus,
+.searchEnginesList li:hover{
+    color: red;
 }
 
 /* shortcuts */
-.element{
+.element:focus{
+    outline: none;
+}
+.element .content{
     font-size: clamp(0.9rem, calc(0.6rem + 0.4vw), 1rem);
     display: flex;
     width: 5.5rem;
@@ -266,33 +310,36 @@ section h4{
     border-radius: 0.6rem;
     backdrop-filter: var(--background-blur);
     background-image: linear-gradient(to top, var(--gradient-glass-bottom), var(--gradient-glass-top));
-    transition: --gradient-glass-bottom 0.5s ease, --gradient-glass-top 0.5s ease;
-
+    transition: --gradient-glass-bottom 0.7s ease, --gradient-glass-top 0.7s ease;
+    position: relative;
     border: var(--border);
     cursor: pointer;
     text-decoration: none;
+    color: white;
 }
-    .element:hover{
+    .element .content:hover,
+    .element:focus .content{
         --gradient-glass-bottom: rgba(129, 129, 129, 0.85);
-        --gradient-glass-top: rgba(233, 233, 233, 0.85);
+        --gradient-glass-top: rgba(238, 238, 238, 0.85);
+        box-shadow: -1px 1px 2px #3131319d, 1px -1px 3px #3131319d, 6px 6px 15px #3131319d;
+        transform: scale(1.03);
     }
-.element .icon{
+.element .content .icon{
     width: 100%;
     height: 60%;
     text-align: center;
 }
-.element .icon img{
+.element .content .icon img{
     max-width: 100%;
     max-height: 100%;
     height: 75%;
     aspect-ratio: 1 / 1;
 }
-.element label{
+.element .content label{
     font-family: Arial, Helvetica, sans-serif;
     width: calc(100% - 0.5rem);
     max-height: 40%;
     height: 100%;
-    /* margin: 0 auto; */
     padding:0 0.5rem;
     overflow: hidden;
     line-height: 0.9;
@@ -301,52 +348,35 @@ section h4{
     line-break: anywhere;
     pointer-events: none;
 }
-.uriGroup .container{
+
+.uriGroup{
+    position: relative;
+}
+.uriGroup.showChildren .children{
+    display: flex;
+    left: 100%;
+    backdrop-filter: var(--background-blur-hard);
+    z-index: 1;
+    border:var(--border);
+    pointer-events: initial;
+}
+.uriGroup .children{
     position: absolute;
     left: 0;
     top: 0;
-    /* background: red; */
-    padding: 0;
-    transition: .666s;
-    /* transition-delay: 3.5s;  */
-    display: none;
-    /* opacity: 0; */
-    pointer-events: none;
-    width: initial;
-}
-.uriGroup .container .element {
-    margin: 0;
-    margin-bottom: 10px;
-    background-color: red;
-    background: var(--background-solid-dark);
-    opacity: 0;
-    transition: 6s;
-    
-}
-.uriGroup .container .element:hover{
-    background: linear-gradient(0deg, rgb(84 84 84 / 35%) 0%, rgb(246 246 246 / 60%) 100%);
-}
-.uriGroup.showChildren{
-    z-index: 1;
-}
-.uriGroup.showChildren > .container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    opacity: 1;
-    pointer-events: initial;
-    z-index: 1;
-    background-color: rgba(255, 0, 0, 0.144);
-    width: 50vw;
-    left: 100%;
-    border:var(--border);
     padding: 1rem;
+    transition: .666s;
+    display: none;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    pointer-events: none;
+    width: 50vw;
+    height: 50vh;
+    overflow-y: scroll;
+    backdrop-filter: blur(4px);
+    border-radius: 0.8rem;
 }
-.uriGroup.showChildren > .container .element{
-    opacity: 1;
-    transition: 1s;
-}
+
 
 /* FOOTTER */
 footer{
@@ -370,6 +400,28 @@ footer{
   }
 }
 */
+.dragging-uri{
+    width:34px;
+    height:34px;
+    background:lightgray;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+.pendulum{
+    animation-duration: 0.3s;
+    animation-name: pendulum;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes pendulum{
+    0%{
+        transform: rotate(-10deg);
+    }
+    100%{
+        transform: rotate(10deg);
+    }
+}
 
 @property --gradient-glass-bottom {
   syntax: '<color>';
