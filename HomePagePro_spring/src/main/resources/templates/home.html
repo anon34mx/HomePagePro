@@ -12,10 +12,10 @@
     <link rel="stylesheet" th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
 
     <script src="/js/controller.js"></script>
-    <script>
-        const searchEngine = "[[${defaultSearchEngine}]]";
-        const searchParameterName = "[[${searchParameterName}]]";
-        const se = "[[${searchEngines}]]";
+    <script th:inline="javascript">
+        const defaultSearchEngine = [[${defaultSearchEngine}]];
+        const defaultSearchParameterName = [[${searchParameterName}]];
+        const se = [[${searchEngines}]];
     </script>
 </head>
 <body>
@@ -32,19 +32,31 @@
             </ul>
         </nav>
         <div class="search-bar">
-            <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="py-1">
+            <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="py-1" onsubmit="event.preventDefault();validateSearch(null,null,this)">
                 <div class="search ui-widget">
                     <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
                     <input id="searchInput" type="search" autofocus="" placeholder="Search..." th:name="${searchParameterName}" autocomplete="off" class="px-2 border">
                     <label id="suggestions" for="searchInput"></label>
                 </div>
-                <!-- <button class="mx-2">GO</button> -->
                 <input type="submit" value="GO" class="mx-2 btn-primary">
                 <ul class="searchEnginesList">
                     <button id="enginesArrow" class="mx-2 btn-primary">
                         <img src="/arrow.svg" class="icon-sm">
                     </button>
                     <div class="container glass">
+                        <li class="txt-shadow"
+                            th:each="engine : ${searchEngines}">
+                            <button href="#engine1" class="px-2 btn-primary py-1" style="width: 100%;"
+                                th:uri="@{${engine.uri}}"
+                                th:parameter="@{${engine.parameter}}"
+                                >
+                                <!-- <div> -->
+                                    <img th:src="@{${engine.icon}}"  style="width: 20px;height: 20px;">
+                                    [[${engine.name}]]
+                                <!-- </div> -->
+                            </button>
+                        </li>
+                        <!--
                         <li class="txt-shadow">
                             <button href="#engine1" class="px-2 btn-primary py-1" style="width: 100%;">
                                 <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
@@ -63,6 +75,7 @@
                                 engine3
                             </button>
                         </li>
+                        -->
                     </div>
                 </ul>
             </form>

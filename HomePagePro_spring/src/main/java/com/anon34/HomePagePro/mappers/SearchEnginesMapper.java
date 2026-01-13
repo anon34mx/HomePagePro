@@ -11,7 +11,7 @@ public class SearchEnginesMapper {
             searchEngines.getUri(),
             searchEngines.getParameter(),
             searchEngines.getIcon(),
-            searchEngines.getIsDefault()
+            searchEngines.isDefault()
         );
     }
 }

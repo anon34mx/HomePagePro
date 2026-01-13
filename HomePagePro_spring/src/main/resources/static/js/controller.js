@@ -1,6 +1,9 @@
 $(document).ready(function() {
     $('.uriGroup').hover(showFolderContent,hideFolderContent);
     $("#searchInput").on("keyup", googleAutocomplete);
+    $("#searchInput").on("focusin", ()=>{
+        hideSearchEnginesList();
+    });
 
 
     $("#enginesArrow").on("click",
@@ -32,7 +35,12 @@ $(document).ready(function() {
     });
     $(".searchEnginesList li button").on("click", function(){
         event.preventDefault();
-        validateSearch("custom", this.form);
+        // console.log(this, this.form)
+        validateSearch(
+            $(this).attr("uri"),
+            $(this).attr("parameter"),
+            this.form
+        );
     });
 
     $("#editShortcuts").on("click", function(){
@@ -86,7 +94,7 @@ window.googleAutocomplete=async function(){
     });
 }
 
-window.validateSearch=async function(searchEngine,form){
+window.validateSearch=async function(searchEngine,parameterName,form){
 	// Event.preventDefault();
 	var search=$("#searchInput").val();
 	// var isIP=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{1,5})?/);
@@ -115,15 +123,16 @@ window.validateSearch=async function(searchEngine,form){
 	}
 
     //SEARCH
-    console.log("search");
     if(searchEngine!=undefined){
-        $("#searchForm").attr("action","https://yandex.com/search/?");
-        $("#searchInput").attr("name","text");
+        console.log("search with custom engine");
+        $("#searchForm").attr("action",searchEngine);
+        $("#searchInput").attr("name", parameterName);
         form.submit();
     }else{
+        console.log("search with default engine");
         // use default search engine
-        $("#searchForm").attr("action",searchEngine);
-        $("#searchInput").attr("name",searchParameterName);
+        $("#searchForm").attr("action",defaultSearchEngine);
+        $("#searchInput").attr("name",defaultSearchParameterName);
         form.submit();
     }
 	
@@ -143,6 +152,7 @@ window.editGroupsStop=function(){
     $('.uri').draggable( "destroy" );
 }
 window.editGroups=function(){
+    // $( ".uri" ).not(".uriGroup .uri").draggable({
     $( ".uri" ).draggable({
         containment: "parent",
         revert: true,

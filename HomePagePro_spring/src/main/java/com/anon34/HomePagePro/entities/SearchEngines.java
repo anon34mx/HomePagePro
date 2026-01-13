@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.Entity; // For Spring Boot 3+ and JDK 17+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -17,6 +19,7 @@ import jakarta.persistence.Column;
 @Table(name = "search_engines")
 public class SearchEngines {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -32,5 +35,5 @@ public class SearchEngines {
     private String icon;
 
     @Column(name = "isDefault", nullable = false)
-    private String isDefault;
+    private boolean  isDefault;
 }

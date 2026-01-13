@@ -214,11 +214,7 @@ header div.search-bar form input[type="search"]:focus{
     background-image: linear-gradient(to top, var(--gradient-glass-bottom), var(--gradient-glass-top));
     transition: --gradient-glass-bottom 0.5s ease, --gradient-glass-top 0.5s ease;
 }
-.btn-primary:valid, .btn-primary:invalid{
-    content:'d';
-    backdrop-filter: var(--background-blur);
-    display: block;
-}
+
 .btn-primary:hover{
     --gradient-glass-bottom: rgba(129, 129, 129, 0.85);
     --gradient-glass-top: rgba(233, 233, 233, 0.85);
@@ -268,26 +264,43 @@ section h4{
     width: 100%;
     height: 100%;
     backdrop-filter: var(--background-blur-hard);
+    background-color: red;
 }
 .searchEnginesList .container{
     position: absolute;
     display: none;
-    top: 24px;
+    top: 44px;
     width: 50%;
     right: 2px;
-    margin-top: 10px;
-    padding: 10px;
-    backdrop-filter: var(--background-blur-hard);
+    padding-top: 8px;
+    /* padding: 10px; */
+    /* backdrop-filter: var(--background-blur-hard); */
     border: var(--border);
 }
+/* .searchEnginesList li button:before
+{
+    content: 'ssss';
+    display: block;
+    position: absolute;
+    background: #ffffff;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(1px);
+} */
+/* .searchEnginesList li button div{
+    position: absolute;
+} */
+ .searchEnginesList li button{
+    background-color: gray;
+ }
 .searchEnginesList li{
-    margin: 9px 0;
-}
-.searchEnginesList li{
-    outline: 1px solid red;
+    margin: 0px 0;
     display: block;
     color: white;
     text-decoration: none;
+    position: relative;
 }
 .searchEnginesList li:focus,
 .searchEnginesList li:hover{

@@ -6,9 +6,9 @@ public class searchEnginesDTO {
     private String uri;
     private String parameter;
     private String icon;
-    private String isDefault;
+    private boolean isDefault;
 
-    public searchEnginesDTO(Long id, String name, String uri, String parameter, String icon, String isDefault) {
+    public searchEnginesDTO(Long id, String name, String uri, String parameter, String icon, boolean isDefault) {
         this.id = id;
         this.name = name;
         this.uri = uri;
@@ -47,15 +47,17 @@ public class searchEnginesDTO {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    public String getIsDefault() {
-        return isDefault;
-    }
-    public void setIsDefault(String isDefault) {
+
+    public void setIsDefault(boolean isDefault) {
         this.isDefault = isDefault;
     }
+    public boolean isDefault() {
+        return isDefault;
+    }
+
     @Override
     public String toString() {
         return "searchEngines [id=" + id + ", name=" + name + ", uri=" + uri + ", parameter=" + parameter + ", icon="
-                + icon + ", isDefault=" + isDefault + "]";
+                + icon + ", isDefault=" + "isDefault" + "]";
     }
 }
