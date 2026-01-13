@@ -1,12 +1,24 @@
 package com.anon34.HomePagePro.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.anon34.HomePagePro.dto.searchEnginesDTO;
+import com.anon34.HomePagePro.services.SearchEngineService;
+
 import org.springframework.ui.Model;
 
 @Controller
 public class MainHppController {
+    private final SearchEngineService searchEngineService;
+
+    public MainHppController(SearchEngineService searchEngineService) {
+        this.searchEngineService = searchEngineService;
+    }
+
     @Value("${app.version}")
     private String appVersion;
 
@@ -15,11 +27,15 @@ public class MainHppController {
     
     @GetMapping
     public String home(Model model) {
+        List<searchEnginesDTO> searchEngines = searchEngineService.all();
+        System.out.println(searchEngines.toString());
+        
         model.addAttribute("appName", appName);
         model.addAttribute("appVersion", appVersion);
         model.addAttribute("currentTheme", "default");
         model.addAttribute("defaultSearchEngine", "https://www.google.com/search");
         model.addAttribute("searchParameterName", "q");
+        model.addAttribute("searchEngines", searchEngines);
         return "home";
     }
     
