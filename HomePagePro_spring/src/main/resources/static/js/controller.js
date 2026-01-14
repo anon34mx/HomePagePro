@@ -51,6 +51,7 @@ $(document).ready(function() {
 
 window.showFolderContent=function(){
     $(this).addClass("showChildren");
+    $(this).find(".children").css("opacity","1");
     if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
         console.log("no cabe");
         $(this).find(".container").css("left", "-100%");
@@ -62,6 +63,7 @@ window.showFolderContent=function(){
 window.hideFolderContent=function(){
     $(this).removeClass("showChildren");
     $(this).find(".container").css("left", "0");
+    $(this).find(".children").css("opacity","0");
 }
 
 window.googleAutocomplete=async function(){
@@ -170,14 +172,19 @@ window.editGroups=function(){
         // "ui-droppable-active": "ui-state-default"
       },
       drop: function( event, ui ) {
-        console.log(this, ui.draggable[0]);
-        $(this).remove();
-        $(ui.draggable).remove();
+        console.log("create group");
+        // $(this).remove();
+        // $(ui.draggable).remove();
       }
         // $( this )
         //     .addClass( "ui-state-highlight" )
         //     .find( "p" )
         //     .html( "Dropped!" );
         // }
+    });
+    $( "#shortcuts" ).droppable({
+        drop: function(event, ui){
+            console.log("main group");
+        }
     });
 }

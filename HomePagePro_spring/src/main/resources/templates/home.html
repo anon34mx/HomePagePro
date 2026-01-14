@@ -116,6 +116,22 @@
        </div>
     </div>
 
+
+    <a id="@{${shortcut.id}}" th:href="${shortcut.uri}" type="uri" class="text element prevent-select uri linkDraggable"
+       target="_self" title="shortcut to @{${shortcut.uri}}" th:each="shortcut : ${shortcuts}">
+       <div class="content shadow">
+           <div class="icon">
+                <picture>
+                    <source th:srcset="@{${shortcut.icon}}" type="image/ico">
+                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                </picture>
+           </div>
+           <label class="txt-white txt-shadow">
+              [[${shortcut.name}]]
+           </label>
+       </div>
+    </a>
+    <!--
     <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
        <div class="content shadow">
@@ -127,6 +143,7 @@
            </label>
        </div>
     </a>
+    -->
     </section>
 
     <!-- localhost -->

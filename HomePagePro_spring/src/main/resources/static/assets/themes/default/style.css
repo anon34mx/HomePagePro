@@ -372,6 +372,7 @@ section h4{
     z-index: 1;
     border:var(--border);
     pointer-events: initial;
+    /* opacity: 1; */
 }
 .uriGroup .children{
     position: absolute;
@@ -379,7 +380,7 @@ section h4{
     top: 0;
     padding: 1rem;
     transition: .666s;
-    display: none;
+    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     pointer-events: none;
@@ -388,6 +389,8 @@ section h4{
     overflow-y: scroll;
     backdrop-filter: blur(4px);
     border-radius: 0.8rem;
+    transition: 0.5s;
+    opacity: 0;
 }
 
 

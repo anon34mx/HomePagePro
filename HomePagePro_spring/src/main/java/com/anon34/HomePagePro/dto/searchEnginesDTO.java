@@ -58,6 +58,6 @@ public class searchEnginesDTO {
     @Override
     public String toString() {
         return "searchEngines [id=" + id + ", name=" + name + ", uri=" + uri + ", parameter=" + parameter + ", icon="
-                + icon + ", isDefault=" + "isDefault" + "]";
+                + icon + ", isDefault=" + isDefault + "]";
     }
 }
