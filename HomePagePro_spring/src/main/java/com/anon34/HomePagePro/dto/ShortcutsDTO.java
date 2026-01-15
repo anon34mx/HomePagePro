@@ -1,12 +1,25 @@
 package com.anon34.HomePagePro.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.anon34.HomePagePro.entities.Shortcuts;
+
 public class ShortcutsDTO {
     private Long id;
     private boolean isFolder;
     private String name;
     private String uri;
     private String icon;
+    private Shortcuts parentId;
+    private List<ShortcutsDTO> content=new ArrayList<>();
 
+    public Shortcuts getParentId() {
+        return parentId;
+    }
+    public void setParentId(Shortcuts parentId) {
+        this.parentId = parentId;
+    }
     public Long getId() {
         return id;
     }
@@ -39,18 +52,25 @@ public class ShortcutsDTO {
     }
 
     public ShortcutsDTO(
-        Long id, boolean isFolder, String name, String uri, String icon
+        Long id, boolean isFolder, String name, String uri, String icon, Shortcuts parentId
     ){
         this.id = id;
         this.isFolder = isFolder;
         this.name = name;
         this.uri = uri;
         this.icon = icon;
+        this.parentId = parentId;
     }
     
     @Override
     public String toString(){
-        return "shortcuts [id=" + id + ", name=" + name + ", uri=" + uri + ", isFolder=" + isFolder + ", icon="
-            + icon;
+        return "shortcuts [id=" + id + " parent="+parentId+" , name=" + name + ", uri=" + uri + ", isFolder=" + isFolder + ", icon="
+            + icon+"\n";
+    }
+    public List<ShortcutsDTO> getContent() {
+        return content;
+    }
+    public void setContent(List<ShortcutsDTO> content) {
+        this.content = content;
     }
 }

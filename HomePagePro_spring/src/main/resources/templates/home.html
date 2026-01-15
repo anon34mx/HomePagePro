@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.thymeleaf.org">
 <head>
@@ -16,6 +17,7 @@
         const defaultSearchEngine = [[${defaultSearchEngine}]];
         const defaultSearchParameterName = [[${searchParameterName}]];
         const se = [[${searchEngines}]];
+        const shortcuts=[[${shortcuts}]];
     </script>
 </head>
 <body>
@@ -56,26 +58,6 @@
                                 <!-- </div> -->
                             </button>
                         </li>
-                        <!--
-                        <li class="txt-shadow">
-                            <button href="#engine1" class="px-2 btn-primary py-1" style="width: 100%;">
-                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
-                                engine1
-                            </button>
-                        </li>
-                        <li class="txt-shadow">
-                            <button href="#engine2" class="px-2 btn-primary py-1" style="width: 100%;">
-                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
-                                engine2
-                            </button>
-                        </li>
-                        <li class="txt-shadow">
-                            <button href="#engine3" class="px-2 btn-primary py-1" style="width: 100%;">
-                                <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" style="width: 20px;height: 20px;">
-                                engine3
-                            </button>
-                        </li>
-                        -->
                     </div>
                 </ul>
             </form>
@@ -90,7 +72,56 @@
                 <button id="editShortcuts">edit</button>
             </div>
         </div>
-    <!-- <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png"> -->
+
+
+    <th:block th:each="shortcut : ${shortcuts}">
+        <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"
+            target="_self" title="shortcut to ${name}" th:if="${shortcut.isFolder == true}">
+            <div class="content shadow">
+                <div class="icon">
+                    <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                </div>
+                <label class="txt-white-shadow">
+                    [[${shortcut.name}]]
+                </label>
+            </div>
+            <div class="children">
+                [[${shortcut.name}]]
+                    <!-- <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
+                        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
+                        <div class="content shadow">
+                            <div class="icon">
+                                <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                            </div>
+                            <label class="txt-white txt-shadow">
+                                ${name}
+                            </label>
+                        </div>
+                    </a> -->
+            </div>
+        </div>
+
+
+        <a id="@{${shortcut.id}}" th:href="${shortcut.uri}" type="uri" class="text element prevent-select uri linkDraggable"
+           target="_self" title="shortcut to @{${shortcut.uri}}" th:if="${shortcut.isFolder == false}">
+           <div class="content shadow">
+               <div class="icon">
+                    <picture>
+                        <source th:srcset="@{${shortcut.icon}}" type="image/ico">
+                        <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                    </picture>
+               </div>
+               <label class="txt-white txt-shadow">
+                  [[${shortcut.name}]]
+                  >[[${shortcut.isFolder}]]<
+               </label>
+           </div>
+        </a>
+    </th:block>
+
+    
+    <!--
+    FOLDER
     <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"
        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
        <div class="content shadow">
@@ -116,22 +147,7 @@
        </div>
     </div>
 
-
-    <a id="@{${shortcut.id}}" th:href="${shortcut.uri}" type="uri" class="text element prevent-select uri linkDraggable"
-       target="_self" title="shortcut to @{${shortcut.uri}}" th:each="shortcut : ${shortcuts}">
-       <div class="content shadow">
-           <div class="icon">
-                <picture>
-                    <source th:srcset="@{${shortcut.icon}}" type="image/ico">
-                    <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                </picture>
-           </div>
-           <label class="txt-white txt-shadow">
-              [[${shortcut.name}]]
-           </label>
-       </div>
-    </a>
-    <!--
+    SHORTCUT
     <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
        <div class="content shadow">

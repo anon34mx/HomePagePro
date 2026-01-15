@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.anon34.HomePagePro.dto.ShortcutsDTO;
 import com.anon34.HomePagePro.dto.searchEnginesDTO;
+import com.anon34.HomePagePro.entities.Shortcuts;
 import com.anon34.HomePagePro.services.SearchEngineService;
 import com.anon34.HomePagePro.services.ShortcutService;
 
@@ -32,10 +33,11 @@ public class MainHppController {
     @GetMapping
     public String home(Model model) {
         List<searchEnginesDTO> searchEngines = searchEngineService.all();
-        System.out.println(searchEngines.toString());
+        System.out.println(searchEngines.toString()+"\n");
 
-        List<ShortcutsDTO> shortcuts = shortcutService.all();
-        System.out.println(shortcuts.toString());
+        System.out.println("TREE \n\n");
+        List<ShortcutsDTO> shortcuts = shortcutService.getTree();
+        System.out.println(shortcuts.toString()+"\n");
         
         model.addAttribute("appName", appName);
         model.addAttribute("appVersion", appVersion);

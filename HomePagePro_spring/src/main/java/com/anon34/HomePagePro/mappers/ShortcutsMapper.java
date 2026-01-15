@@ -10,7 +10,8 @@ public class ShortcutsMapper {
             shortcut.isFolder(),
             shortcut.getName(),
             shortcut.getUri(),
-            shortcut.getIcon()
+            shortcut.getIcon(),
+            shortcut.getParentId()
         );
     }
 
