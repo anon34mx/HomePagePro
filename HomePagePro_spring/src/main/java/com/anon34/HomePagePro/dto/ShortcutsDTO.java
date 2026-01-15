@@ -3,7 +3,6 @@ package com.anon34.HomePagePro.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anon34.HomePagePro.entities.Shortcuts;
 
 public class ShortcutsDTO {
     private Long id;
@@ -11,13 +10,13 @@ public class ShortcutsDTO {
     private String name;
     private String uri;
     private String icon;
-    private Shortcuts parentId;
+    private Long parentId;
     private List<ShortcutsDTO> content=new ArrayList<>();
 
-    public Shortcuts getParentId() {
+    public Long getParentId() {
         return parentId;
     }
-    public void setParentId(Shortcuts parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
     public Long getId() {
@@ -52,7 +51,7 @@ public class ShortcutsDTO {
     }
 
     public ShortcutsDTO(
-        Long id, boolean isFolder, String name, String uri, String icon, Shortcuts parentId
+        Long id, boolean isFolder, String name, String uri, String icon, Long parentId
     ){
         this.id = id;
         this.isFolder = isFolder;

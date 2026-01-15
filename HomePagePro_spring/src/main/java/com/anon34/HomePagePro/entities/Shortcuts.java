@@ -1,6 +1,5 @@
 package com.anon34.HomePagePro.entities;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,9 +26,10 @@ public class Shortcuts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne // foreign key
-    @JoinColumn(name = "parentId") // foreign key column
-    private Shortcuts parentId;
+    // @ManyToOne // foreign key
+    // @JoinColumn(name = "parent_id") // foreign key column
+    @Column(name="parent_id")
+    private Long parentId;
     
     @Column(name = "isFolder", nullable = false)
     private boolean isFolder;

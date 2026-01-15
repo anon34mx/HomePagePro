@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.anon34.HomePagePro.dto.ShortcutsDTO;
 import com.anon34.HomePagePro.dto.searchEnginesDTO;
-import com.anon34.HomePagePro.entities.Shortcuts;
 import com.anon34.HomePagePro.services.SearchEngineService;
 import com.anon34.HomePagePro.services.ShortcutService;
 
