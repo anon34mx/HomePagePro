@@ -72,54 +72,43 @@
                 <button id="editShortcuts">edit</button>
             </div>
         </div>
-
-
-    <th:block th:each="shortcut : ${shortcuts}">
-        <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"
-            target="_self" title="shortcut to ${name}" th:if="${shortcut.isFolder == true}">
-            <div class="content shadow">
-                <div class="icon">
-                    <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-                </div>
-                <label class="txt-white-shadow">
-                    [[${shortcut.name}]]
-                </label>
-            </div>
-            <div class="children">
-                [[${shortcut.name}]]
-                    <!-- <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
-                        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
-                        <div class="content shadow">
-                            <div class="icon">
-                                <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                            </div>
-                            <label class="txt-white txt-shadow">
-                                ${name}
-                            </label>
-                        </div>
-                    </a> -->
-            </div>
-        </div>
-
-
-        <a id="@{${shortcut.id}}" th:href="${shortcut.uri}" type="uri" class="text element prevent-select uri linkDraggable"
-           target="_self" title="shortcut to @{${shortcut.uri}}" th:if="${shortcut.isFolder == false}">
+    
+    <template id="shortcutTemplate">
+        <a id="" href="" type="uri" class="text element prevent-select uri linkDraggable"
+           target="_self" title="shortcut to...">
            <div class="content shadow">
                <div class="icon">
                     <picture>
-                        <source th:srcset="@{${shortcut.icon}}" type="image/ico">
+                        <source srcset="" type="image/ico">
                         <img src="assets/themes/default/icons/web-svgrepo-com.svg">
                     </picture>
                </div>
-               <label class="txt-white txt-shadow">
-                  [[${shortcut.name}]]
-                  >[[${shortcut.isFolder}]]<
+               <label class="name txt-white txt-shadow">
+                    {LINK}
                </label>
            </div>
         </a>
-    </th:block>
+    </template>
 
-    
+    <template id="uriGroupTemplate">
+        <div id="${id}" href="${uri}" type="uriGroup" class="text element prevent-select uriGroup linkDraggable showCh ildren"
+           target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
+           <div class="content shadow">
+               <div class="icon">
+                    <picture>
+                        <source srcset="" type="image/ico">
+                        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                    </picture>
+               </div>
+               <label class="txt-white-shadow name">
+                  {FOLDER}
+               </label>
+           </div>
+           <div class="children">
+           </div>
+        </div>
+    </template>
+
     <!--
     FOLDER
     <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"

@@ -47,6 +47,9 @@ $(document).ready(function() {
         event.preventDefault();
         editGroups();
     });
+
+    // INITIALIZE THINGS
+    generateContent();
 });
 
 window.showFolderContent=function(){
@@ -187,4 +190,41 @@ window.editGroups=function(){
             console.log("main group");
         }
     });
+}
+
+window.generateContent=function(){
+    shortcuts.forEach(shortcut => {
+        if(shortcut.folder==false){
+            renderShortcut(shortcut,$("#shortcuts"));
+        }else{
+            renderFolder(shortcut);
+        }
+    });
+}
+
+window.renderShortcut=function(shortcut, target){
+    var template=document.querySelector("#shortcutTemplate");
+    let clone = template.content.cloneNode(true);
+
+    clone.querySelector(".uri").id=shortcut.id;
+    clone.querySelector(".uri").href=shortcut.uri;
+    clone.querySelector("label.name").textContent=shortcut.name;
+    clone.querySelector("picture img").srcset=shortcut.icon;
+
+    $(target).append(clone);
+}
+window.renderFolder=function(folder){
+    var template=document.querySelector("#uriGroupTemplate");
+    let clone = template.content.cloneNode(true);
+
+    clone.querySelector(".uriGroup").id=folder.id;
+    clone.querySelector("label.name").textContent=folder.name;
+
+    console.log(folder);
+    folder.content.forEach(shortcut => {
+        renderShortcut(shortcut, clone.querySelector(".children"));
+    });
+
+    $("#shortcuts").append(clone);
+    $("#"+folder.id).hover(showFolderContent,hideFolderContent);
 }
