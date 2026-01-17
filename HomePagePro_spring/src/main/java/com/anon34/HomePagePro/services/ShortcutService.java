@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.anon34.HomePagePro.Repositories.Repo_shortCuts;
 import com.anon34.HomePagePro.mappers.ShortcutsMapper;
 import com.anon34.HomePagePro.dto.ShortcutsDTO;
+import com.anon34.HomePagePro.entities.Shortcuts;
 
 @Service
 public class ShortcutService {
@@ -22,7 +23,20 @@ public class ShortcutService {
         return repo_shortCuts.findAll().stream().map(ShortcutsMapper::toDTO)
         .collect(Collectors.toList());
     }
+
+    public ShortcutsDTO serv_getById(Long id){
+        Shortcuts sh=repo_shortCuts.findById(id).orElseThrow(()->new RuntimeException(
+            "Shortcut not found"
+        ));
+        return ShortcutsMapper.toDTO(sh);
+    }
     
+    public ShortcutsDTO serv_insert(ShortcutsDTO dto){
+        System.out.println(dto);
+        Shortcuts sh=ShortcutsMapper.toEntity(dto);
+        Shortcuts inserted=repo_shortCuts.save(sh);
+        return ShortcutsMapper.toDTO(inserted);
+    }
     // public List<ShortcutsDTO> getTree(){
     //     return repo_shortCuts.getTreeShortcuts().stream().map(ShortcutsMapper::toDTO)
     //     .collect(Collectors.toList());

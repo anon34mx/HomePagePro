@@ -28,7 +28,7 @@ public class Shortcuts {
 
     // @ManyToOne // foreign key
     // @JoinColumn(name = "parent_id") // foreign key column
-    @Column(name="parent_id")
+    @Column(name="parent_id", nullable = true)
     private Long parentId;
     
     @Column(name = "isFolder", nullable = false)

@@ -66,97 +66,75 @@
     
     <!-- Shortcuts -->
     <section id="shortcuts" class="listing">
-        <div class="title">
-            <h4 class="txt-white txt-shadow">Shortcuts</h4>
+        <div class="titleBar">
+            <div class="title txt-white txt-shadow">Shortcuts</div>
             <div>
+                <button id="createShortcuts" onclick="showModal('modal-createShortcut')">add</button>
                 <button id="editShortcuts">edit</button>
             </div>
         </div>
     
-    <template id="shortcutTemplate">
-        <a id="" href="" type="uri" class="text element prevent-select uri linkDraggable"
-           target="_self" title="shortcut to...">
-           <div class="content shadow">
-               <div class="icon">
-                    <picture>
-                        <source srcset="" type="image/ico">
-                        <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                    </picture>
-               </div>
-               <label class="name txt-white txt-shadow">
-                    {LINK}
-               </label>
-           </div>
-        </a>
-    </template>
-
-    <template id="uriGroupTemplate">
-        <div id="${id}" href="${uri}" type="uriGroup" class="text element prevent-select uriGroup linkDraggable showCh ildren"
-           target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
-           <div class="content shadow">
-               <div class="icon">
-                    <picture>
-                        <source srcset="" type="image/ico">
-                        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-                    </picture>
-               </div>
-               <label class="txt-white-shadow name">
-                  {FOLDER}
-               </label>
-           </div>
-           <div class="children">
-           </div>
-        </div>
-    </template>
-
-    <!--
-    FOLDER
-    <div id="${id}" href="${uri}" type="uri" class="text element prevent-select uriGroup linkDraggable showCh ildren"
-       target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
-       <div class="content shadow">
-           <div class="icon">
-               <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-           </div>
-           <label class="txt-white-shadow">
-              FOLDER
-           </label>
-       </div>
-       <div class="children">
-            <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
-                target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
-                <div class="content shadow">
-                    <div class="icon">
-                        <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                    </div>
-                    <label class="txt-white txt-shadow">
-                        ${name}
-                    </label>
+        <template id="shortcutTemplate">
+            <a id="" href="" type="uri" class="text element prevent-select uri linkDraggable"
+                target="_self" title="shortcut to...">
+            <div class="content shadow">
+                <div class="icon">
+                        <picture>
+                            <source srcset="" type="image/ico">
+                            <img src="assets/themes/default/icons/web-svgrepo-com.svg">
+                        </picture>
                 </div>
+                <label class="name txt-white txt-shadow">
+                        {LINK}
+                </label>
+            </div>
             </a>
-       </div>
-    </div>
+        </template>
 
-    SHORTCUT
-    <a id="${id}" href="${uri}" type="uri" class="text element prevent-select uri linkDraggable"
-       target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 10)}">
-       <div class="content shadow">
-           <div class="icon">
-               <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-           </div>
-           <label class="txt-white txt-shadow">
-              ${name}
-           </label>
-       </div>
-    </a>
-    -->
+        <template id="uriGroupTemplate">
+            <div id="${id}" href="${uri}" type="uriGroup" class="text element prevent-select uriGroup linkDraggable showCh ildren"
+            target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
+            <div class="content shadow">
+                <div class="icon">
+                        <picture>
+                            <source srcset="" type="image/ico">
+                            <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                        </picture>
+                </div>
+                <label class="txt-white-shadow name">
+                    {FOLDER}
+                </label>
+            </div>
+            <div class="children">
+            </div>
+            </div>
+        </template>
     </section>
 
     <!-- localhost -->
     <section id="server" class="listing">
-        <div class="title">
-            <h4 class="txt-white txt-shadow">Server</h4>
+        <div class="titleBar">
+            <div class="title txt-white txt-shadow">Localhost</div>
+            <div>
+                <button id="editShortcuts">edit</button>
+            </div>
         </div>
     </section>
+
+    <!-- modals -->
+    <dialog id="modal-createShortcut">
+        <div class="titleBar">
+            <div class="title txt-white txt-shadow">Content|</div>
+            <div>
+                <button onclick="closeModal('modal-createShortcut')">X</button>
+            </div>
+        </div>
+        <div>
+            <form action="">
+                <div></div>
+            </form>
+        </div>
+    </dialog>
 
     <footer>
         <a href="https://anon34mx.github.io/" class="txt-white">anon34</a>

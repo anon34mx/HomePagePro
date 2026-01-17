@@ -15,6 +15,19 @@ public class ShortcutsMapper {
         );
     }
 
+    public static Shortcuts toEntity(ShortcutsDTO dto){
+        System.out.println(dto);
+        Shortcuts sh=new Shortcuts();
+        sh.setId(dto.getId());
+        sh.setName(dto.getName());
+        sh.setUri(dto.getUri() != null ? dto.getUri() : "");
+        sh.setIcon(dto.getIcon() != null ? dto.getIcon() : "");
+        sh.setParentId(dto.getParentId());
+        sh.setFolder(dto.isFolder());
+        sh.setType(Shortcuts.Type.SHORTCUT);
+        return sh;
+    }
+
     public static String toHtmlString(Shortcuts shortcut){
         return ""+shortcut.getId()+" - "+shortcut.getName();
     }

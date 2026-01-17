@@ -157,9 +157,8 @@ window.editGroupsStop=function(){
     $('.uri').draggable( "destroy" );
 }
 window.editGroups=function(){
-    // $( ".uri" ).not(".uriGroup .uri").draggable({
     $( ".uri" ).draggable({
-        containment: "parent",
+        // containment: $("#shortcuts"),
         revert: true,
         // grid: [ 20, 20 ]
         cursor: "grabbing",
@@ -170,22 +169,21 @@ window.editGroups=function(){
     });
 
     $( ".uri" ).droppable({
-      accept: ".uri",
-      classes: {
-        // "ui-droppable-active": "ui-state-default"
-      },
-      drop: function( event, ui ) {
-        console.log("create group");
-        // $(this).remove();
-        // $(ui.draggable).remove();
-      }
-        // $( this )
-        //     .addClass( "ui-state-highlight" )
-        //     .find( "p" )
-        //     .html( "Dropped!" );
-        // }
+        accept: ".uri",
+        classes: {
+            "ui-droppable-active": "ui-state-highlight"
+        },
+        drop: function( event, ui ) {
+            console.log("create group");
+        },
+        accept: "#shortcuts .uri",
+        //   accept: "#shortcuts .uri > .linkDraggable",
     });
     $( "#shortcuts" ).droppable({
+        tolerance:"pointer",
+        classes: {
+            "ui-droppable-active": "ui-state-highlight"
+        },
         drop: function(event, ui){
             console.log("main group");
         }
@@ -208,6 +206,7 @@ window.renderShortcut=function(shortcut, target){
 
     clone.querySelector(".uri").id=shortcut.id;
     clone.querySelector(".uri").href=shortcut.uri;
+    clone.querySelector(".uri").title=shortcut.uri;
     clone.querySelector("label.name").textContent=shortcut.name;
     clone.querySelector("picture img").srcset=shortcut.icon;
 
@@ -227,4 +226,13 @@ window.renderFolder=function(folder){
 
     $("#shortcuts").append(clone);
     $("#"+folder.id).hover(showFolderContent,hideFolderContent);
+}
+
+window.showModal=function(modalId){
+    let modal=document.getElementById(modalId);
+    modal.showModal();
+}
+window.closeModal=function(modalId){
+    let modal=document.getElementById(modalId);
+    modal.close();
 }

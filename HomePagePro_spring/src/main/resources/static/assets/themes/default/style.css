@@ -19,6 +19,7 @@
 *{
     padding: 0;
     margin: 0;
+    outline: 1px solid tomato;
 }
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -109,6 +110,22 @@
 }
 .ui-helper-hidden-accessible{
     display: none !important;
+}
+
+dialog{
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff85;
+    backdrop-filter: var(--background-blur-hard);
+    border-radius: 1rem;
+    border: 1px solid white;
+    transition: 1s;
+}
+dialog:-internal-dialog-in-top-layer::backdrop {
+    backdrop-filter: var(--background-blur);
 }
 /* ****************************** */
 html,body{
@@ -231,8 +248,10 @@ header div.search-bar form input[type="search"]:focus{
     
 }
 
-section .title{
-    width: 100%;;
+.titleBar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 section h4{
     width: 100%;
@@ -391,6 +410,9 @@ section h4{
     border-radius: 0.8rem;
     transition: 0.5s;
     opacity: 0;
+}
+.uriGroup .children a{
+    height: fit-content;
 }
 
 

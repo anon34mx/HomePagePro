@@ -50,6 +50,9 @@ public class ShortcutsDTO {
         this.icon = icon;
     }
 
+    public ShortcutsDTO() {
+    }
+
     public ShortcutsDTO(
         Long id, boolean isFolder, String name, String uri, String icon, Long parentId
     ){
