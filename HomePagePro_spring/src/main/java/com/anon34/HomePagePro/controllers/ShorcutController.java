@@ -37,17 +37,17 @@ public class ShorcutController {
     }
 
     // INSERT
-    /*
-        {
-            "id": null,
-            "name": "new",
-            "icon": "https://www.new.com/favicon.ico",
-            "uri": "https://www.new.com/",
-            "parentId": null,
-            "content": [],
-            "folder": false
-        }
-    */
+        /*
+            {
+                "id": null,
+                "name": "new",
+                "icon": "https://www.new.com/favicon.ico",
+                "uri": "https://www.new.com/",
+                "parentId": null,
+                "content": [],
+                "folder": false
+            }
+        */
     @PostMapping("/shortcuts")
     public ShortcutsDTO postMethodName(@RequestBody ShortcutsDTO dto) {
         System.out.println("CONTRKLLER");

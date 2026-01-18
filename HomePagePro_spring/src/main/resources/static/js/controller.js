@@ -198,6 +198,10 @@ window.generateContent=function(){
             renderFolder(shortcut);
         }
     });
+
+    lhFiles.forEach(element=>{
+        renderShortcut(element,$("#server"));
+    })
 }
 
 window.renderShortcut=function(shortcut, target){
@@ -219,7 +223,7 @@ window.renderFolder=function(folder){
     clone.querySelector(".uriGroup").id=folder.id;
     clone.querySelector("label.name").textContent=folder.name;
 
-    console.log(folder);
+    // console.log(folder);
     folder.content.forEach(shortcut => {
         renderShortcut(shortcut, clone.querySelector(".children"));
     });
