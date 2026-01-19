@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${title}">Document</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <script src="/libs/jquery/jquery-3.7.1.min.js"></script>
     <script src="/libs/jquery/jquery-ui.js"></script>
@@ -19,6 +20,13 @@
         const se = [[${searchEngines}]];
         const shortcuts=[[${shortcuts}]];
         const lhFiles=[[${lhFiles}]];
+        var rclickTarget="";
+
+        Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
+            get: function(){
+                return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
+            }
+        });
     </script>
 </head>
 <body>
@@ -74,42 +82,6 @@
                 <button id="editShortcuts">edit</button>
             </div>
         </div>
-    
-        <template id="shortcutTemplate">
-            <a id="" href="" type="uri" class="text element prevent-select uri linkDraggable"
-                target="_self" title="shortcut to...">
-            <div class="content shadow">
-                <div class="icon">
-                        <picture>
-                            <source srcset="" type="image/ico">
-                            <img src="assets/themes/default/icons/web-svgrepo-com.svg">
-                        </picture>
-                </div>
-                <label class="name txt-white txt-shadow">
-                        {LINK}
-                </label>
-            </div>
-            </a>
-        </template>
-
-        <template id="uriGroupTemplate">
-            <div id="${id}" href="${uri}" type="uriGroup" class="text element prevent-select uriGroup linkDraggable showCh ildren"
-            target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
-            <div class="content shadow">
-                <div class="icon">
-                        <picture>
-                            <source srcset="" type="image/ico">
-                            <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
-                        </picture>
-                </div>
-                <label class="txt-white-shadow name">
-                    {FOLDER}
-                </label>
-            </div>
-            <div class="children">
-            </div>
-            </div>
-        </template>
     </section>
 
     <!-- localhost -->
@@ -117,6 +89,7 @@
         <div class="titleBar">
             <div class="title txt-white txt-shadow">Localhost</div>
             <div>
+                <button id="">⭐</button>
                 <button id="">🚫</button>
             </div>
         </div>
@@ -132,7 +105,29 @@
         </div>
         <div>
             <form action="">
-                <div></div>
+                <div>
+                    <label for="">id</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label for="">Name</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label for="">Icon</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label for="">uri</label>
+                    <input type="text">
+                </div>
+                <div>
+                    <label for="">Type</label>
+                    <input id="radioFolder" type="radio" name="type" value="Folder">
+                    <label for="radioFolder">Folder</label>
+                    <input id="radioFile" type="radio" name="type" value="File">
+                    <label for="radioFile">File</label>
+                </div>
             </form>
         </div>
     </dialog>
@@ -141,5 +136,56 @@
         <a href="https://anon34mx.github.io/" class="txt-white">anon34</a>
         <button>conf</button>
     </footer>
+
+
+    <template id="shortcutTemplate">
+        <a id="" href="" type="uri" class="text element prevent-select uri linkDraggable"
+            target="_self" title="shortcut to..." oncon textmenu="console.log('context menu');return false;">
+        <div class="content shadow">
+            <div class="icon">
+                    <picture>
+                        <source srcset="">
+                        <img src="assets/themes/default/icons/web-svgrepo-com.svg" error="console.log('as');">
+                    </picture>
+            </div>
+            <label class="name txt-white txt-shadow">
+                    {LINK}
+            </label>
+        </div>
+        </a>
+    </template>
+
+    <template id="uriGroupTemplate">
+        <div id="${id}" href="${uri}" type="uriGroup" class="text element prevent-select uriGroup linkDraggable showCh ildren"
+        target="_self" title="shortcut to ${name}" th:each="i : ${#numbers.sequence(1, 1)}">
+        <div class="content shadow">
+            <div class="icon">
+                    <picture>
+                        <source srcset="" type="image/ico">
+                        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                    </picture>
+            </div>
+            <label class="txt-white-shadow name">
+                {FOLDER}
+            </label>
+        </div>
+        <div class="children">
+        </div>
+        </div>
+    </template>
+
+    <ol id="contextMenu" class="contextMenu" oncontextmenu="return false;" target="">
+        <!-- SHORTCUTS -->
+        <li id="OpenLinkNewTab" class="uri" onclick="openElement('uriNewTab')">Open in new tab</li>
+        <li id="EditLink" class="uri" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>
+        
+        <li id="EditGroup" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit group</li>
+
+        <!-- FOLDERS -->
+        <li id="" class="folder" onclick="window.location='lastElement.href'">Open</li>
+        <li id="" class="folder" onclick="event.preventDefault();launchFolder()">File Explorer</li>
+        <!-- FILES -->
+        <li id="" class="file" onclick="event.preventDefault();window.location.href='https'">Open in browser</li>
+    </ol>
 </body>
 </html>

@@ -15,6 +15,7 @@
         1px 1px 3px #00000082,
         1px -1px 3px #00000082
         ;
+    --white: rgb(245, 245, 245);
 }
 *{
     padding: 0;
@@ -348,6 +349,7 @@ section h4{
     cursor: pointer;
     text-decoration: none;
     color: white;
+    pointer-events: none;
 }
     .element .content:hover,
     .element:focus .content{
@@ -425,6 +427,29 @@ footer{
     padding: 0.25rem 0.5rem;
 }
 
+ol.contextMenu{
+    display: block;
+    position: absolute;
+    width: 200px;
+    background-color: var(--white);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+ol.contextMenu li{
+    padding: 3px 6px;
+    border-bottom: 1px solid gray;
+}
+ol.contextMenu li:nth-last-of-type(1){
+    border-bottom: none;
+}
+ol.contextMenu li:hover{
+    background-color: blue;
+    color: var(--white);
+    cursor: pointer;
+    border: 1px solid gray;
+    border-style: dotted;
+}
 /*
 @keyframes gradientShift {
   0% {

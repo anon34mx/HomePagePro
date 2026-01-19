@@ -47,6 +47,27 @@ $(document).ready(function() {
         event.preventDefault();
         editGroups();
     });
+    $("html").on("click", ()=>{
+        switch (event.which) {
+            case 1:
+                // alert('Left Mouse button pressed.');
+                contextmenuHide();
+                break;
+            case 2:
+                // alert('Middle Mouse button pressed.');
+                break;
+            case 3:
+                // alert('Right Mouse button pressed.');
+                break;
+            default:
+                // alert('You have a strange Mouse!');
+        }
+    })
+
+    // CONTEXT MENU
+    // $('.uriGroup, .uri').contextmenu(function() {
+	// 	return false;
+	// });
 
     // INITIALIZE THINGS
     generateContent();
@@ -212,9 +233,12 @@ window.renderShortcut=function(shortcut, target){
     clone.querySelector(".uri").href=shortcut.uri;
     clone.querySelector(".uri").title=shortcut.uri;
     clone.querySelector("label.name").textContent=shortcut.name;
-    clone.querySelector("picture img").srcset=shortcut.icon;
+    clone.querySelector("picture source").srcset=shortcut.icon;
 
     $(target).append(clone);
+    $("#"+shortcut.id).contextmenu(()=>{
+        return contextmenuShow(event)
+    });
 }
 window.renderFolder=function(folder){
     var template=document.querySelector("#uriGroupTemplate");
@@ -230,6 +254,9 @@ window.renderFolder=function(folder){
 
     $("#shortcuts").append(clone);
     $("#"+folder.id).hover(showFolderContent,hideFolderContent);
+    $("#"+folder.id).contextmenu(()=>{
+        return contextmenuShow(event)
+    });
 }
 
 window.showModal=function(modalId){
@@ -239,4 +266,33 @@ window.showModal=function(modalId){
 window.closeModal=function(modalId){
     let modal=document.getElementById(modalId);
     modal.close();
+}
+
+// CONTEXT MENU
+window.contextmenuShow=function(event){
+    console.log("context menu");
+    console.log(this);
+    console.log(event);
+
+    // $("#contextMenu").attr("target",event.target.id);
+    rclickTarget=event.target;
+
+    posX=(event.pageX); // POSICION DEL CLICK
+    posY = (event.pageY); //- $("body").scrollTop(); // POSICION DEL CLICK
+
+    if(posX+$("#contextMenu")[0].offsetWidth+10 > window.innerWidth){
+        posX=posX-$("#contextMenu")[0].offsetWidth;
+    }
+
+    console.log(posX, posY);
+    console.log();
+
+    $("#contextMenu").css("display", "block")
+    $("#contextMenu").css("top", posY + "px")
+    $("#contextMenu").css("left", posX + "px")
+    // $("#contextMenu").css("display", "block")
+    return false;
+}
+window.contextmenuHide=function(){
+    $("#contextMenu").css("display", "none");
 }
