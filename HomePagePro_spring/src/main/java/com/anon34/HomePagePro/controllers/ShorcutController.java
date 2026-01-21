@@ -1,5 +1,8 @@
 package com.anon34.HomePagePro.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.awt.Desktop;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -70,4 +75,28 @@ public class ShorcutController {
     public String deleteShortcut(@PathVariable Long id){
         return "";
     }
+
+    @GetMapping("/openExplorer/{path}")
+    public String getMethodName(@PathVariable String path){
+        String os = System.getProperty("os.name").toLowerCase();
+        String ruta = "C:\\";
+
+        try {
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec(new String[]{"explorer", ruta});
+                // Runtime.getRuntime().exec(new String[]{"explorer", "/select,", ruta});
+                // Runtime.getRuntime().exec(new String("explorer \"c:\\\""));
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec(new String[]{"open", ruta});
+            } else if (os.contains("nix") || os.contains("nux")) {
+                Runtime.getRuntime().exec(new String[]{"xdg-open", ruta});
+            } else {
+                System.out.println("Sistema operativo no soportado.");
+            }
+        } catch (IOException e) { e.printStackTrace();
+
+        }
+        return "";
+    }
+    
 }

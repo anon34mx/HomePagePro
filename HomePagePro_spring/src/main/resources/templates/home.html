@@ -74,13 +74,16 @@
     </header>
     
     <!-- Shortcuts -->
-    <section id="shortcuts" class="listing">
+    <section id="shortcuts" class="">
         <div class="titleBar">
             <div class="title txt-white txt-shadow">Shortcuts</div>
             <div>
-                <button id="createShortcuts" onclick="showModal('modal-createShortcut')">add</button>
-                <button id="editShortcuts">edit</button>
+                <button id="createShortcuts" onclick="showModal('modal-createShortcut')" class="mx-3 btn-primary">add</button>
+                <button id="editShortcuts" class="mx-3 btn-primary">edit</button>
             </div>
+        </div>
+        <div class="shortcutsContainer listing">
+
         </div>
     </section>
 
@@ -103,33 +106,61 @@
                 <button onclick="closeModal('modal-createShortcut')">X</button>
             </div>
         </div>
-        <div>
-            <form action="">
-                <div>
-                    <label for="">id</label>
-                    <input type="text">
+        <form action="">
+            <div class="row col-10 mx-auto py-4">
+                <div class="row col-12 mb-2">
+                    <div class="col-6">
+                        <label for="">id</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="col-12">
+                    </div>
                 </div>
-                <div>
-                    <label for="">Name</label>
-                    <input type="text">
+                <div class="row col-12 mb-2">
+                    <div class="col-6">
+                        <label for="">Name</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="col-12">
+                    </div>
                 </div>
-                <div>
-                    <label for="">Icon</label>
-                    <input type="text">
+                <div class="row col-12 mb-2">
+                    <div class="col-6">
+                        <label for="">Icon</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" placeholder="icon" class="col-12">
+                    </div>
                 </div>
-                <div>
-                    <label for="">uri</label>
-                    <input type="text">
+                <div class="row col-12 mb-2">
+                    <div class="col-6">
+                        <label for="">uri</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="col-12">
+                    </div>
                 </div>
-                <div>
-                    <label for="">Type</label>
-                    <input id="radioFolder" type="radio" name="type" value="Folder">
-                    <label for="radioFolder">Folder</label>
-                    <input id="radioFile" type="radio" name="type" value="File">
-                    <label for="radioFile">File</label>
+                <div class="row col-12 mb-2">
+                    <div class="col-6">
+                        <label for="">Type</label>
+                    </div>
+                    <div class="col-6">
+                        <input id="radioFolder" type="radio" name="type" value="Folder">
+                        <label for="radioFolder">Folder</label>
+                        <input id="radioFile" type="radio" name="type" value="File">
+                        <label for="radioFile">File</label>
+                    </div>
                 </div>
-            </form>
-        </div>
+                <div class="row col-12 mb-2">
+                    <button class="mx-3 btn-primary">
+                        Save
+                    </button>
+                    <button class="mx-3 btn-primary">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
     </dialog>
 
     <footer>
@@ -165,7 +196,7 @@
                         <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
                     </picture>
             </div>
-            <label class="txt-white-shadow name">
+            <label class="name txt-white txt-shadow">
                 {FOLDER}
             </label>
         </div>
@@ -174,7 +205,7 @@
         </div>
     </template>
 
-    <ol id="contextMenu" class="contextMenu" oncontextmenu="return false;" target="">
+    <ol id="contextMenu" class="contextMenu" oncontextmenu="return false;" target="" style="display: none;">
         <!-- SHORTCUTS -->
         <li id="OpenLinkNewTab" class="uri" onclick="openElement('uriNewTab')">Open in new tab</li>
         <li id="EditLink" class="uri" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>

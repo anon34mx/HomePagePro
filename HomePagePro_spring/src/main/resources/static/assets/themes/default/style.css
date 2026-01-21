@@ -49,6 +49,10 @@
         1px -1px 8px #3131319d,
         6px 6px 8px #3131319d;
 }
+.mx-auto{
+    margin-left: auto;
+    margin-right: auto;
+}
 .mx-1{margin:0 0.25rem;}
 .mx-2{margin:0 0.5rem;}
 .mx-3{margin:0 0.75rem;}
@@ -58,6 +62,14 @@
 .my-2{margin:0.5rem 0;}
 .my-3{margin:0.75rem    0;}
 .my-4{margin:1.0rem 0;}
+.mb-1{margin-bottom:0.25rem;}
+.mb-2{margin-bottom:0.5rem;}
+.mb-3{margin-bottom:0.75rem;}
+.mb-4{margin-bottom:1.0rem;}
+.mt-1{margin-top:0.25rem;}
+.mt-2{margin-top:0.5rem;}
+.mt-3{margin-top:0.75rem;}
+.mt-4{margin-top:1.0rem;}
 
 .px-1{padding:0 0.25rem;}
 .px-2{padding:0 0.5rem;}
@@ -69,6 +81,69 @@
 .py-2{padding:0.50rem 0;}
 .py-3{padding:0.75rem 0;}
 .py-4{padding:1.0rem 0;}
+.col-1 {
+  flex: 0 0 auto;
+  width: 8.33333333%;
+}
+
+.col-2 {
+  flex: 0 0 auto;
+  width: 16.66666667%;
+}
+
+.col-3 {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.col-4 {
+  flex: 0 0 auto;
+  width: 33.33333333%;
+}
+
+.col-5 {
+  flex: 0 0 auto;
+  width: 41.66666667%;
+}
+
+.col-6 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.col-7 {
+  flex: 0 0 auto;
+  width: 58.33333333%;
+}
+
+.col-8 {
+  flex: 0 0 auto;
+  width: 66.66666667%;
+}
+
+.col-9 {
+  flex: 0 0 auto;
+  width: 75%;
+}
+
+.col-10 {
+  flex: 0 0 auto;
+  width: 83.33333333%;
+}
+
+.col-11 {
+  flex: 0 0 auto;
+  width: 91.66666667%;
+}
+
+.col-12 {
+  flex: 0 0 auto;
+  width: 100%;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
 
 ::-webkit-scrollbar {
   background-color: transparent;
@@ -328,8 +403,15 @@ section h4{
 }
 
 /* shortcuts */
+.element{
+    text-decoration: none;
+    margin: 0.5rem 0.5rem;
+}
 .element:focus{
     outline: none;
+}
+.element .content *{
+    pointer-events: none;
 }
 .element .content{
     font-size: clamp(0.9rem, calc(0.6rem + 0.4vw), 1rem);
@@ -349,7 +431,7 @@ section h4{
     cursor: pointer;
     text-decoration: none;
     color: white;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
     .element .content:hover,
     .element:focus .content{
@@ -380,7 +462,7 @@ section h4{
     text-align: center;
     border-radius: 0 0 0.4rem 0.4rem;
     line-break: anywhere;
-    pointer-events: none;
+    
 }
 
 .uriGroup{
@@ -393,8 +475,16 @@ section h4{
     z-index: 1;
     border:var(--border);
     pointer-events: initial;
-    /* opacity: 1; */
+    opacity: 1;
+    overflow-x: hidden;
 }
+/* .uriGroup.showChildren .children *{
+    opacity: 1;
+}
+
+.uriGroup .children *{
+    opacity: 0;
+} */
 .uriGroup .children{
     position: absolute;
     left: 0;
@@ -435,6 +525,7 @@ ol.contextMenu{
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow-x: hidden;
+    z-index: 10;
 }
 ol.contextMenu li{
     padding: 3px 6px;

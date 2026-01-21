@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.uriGroup').hover(showFolderContent,hideFolderContent);
+
     $("#searchInput").on("keyup", googleAutocomplete);
     $("#searchInput").on("focusin", ()=>{
         hideSearchEnginesList();
@@ -50,19 +50,19 @@ $(document).ready(function() {
     $("html").on("click", ()=>{
         switch (event.which) {
             case 1:
-                // alert('Left Mouse button pressed.');
+                // console.log('Left Mouse button pressed.');
                 contextmenuHide();
                 break;
             case 2:
-                // alert('Middle Mouse button pressed.');
+                // console.log('Middle Mouse button pressed.');
                 break;
             case 3:
-                // alert('Right Mouse button pressed.');
+                // console.log('Right Mouse button pressed.');
                 break;
             default:
-                // alert('You have a strange Mouse!');
+                // console.log('You have a strange Mouse!');
         }
-    })
+    });
 
     // CONTEXT MENU
     // $('.uriGroup, .uri').contextmenu(function() {
@@ -74,8 +74,8 @@ $(document).ready(function() {
 });
 
 window.showFolderContent=function(){
-    $(this).addClass("showChildren");
-    $(this).find(".children").css("opacity","1");
+    $(this).toggleClass("showChildren");
+    // $(this).find(".children").css("opacity","1");
     if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
         console.log("no cabe");
         $(this).find(".container").css("left", "-100%");
@@ -189,8 +189,9 @@ window.editGroups=function(){
         }
     });
 
-    $( ".uri" ).droppable({
-        accept: ".uri",
+    $( "#shortcuts .shortcutsContainer.listing > .uri" ).not(".children").droppable({
+        accept: "#shortcuts .shortcutsContainer.listing > .uri",
+        greedy: true,
         classes: {
             "ui-droppable-active": "ui-state-highlight"
         },
@@ -198,10 +199,11 @@ window.editGroups=function(){
             console.log("create group");
         },
         accept: "#shortcuts .uri",
-        //   accept: "#shortcuts .uri > .linkDraggable",
     });
     $( "#shortcuts" ).droppable({
-        tolerance:"pointer",
+        // tolerance:"pointer",
+        accept : ".uriGroup .children .uri",
+        greedy: true,
         classes: {
             "ui-droppable-active": "ui-state-highlight"
         },
@@ -209,38 +211,60 @@ window.editGroups=function(){
             console.log("main group");
         }
     });
+    $( "#shortcuts .uriGroup" ).droppable({
+        accept: "#shortcuts > .uri",
+        greedy: true,
+        classes: {
+            "ui-droppable-active": "ui-state-highlight"
+        },
+        drop: function( event, ui ) {
+            console.log("add to group");
+        },
+        accept: "#shortcuts .uri",
+    });
 }
 
-window.generateContent=function(){
-    shortcuts.forEach(shortcut => {
+window.generateContent=async function(){
+    shortcuts.forEach(async shortcut => {
         if(shortcut.folder==false){
-            renderShortcut(shortcut,$("#shortcuts"));
+            await renderShortcut(shortcut,$("#shortcuts .shortcutsContainer"));
         }else{
-            renderFolder(shortcut);
+            await renderFolder(shortcut);
         }
     });
 
-    lhFiles.forEach(element=>{
-        renderShortcut(element,$("#server"));
+    lhFiles.forEach(async element=>{
+        await renderShortcut(element,$("#server"),"local");
     })
 }
 
-window.renderShortcut=function(shortcut, target){
+window.renderShortcut=async function(shortcut, target, type){
     var template=document.querySelector("#shortcutTemplate");
     let clone = template.content.cloneNode(true);
+    let id=shortcut.id;
 
-    clone.querySelector(".uri").id=shortcut.id;
+    if(type!="local"){
+        clone.querySelector(".uri").id=id;
+    }else{
+        id=new Date().getTime();
+        clone.querySelector(".uri").id=id;
+        if(shortcut.isFolder){
+            clone.querySelector(".uri").attributes.type.value="folder";
+        }else{
+            clone.querySelector(".uri").attributes.type.value="file";
+        }
+    }
     clone.querySelector(".uri").href=shortcut.uri;
     clone.querySelector(".uri").title=shortcut.uri;
     clone.querySelector("label.name").textContent=shortcut.name;
     clone.querySelector("picture source").srcset=shortcut.icon;
 
-    $(target).append(clone);
-    $("#"+shortcut.id).contextmenu(()=>{
+    await $(target).append(clone);
+    await $("#"+id).contextmenu(()=>{
         return contextmenuShow(event)
     });
 }
-window.renderFolder=function(folder){
+window.renderFolder=async function(folder){
     var template=document.querySelector("#uriGroupTemplate");
     let clone = template.content.cloneNode(true);
 
@@ -248,14 +272,15 @@ window.renderFolder=function(folder){
     clone.querySelector("label.name").textContent=folder.name;
 
     // console.log(folder);
-    folder.content.forEach(shortcut => {
-        renderShortcut(shortcut, clone.querySelector(".children"));
+    folder.content.forEach(async shortcut => {
+        await renderShortcut(shortcut, clone.querySelector(".children"));
     });
 
-    $("#shortcuts").append(clone);
-    $("#"+folder.id).hover(showFolderContent,hideFolderContent);
-    $("#"+folder.id).contextmenu(()=>{
-        return contextmenuShow(event)
+    await $("#shortcuts .shortcutsContainer").append(clone);
+    // await $("#"+folder.id).hover(showFolderContent,hideFolderContent);
+    await $("#"+folder.id).on("click", showFolderContent);
+    await $("#"+folder.id).contextmenu(()=>{
+        return contextmenuShow(event);
     });
 }
 
@@ -272,10 +297,10 @@ window.closeModal=function(modalId){
 window.contextmenuShow=function(event){
     console.log("context menu");
     console.log(this);
-    console.log(event);
+    console.log(event.target.parentElement);
 
     // $("#contextMenu").attr("target",event.target.id);
-    rclickTarget=event.target;
+    rclickTarget=event.target.parentElement;
 
     posX=(event.pageX); // POSICION DEL CLICK
     posY = (event.pageY); //- $("body").scrollTop(); // POSICION DEL CLICK
@@ -295,4 +320,24 @@ window.contextmenuShow=function(event){
 }
 window.contextmenuHide=function(){
     $("#contextMenu").css("display", "none");
+}
+
+function openElement(action){
+	switch (action) {
+		case "uri":
+			rclickTarget.click();
+			break;
+		case "uriNewTab":
+			window.open(rclickTarget.href, '_blank');
+			break;
+		case "execute":
+			
+			break;
+		case "inExplorer":
+			
+			break;
+	
+		default:
+			break;
+	}
 }
