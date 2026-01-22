@@ -112,8 +112,30 @@ public class ShorcutController {
     }
     
 
+    /*
+    TEST raw json POST
+        {
+            "shortcut1":{
+                "id": 1,
+                "name": "new",
+                "icon": "https://www.new.com/favicon.ico",
+                "uri": "https://www.new.com/",
+                "parentId": null,
+                "content": [],
+                "folder": false
+            },
+            "shortcut2":{
+                "id": 3,
+                "name": "new2",
+                "icon": "https://www.new.com/favicon.ico",
+                "uri": "https://www.new.com/",
+                "parentId": null,
+                "content": [],
+                "folder": false
+            }
+        }
+    */
     @PostMapping("/shortcuts/merge")
-    // public ShortcutsDTO merge(@RequestBody ShortcutsDTO shortcut1, @RequestBody ShortcutsDTO shortcut2) {
     public ShortcutsDTO merge(@RequestBody Map<String, ShortcutsDTO> shortcuts) {
         //create group
         ShortcutsDTO group = new ShortcutsDTO();
