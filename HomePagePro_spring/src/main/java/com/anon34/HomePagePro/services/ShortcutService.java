@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,27 @@ public class ShortcutService {
         Shortcuts inserted=repo_shortCuts.save(sh);
         return ShortcutsMapper.toDTO(inserted);
     }
-    // public List<ShortcutsDTO> getTree(){
-    //     return repo_shortCuts.getTreeShortcuts().stream().map(ShortcutsMapper::toDTO)
-    //     .collect(Collectors.toList());
-    // }
+
+    public ShortcutsDTO serv_update(ShortcutsDTO dto, Long id){
+        Optional<Shortcuts> found; // = repo_shortCuts.findById(id);
+        if(id > 0){
+            found = repo_shortCuts.findById(id);
+        }else{
+            found = repo_shortCuts.findById(dto.getId());
+        }
+        if(found.isPresent()){
+            Shortcuts sh=found.get();
+            sh.setName(dto.getName());
+            sh.setIcon(dto.getIcon());
+            sh.setParentId(dto.getParentId());
+            sh.setUri(dto.getUri());
+
+            Shortcuts updated=repo_shortCuts.save(sh);
+            return ShortcutsMapper.toDTO(updated);
+        }else{
+            throw new RuntimeException("Shortcut not found");
+        }
+    }
 
     // this
     public List<ShortcutsDTO> getTree(){

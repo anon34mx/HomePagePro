@@ -197,6 +197,12 @@ window.editGroups=function(){
         },
         drop: function( event, ui ) {
             console.log("create group");
+            // console.log(event.target);
+            // console.log(ui.draggable[0]);
+            let sh1=filterShortcuts(shortcuts, event.target.id);
+            let sh2=filterShortcuts(shortcuts, ui.draggable[0].id);
+            console.log(sh1, sh2);
+            createGroup(sh1, sh2);
         },
         accept: "#shortcuts .uri",
     });
@@ -340,4 +346,32 @@ function openElement(action){
 		default:
 			break;
 	}
+}
+
+function filterShortcuts(list, id){
+    return list.filter(sh=>{
+        return sh.id == id ///search parameter
+    })[0];
+}
+
+window.createGroup=async function(shortcut1, shortcut2){
+    $.ajax({
+        type: "POST",
+        url:"/shortcuts/merge",
+        data: JSON.stringify({
+            shortcut1,
+            shortcut2
+        }),
+        contentType: "application/json",
+        success: function(response){
+            console.log("Greoup created", response);
+
+            // move elements
+            return true;
+        },
+        error: function(error){
+            console.error("Error creating group", error);
+            return false;
+        }
+    });
 }

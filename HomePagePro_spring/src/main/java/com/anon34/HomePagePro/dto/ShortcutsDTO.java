@@ -2,11 +2,13 @@ package com.anon34.HomePagePro.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.anon34.HomePagePro.entities.Shortcuts.Type;
 
 
 public class ShortcutsDTO {
     private Long id;
     private boolean isFolder;
+    private Type type;
     private String name;
     private String uri;
     private String icon;
@@ -30,6 +32,12 @@ public class ShortcutsDTO {
     }
     public void setFolder(boolean isFolder) {
         this.isFolder = isFolder;
+    }
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
     }
     public String getName() {
         return name;

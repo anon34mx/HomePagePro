@@ -37,10 +37,10 @@ public class Shortcuts {
     @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="uri", nullable=false)
+    @Column(name="uri", nullable=true)
     private String uri;
 
-    @Column(name="icon", nullable=false)
+    @Column(name="icon", nullable=true)
     private String icon;
 
     public enum Type{
@@ -48,7 +48,7 @@ public class Shortcuts {
         SHORTCUT,
         OTHER
     }
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = true)
     @Enumerated(EnumType.ORDINAL)
     private Type type;
 }

@@ -3,6 +3,7 @@ package com.anon34.HomePagePro.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Desktop;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.anon34.HomePagePro.entities.Shortcuts.Type;
 
 
 
@@ -29,10 +30,8 @@ public class ShorcutController {
 
     // ALL
     @GetMapping("/shortcuts")
-    public Map<String, Object> getShortcuts(){
-        Map<String, Object> shortcuts = new java.util.HashMap<>();
-        shortcuts.put("About","https://anon34mx.github.io/");
-        return shortcuts;
+    public List<ShortcutsDTO> getShortcuts(){
+        return service.all();
     }
 
     // BY ID
@@ -58,8 +57,21 @@ public class ShorcutController {
         System.out.println("CONTRKLLER");
         System.out.println(dto);
 
-        // return dto;
-        return service.serv_insert(dto);
+        if(!dto.isFolder()){
+            if(dto.getName()==null || dto.getName().isEmpty()){
+                throw new IllegalArgumentException("VALIDATE NAME");
+            }
+            return service.serv_insert(dto);
+        }else{
+            if(dto.getName()==null || dto.getName().isEmpty()){
+                throw new IllegalArgumentException("VALIDATE NAME");
+            }
+            if(dto.getUri()==null || dto.getUri().isEmpty()){
+                throw new IllegalArgumentException("VALIDATE URI");
+            }
+            return service.serv_insert(dto);
+        }
+        // return service.serv_insert(dto);
     }
 
     // UPDATE
@@ -97,6 +109,41 @@ public class ShorcutController {
 
         }
         return "";
+    }
+    
+
+    @PostMapping("/shortcuts/merge")
+    // public ShortcutsDTO merge(@RequestBody ShortcutsDTO shortcut1, @RequestBody ShortcutsDTO shortcut2) {
+    public ShortcutsDTO merge(@RequestBody Map<String, ShortcutsDTO> shortcuts) {
+        //create group
+        ShortcutsDTO group = new ShortcutsDTO();
+        group.setFolder(true);  
+        group.setName("New Group");
+        group.setContent(null);
+        group.setIcon(null);
+        group.setParentId(null);
+        group.setUri(null);
+        group.setType(Type.FOLDER);
+        group.setFolder(true);
+        group = service.serv_insert(group);
+        
+
+        // add both to group
+        System.out.println("UPDATE SHORTCUTS");
+
+        shortcuts.get("shortcut1").setParentId(group.getId());
+        service.serv_update(shortcuts.get("shortcut1"), -1L);
+        shortcuts.get("shortcut2").setParentId(group.getId());
+        service.serv_update(shortcuts.get("shortcut2"), -1L);
+        
+        return group;
+    }
+    
+    @PostMapping("/shortcuts/removeFromGroup")
+    public String removeFromGroup(@RequestBody ShortcutsDTO shortcut) {
+        //remove (changeparentId to null)
+        
+        return "entity";
     }
     
 }

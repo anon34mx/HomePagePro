@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,9 @@ public interface Repo_shortCuts extends JpaRepository<Shortcuts, Long>{
                 ") SELECT id, parent_id, name, is_folder, uri, icon, type FROM cte ORDER BY is_folder DESC,id, parent_id=id",
         nativeQuery = true
     )
-    List<Shortcuts> getTreeShortcuts();
+    List<Shortcuts> getTreeShortcuts(
+        // @Param("parentId") Long parentId
+    );
     
     // public default List<Shortcuts> getTreeShortcuts(){
     //     String tree_query = """
