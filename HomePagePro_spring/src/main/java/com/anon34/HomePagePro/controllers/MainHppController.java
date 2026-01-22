@@ -46,7 +46,7 @@ public class MainHppController {
         System.out.println(shortcuts.toString()+"\n");
         
         List<Map<String, Object>> lhFiles=localhostService.listLocalhostFiles();
-        System.out.println("\n++\n"+lhFiles);
+        // System.out.println("\n+++\n"+lhFiles);
         model.addAttribute("appName", appName);
         model.addAttribute("appVersion", appVersion);
         model.addAttribute("currentTheme", "default");

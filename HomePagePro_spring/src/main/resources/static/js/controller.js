@@ -215,6 +215,13 @@ window.editGroups=function(){
         },
         drop: function(event, ui){
             console.log("main group");
+            console.log(event.target);
+            console.log(ui.draggable[0]);
+
+            let sh=$(ui.draggable[0]).clone();
+            console.log(sh);
+            $(ui.draggable[0]).remove()
+            $("#shortcuts .shortcutsContainer").append(sh[0]);
         }
     });
     $( "#shortcuts .uriGroup" ).droppable({
@@ -363,8 +370,17 @@ window.createGroup=async function(shortcut1, shortcut2){
             shortcut2
         }),
         contentType: "application/json",
-        success: function(response){
-            console.log("Greoup created", response);
+        success: async function(response){
+            console.log("Group created", response);
+            await renderFolder(response);
+
+            let sh1=$("#"+shortcut1.id).clone();
+            await $("#"+shortcut1.id).remove();
+            await $("#"+response.id+" .children").append($(sh1));
+            
+            let sh2=$("#"+shortcut2.id).clone();
+            await $("#"+shortcut2.id).remove();
+            await $("#"+response.id+" .children").append($(sh2));
 
             // move elements
             return true;
@@ -373,5 +389,12 @@ window.createGroup=async function(shortcut1, shortcut2){
             console.error("Error creating group", error);
             return false;
         }
+    });
+}
+
+window.removeShFromGroup=function(event){
+    $.ajax({
+        type:"POOST",
+        url:"/shortcuts/removeFromGroup",
     });
 }

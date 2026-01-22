@@ -15,14 +15,14 @@ public interface Repo_shortCuts extends JpaRepository<Shortcuts, Long>{
     public static final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     @Query(value = "WITH RECURSIVE cte (id, parent_id, name, is_folder, uri, icon, type) AS ( " +
-                "SELECT s.id, s.parent_id, s.name, s.is_folder, s.uri, s.icon, s.type FROM shortcuts s WHERE s.parent_id IS NULL " +
-                "UNION ALL " +
-                "SELECT child.id, child.parent_id, child.name, child.is_folder, child.uri, child.icon, child.type FROM shortcuts child INNER JOIN cte ON cte.id = child.parent_id " +
-                ") SELECT id, parent_id, name, is_folder, uri, icon, type FROM cte ORDER BY is_folder DESC,id, parent_id=id",
+            "SELECT s.id, s.parent_id, s.name, s.is_folder, s.uri, s.icon, s.type FROM shortcuts s WHERE s.parent_id IS :parent_id " +
+            "UNION ALL " +
+            "SELECT child.id, child.parent_id, child.name, child.is_folder, child.uri, child.icon, child.type FROM shortcuts child INNER JOIN cte ON cte.id = child.parent_id " +
+            ") SELECT id, parent_id, name, is_folder, uri, icon, type FROM cte ORDER BY is_folder DESC,id, parent_id=id",
         nativeQuery = true
     )
     List<Shortcuts> getTreeShortcuts(
-        // @Param("parentId") Long parentId
+        @Param("parent_id") String parentId
     );
     
     // public default List<Shortcuts> getTreeShortcuts(){
