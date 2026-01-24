@@ -17,25 +17,21 @@ $(document).ready(function() {
     );
 
     $(".searchEnginesList").on("mouseenter", function(){
-        console.log("mouse enter");
         hideSearchEnginesList();
     });
     $(".searchEnginesList").on("mouseleave", function(){
-        console.log("mouse leave");
         hideSearchEnginesList();
     });
     $(".searchEnginesList li button").on("focusout", function(){
         // hideSearchEnginesList();
         let element=this.parentElement;
         let parent=this.parentElement.parentElement;
-        console.log(element, parent, element===parent.lastElementChild);
         if (element===parent.lastElementChild){
             hideSearchEnginesList();
         }
     });
     $(".searchEnginesList li button").on("click", function(){
         event.preventDefault();
-        // console.log(this, this.form)
         validateSearch(
             $(this).attr("uri"),
             $(this).attr("parameter"),
@@ -50,7 +46,6 @@ $(document).ready(function() {
     $("html").on("click", ()=>{
         switch (event.which) {
             case 1:
-                // console.log('Left Mouse button pressed.');
                 contextmenuHide();
                 break;
             case 2:
@@ -74,10 +69,15 @@ $(document).ready(function() {
 });
 
 window.showFolderContent=function(){
-    $(this).toggleClass("showChildren");
+    
+    if($(this).hasClass("showChildren")){
+        $(".showChildren").removeClass("showChildren");
+    }else{
+        $(".showChildren").removeClass("showChildren");
+        $(this).addClass("showChildren");
+    }
     // $(this).find(".children").css("opacity","1");
     if ($(this).offset().left + $(this).width()*2+20 > window.innerWidth){
-        console.log("no cabe");
         $(this).find(".container").css("left", "-100%");
     }else{
         $(this).find(".container").css("left", "100%");
@@ -98,12 +98,6 @@ window.googleAutocomplete=async function(){
         type: 'GET',
         dataType: 'jsonp',
         success: function (data) {
-            // console.log(data);
-            // var suggestions=null;
-            // if(typeof(temp1[0])){
-            //     console.log("usar 1");
-            //     suggestions=data[1];
-            // }
             $( "#searchInput" ).autocomplete({
                 source: data[1],
                 select: function( event, ui ) {
@@ -126,7 +120,6 @@ window.validateSearch=async function(searchEngine,parameterName,form){
 	// var isIP=search.match(/[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}(:[0-9]{1,5})?/);
 	var isIP=search.match(/^(?!\.)(http:\/\/)?([0-9]{1,3}\.){3}[0-9]{1,3}((:[0-9]{1,5}(\/)?)?(\/.{1,}$)?|(\/)?)?$/);
 	if(isIP && search.match(/\ /)){
-        console.log("IP detected");
         window.location.href="http://"+search; // GO
         return true;
 	}
@@ -137,25 +130,21 @@ window.validateSearch=async function(searchEngine,parameterName,form){
         search.match(/^mailto:(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 		){
 		//IS URI
-		console.log("URI https");
 		window.location.href=search;
         return true;
 	}
 	if(search.match(/^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/)){
         // IS WEB DOMAIN
-		console.log("web");
 		window.location.href="https://"+search;
         return true;
 	}
 
     //SEARCH
     if(searchEngine!=undefined){
-        console.log("search with custom engine");
         $("#searchForm").attr("action",searchEngine);
         $("#searchInput").attr("name", parameterName);
         form.submit();
     }else{
-        console.log("search with default engine");
         // use default search engine
         $("#searchForm").attr("action",defaultSearchEngine);
         $("#searchInput").attr("name",defaultSearchParameterName);
@@ -201,7 +190,6 @@ window.editGroups=function(){
             // console.log(ui.draggable[0]);
             let sh1=findShortcutByID(shortcuts, event.target.id);
             let sh2=findShortcutByID(shortcuts, ui.draggable[0].id);
-            console.log(sh1, sh2);
             createGroup(sh1, sh2);
         },
         accept: "#shortcuts .uri",
@@ -214,14 +202,14 @@ window.editGroups=function(){
             "ui-droppable-active": "ui-state-highlight"
         },
         drop: function(event, ui){
-            console.log("main group");
-            console.log(event.target);
-            console.log(ui.draggable[0].id);
+            // console.log("main group");
+            // console.log(event.target);
+            // console.log(ui.draggable[0].id);
 
             let sh=$(ui.draggable[0]).clone();
             
             let shortcut=findShortcutByID(shortcuts, ui.draggable[0].id);
-            console.log(shortcut);
+            // console.log(shortcut);
             removeShortcutFromGroup(shortcut);
 
             $(ui.draggable[0]).remove()
@@ -312,9 +300,9 @@ window.closeModal=function(modalId){
 
 // CONTEXT MENU
 window.contextmenuShow=function(event){
-    console.log("context menu");
-    console.log(this);
-    console.log(event.target.parentElement);
+    // console.log("context menu");
+    // console.log(this);
+    // console.log(event.target.parentElement);
 
     // $("#contextMenu").attr("target",event.target.id);
     rclickTarget=event.target.parentElement;
@@ -326,8 +314,8 @@ window.contextmenuShow=function(event){
         posX=posX-$("#contextMenu")[0].offsetWidth;
     }
 
-    console.log(posX, posY);
-    console.log();
+    // console.log(posX, posY);
+    // console.log();
 
     $("#contextMenu").css("display", "block")
     $("#contextMenu").css("top", posY + "px")
@@ -376,6 +364,23 @@ window.findShortcutByID=function(list, id, iteration=0){
     }
     return null;
 }
+window.removeFromArrayByID=function(list, id){
+    let ret=Array();
+    for(let i=0; i<list.length; i++){
+        if(list[i].id!=id){
+            ret.push(list[i]);
+        }
+        if(list[i].folder==true){
+            list[i].content=removeFromArrayByID(list[i].content, id);
+        }
+    }
+    return ret;
+}
+// window.moveShortcutByID=function(id){
+//     let sh=findShortcutByID(shortcuts, id);
+//     shortcuts=removeFromArrayByID(shortcuts, id);
+//     shortcuts.push(sh);
+// }
 
 // function findShortcutByID(arr, id) {
 //     for (const item of arr) {
@@ -424,6 +429,7 @@ window.createGroup=async function(shortcut1, shortcut2){
 }
 
 window.removeShortcutFromGroup=function(element){
+    console.log(element)
     const promise = fetch('/shortcuts/removeFromGroup',{
         method: 'POST',
         headers:{
@@ -432,7 +438,24 @@ window.removeShortcutFromGroup=function(element){
         },
         body:JSON.stringify(element)
     })
+    .then(response => response.json())
     .then(data => {
         console.log("Shortcut removed from group", data);
+        let sh=findShortcutByID(shortcuts, data.id);
+        shortcuts=removeFromArrayByID(shortcuts, data.id);
+        shortcuts.push(sh);
+
+        let parent=findShortcutByID(shortcuts, element.parentId);
+        if(parent.content.length==0){
+            shortcuts=removeFromArrayByID(shortcuts, element.parentId);
+            $("#"+element.parentId).fadeOut(333);
+            setTimeout(()=>{
+                $("#"+element.parentId).remove();
+            },333);
+        }
     });
+}
+
+window.addShortcutToGroup=function(shortcut, group){
+
 }
