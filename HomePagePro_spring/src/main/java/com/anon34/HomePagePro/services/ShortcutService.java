@@ -66,16 +66,21 @@ public class ShortcutService {
         if(found.isPresent()){
             Shortcuts sh=found.get();
             Long parentId = sh.getParentId();
-            List<ShortcutsDTO> group = repo_shortCuts.getTreeShortcuts(String.valueOf(parentId))
-                .stream().map(ShortcutsMapper::toDTO).collect(Collectors.toList());
-
-            sh.setParentId(null);
-            if(group.size()<1){
-                //delete empty group
-                this.deleteShortcut(parentId);
-            }
+            System.out.println("FOUND");
+            System.out.println(sh);
+            System.out.println(parentId);
+            
+            
             sh.setParentId(null);
             Shortcuts updated=repo_shortCuts.save(sh);
+
+            if(parentId != null){
+                List<ShortcutsDTO> group = repo_shortCuts.getTreeShortcuts(String.valueOf(parentId))
+                    .stream().map(ShortcutsMapper::toDTO).collect(Collectors.toList());
+                if(group.size()<1){ //delete empty group
+                    this.deleteShortcut(parentId);
+                }
+            }
             return ShortcutsMapper.toDTO(updated);
         }else{
             throw new RuntimeException("Shortcut not found: "+shortcutId);

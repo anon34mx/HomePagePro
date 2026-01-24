@@ -51,4 +51,10 @@ public class Shortcuts {
     @Column(name = "type", nullable = true)
     @Enumerated(EnumType.ORDINAL)
     private Type type;
+
+    @Override
+    public String toString() {
+        return "Shortcuts [id=" + id + ", parentId=" + parentId + ", isFolder=" + isFolder + ", name=" + name
+                + ", uri=" + uri + ", icon=" + icon + ", type=" + type + "]";
+    }
 }

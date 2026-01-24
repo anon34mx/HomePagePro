@@ -164,6 +164,7 @@ public class ShorcutController {
     @PostMapping("/shortcuts/removeFromGroup")
     public ShortcutsDTO removeFromGroup(@RequestBody ShortcutsDTO shortcut) {
         //remove (changeparentId to null)
+        // System.out.println("parameter: "+shortcut.getId());
         return service.serv_removeFromGroup(shortcut.getId());
     }
 

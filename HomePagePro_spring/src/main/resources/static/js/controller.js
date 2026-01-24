@@ -199,8 +199,8 @@ window.editGroups=function(){
             console.log("create group");
             // console.log(event.target);
             // console.log(ui.draggable[0]);
-            let sh1=filterShortcuts(shortcuts, event.target.id);
-            let sh2=filterShortcuts(shortcuts, ui.draggable[0].id);
+            let sh1=findShortcutByID(shortcuts, event.target.id);
+            let sh2=findShortcutByID(shortcuts, ui.draggable[0].id);
             console.log(sh1, sh2);
             createGroup(sh1, sh2);
         },
@@ -216,10 +216,14 @@ window.editGroups=function(){
         drop: function(event, ui){
             console.log("main group");
             console.log(event.target);
-            console.log(ui.draggable[0]);
+            console.log(ui.draggable[0].id);
 
             let sh=$(ui.draggable[0]).clone();
-            console.log(sh);
+            
+            let shortcut=findShortcutByID(shortcuts, ui.draggable[0].id);
+            console.log(shortcut);
+            removeShortcutFromGroup(shortcut);
+
             $(ui.draggable[0]).remove()
             $("#shortcuts .shortcutsContainer").append(sh[0]);
         }
@@ -355,11 +359,38 @@ function openElement(action){
 	}
 }
 
-function filterShortcuts(list, id){
-    return list.filter(sh=>{
-        return sh.id == id ///search parameter
-    })[0];
+window.findShortcutByID=function(list, id, iteration=0){
+    for(let i=0; i<list.length; i++){
+        if(list[i]!=undefined){
+            // console.log(list[i].id, list[i].name, list[i].folder, iteration);
+            if(list[i].id==id){
+                return list[i];
+            }
+            if(list[i].folder==true){
+                let found = findShortcutByID(list[i].content, id, iteration+1);
+                if(found){
+                    return found;
+                }
+            }
+        }
+    }
+    return null;
 }
+
+// function findShortcutByID(arr, id) {
+//     for (const item of arr) {
+//         if (item.id === id) {// Found the element
+//             return item;
+//         } if (item.content && item.content.length > 0) {
+//             const found = findShortcutByID(item.content, id);
+//             if (found) {// Found inside nested content
+//                 return found;
+//             }
+//         }
+//     }
+//     // Not found 
+//     return null;
+// }
 
 window.createGroup=async function(shortcut1, shortcut2){
     $.ajax({
@@ -392,9 +423,16 @@ window.createGroup=async function(shortcut1, shortcut2){
     });
 }
 
-window.removeShFromGroup=function(event){
-    $.ajax({
-        type:"POOST",
-        url:"/shortcuts/removeFromGroup",
+window.removeShortcutFromGroup=function(element){
+    const promise = fetch('/shortcuts/removeFromGroup',{
+        method: 'POST',
+        headers:{
+            'Content-type':'application/json',
+
+        },
+        body:JSON.stringify(element)
+    })
+    .then(data => {
+        console.log("Shortcut removed from group", data);
     });
 }
