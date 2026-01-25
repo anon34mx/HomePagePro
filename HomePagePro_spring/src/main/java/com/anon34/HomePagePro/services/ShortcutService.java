@@ -87,6 +87,18 @@ public class ShortcutService {
         }
     }
 
+    public boolean serv_addToGroup(Long shortcutId, Long groupId){
+        Optional<Shortcuts> found = repo_shortCuts.findById(shortcutId);
+        if(found.isPresent()){
+            Shortcuts sh=found.get();
+            sh.setParentId(groupId);
+            repo_shortCuts.save(sh);
+            return true;
+        }else{
+            throw new RuntimeException("Shortcut not found: "+shortcutId);
+        }
+    }
+
     // this
     public List<ShortcutsDTO> getTree(){
         List<ShortcutsDTO> all = repo_shortCuts.getTreeShortcuts(null).stream().map(ShortcutsMapper::toDTO).collect(Collectors.toList());

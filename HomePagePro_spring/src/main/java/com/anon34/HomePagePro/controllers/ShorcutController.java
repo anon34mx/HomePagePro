@@ -111,7 +111,6 @@ public class ShorcutController {
         return "";
     }
     
-
     /*
     TEST raw json POST
         {
@@ -172,6 +171,21 @@ public class ShorcutController {
     public String removeFromGroup(@RequestBody Long shortcutId) {
         service.serv_removeFromGroup(shortcutId);
         return "entity";
+    }
+    
+    @PostMapping("/shortcuts/addToGroup")
+    public String postMethodName(@RequestBody Map<String, Long> params) {
+        System.out.println(params);
+        if(
+            service.serv_addToGroup(
+                params.get("shortcutId"),
+                params.get("groupId")
+            )
+        ){
+            return "done";
+        }else{
+            return "error";
+        }
     }
     
     

@@ -43,6 +43,10 @@ $(document).ready(function() {
         event.preventDefault();
         editGroups();
     });
+    $("#editGroupsDone").on("click", function(){
+        event.preventDefault();
+        editGroupsDone();
+    });
     $("html").on("click", ()=>{
         switch (event.which) {
             case 1:
@@ -224,9 +228,25 @@ window.editGroups=function(){
         },
         drop: function( event, ui ) {
             console.log("add to group");
+            let sh=ui.draggable[0].id;
+            let target=event.target.id;
+            addShortcutToGroup(sh, target);
         },
         accept: "#shortcuts .uri",
     });
+
+    $("#editGroupsDone").show();
+    $("#editShortcuts").hide();
+}
+
+window.editGroupsDone=function(){
+    $("#editGroupsDone").hide();
+    $("#editShortcuts").show();
+
+    $( ".uri" ).draggable("destroy");
+    $( "#shortcuts .shortcutsContainer.listing > .uri" ).not(".children").droppable("destroy");
+    $( "#shortcuts" ).droppable("destroy");
+    $( "#shortcuts .uriGroup" ).droppable("destroy");
 }
 
 window.generateContent=async function(){
@@ -376,6 +396,17 @@ window.removeFromArrayByID=function(list, id){
     }
     return ret;
 }
+window.insertShortcut=function(shortcut, groupID){
+    let inserted=false;
+    for(let i=0; i<shortcuts.length; i++){
+        if(shortcuts[i].id==groupID){
+            console.log("found",shortcuts[i]);
+            inserted=true;
+            shortcuts[i].content.push(shortcut);
+            break;
+        }
+    }
+}
 // window.moveShortcutByID=function(id){
 //     let sh=findShortcutByID(shortcuts, id);
 //     shortcuts=removeFromArrayByID(shortcuts, id);
@@ -446,16 +477,45 @@ window.removeShortcutFromGroup=function(element){
         shortcuts.push(sh);
 
         let parent=findShortcutByID(shortcuts, element.parentId);
-        if(parent.content.length==0){
+        console.log(parent, element.parentId, parent.content.length);
+        
+        if(parent.content.length < 1){
             shortcuts=removeFromArrayByID(shortcuts, element.parentId);
             $("#"+element.parentId).fadeOut(333);
             setTimeout(()=>{
                 $("#"+element.parentId).remove();
             },333);
         }
+    }).then(()=>{
+        editGroups();
     });
 }
 
-window.addShortcutToGroup=function(shortcut, group){
+window.addShortcutToGroup=function(shortcutID, groupID){
+    console.log(shortcutID, groupID);
+    fetch('/shortcuts/addToGroup',{
+        method: 'POST',
+        headers:{
+            'Content-type':'application/json',
+        },
+        body:JSON.stringify({
+            "shortcutId": shortcutID,
+            "groupId": groupID
+        }),
+    })
+    .then(response => response.text())
+    .then(async data => {
+        console.log("Shortcut added to group", data);
+        if(data=="done"){
+            let sh=findShortcutByID(shortcuts, shortcutID);
+            shortcuts=removeFromArrayByID(shortcuts, shortcutID);
+            insertShortcut(sh, groupID);
 
+            let shElement=$("#"+shortcutID).clone();
+            $("#"+shortcutID).remove();
+            $("#"+groupID+" .children").append(shElement);
+        }
+    }).then(()=>{
+        editGroups();
+    });
 }
