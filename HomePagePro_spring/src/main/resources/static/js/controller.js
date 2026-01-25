@@ -259,7 +259,7 @@ window.generateContent=async function(){
     });
 
     lhFiles.forEach(async element=>{
-        await renderShortcut(element,$("#server"),"local");
+        await renderShortcut(element,$("#server .listing"),"local");
     })
 }
 

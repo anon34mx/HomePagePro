@@ -10,17 +10,17 @@
         1px 1px 2px #00000082,
         1px -1px 2px #00000082,
 
-        -1px -1px 3px #00000082,
-        -1px 1px 3px #00000082,
-        1px 1px 3px #00000082,
-        1px -1px 3px #00000082
+        -1px -1px 2.5px #00000082,
+        -1px 1px 2.5px #00000082,
+        1px 1px 2.5px #00000082,
+        1px -1px 2.5px #00000082
         ;
     --white: rgb(245, 245, 245);
 }
 *{
     padding: 0;
     margin: 0;
-    /* outline: 1px solid tomato; */
+    outline: 1px solid tomato;
 }
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
@@ -48,101 +48,6 @@
         -1px 1px 8px #3131319d,
         1px -1px 8px #3131319d,
         6px 6px 8px #3131319d;
-}
-.mx-auto{
-    margin-left: auto;
-    margin-right: auto;
-}
-.mx-1{margin:0 0.25rem;}
-.mx-2{margin:0 0.5rem;}
-.mx-3{margin:0 0.75rem;}
-.mx-4{margin:0 1.0rem;}
-
-.my-1{margin:0.25rem    0;}
-.my-2{margin:0.5rem 0;}
-.my-3{margin:0.75rem    0;}
-.my-4{margin:1.0rem 0;}
-.mb-1{margin-bottom:0.25rem;}
-.mb-2{margin-bottom:0.5rem;}
-.mb-3{margin-bottom:0.75rem;}
-.mb-4{margin-bottom:1.0rem;}
-.mt-1{margin-top:0.25rem;}
-.mt-2{margin-top:0.5rem;}
-.mt-3{margin-top:0.75rem;}
-.mt-4{margin-top:1.0rem;}
-
-.px-1{padding:0 0.25rem;}
-.px-2{padding:0 0.5rem;}
-.px-3{padding:0 0.75rem;}
-.px-4{padding:0 1.0rem;}
-
-.py-0{padding:0rem 0;}
-.py-1{padding:0.25rem 0;}
-.py-2{padding:0.50rem 0;}
-.py-3{padding:0.75rem 0;}
-.py-4{padding:1.0rem 0;}
-.col-1 {
-  flex: 0 0 auto;
-  width: 8.33333333%;
-}
-
-.col-2 {
-  flex: 0 0 auto;
-  width: 16.66666667%;
-}
-
-.col-3 {
-  flex: 0 0 auto;
-  width: 25%;
-}
-
-.col-4 {
-  flex: 0 0 auto;
-  width: 33.33333333%;
-}
-
-.col-5 {
-  flex: 0 0 auto;
-  width: 41.66666667%;
-}
-
-.col-6 {
-  flex: 0 0 auto;
-  width: 50%;
-}
-
-.col-7 {
-  flex: 0 0 auto;
-  width: 58.33333333%;
-}
-
-.col-8 {
-  flex: 0 0 auto;
-  width: 66.66666667%;
-}
-
-.col-9 {
-  flex: 0 0 auto;
-  width: 75%;
-}
-
-.col-10 {
-  flex: 0 0 auto;
-  width: 83.33333333%;
-}
-
-.col-11 {
-  flex: 0 0 auto;
-  width: 91.66666667%;
-}
-
-.col-12 {
-  flex: 0 0 auto;
-  width: 100%;
-}
-.row {
-    display: flex;
-    flex-wrap: wrap;
 }
 
 ::-webkit-scrollbar {
@@ -190,7 +95,8 @@
 
 dialog{
     width: 80%;
-    height: 80%;
+    height: auto;
+    max-height: 80%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -259,6 +165,7 @@ header div.search-bar{
 }
 header div.search-bar form{
     width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -271,7 +178,14 @@ header div.search-bar form .search{
     flex-direction: row;
     align-items: center;
 }
-header div.search-bar form input[type="search"]{
+header div.search-bar form #suggestions{
+    background: red;
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 100%;
+}
+.input1{
     width: 100%;
     height: 24px;
     border: var(--border);
@@ -280,22 +194,17 @@ header div.search-bar form input[type="search"]{
     backdrop-filter: var(--background-blur);
     text-shadow: var(--txt-shadow);
     color: white;
+    /* padding: 0 .5rem; */
 }
-header div.search-bar form #suggestions{
-    background: red;
-    width: 100%;
-    display: block;
-    position: absolute;
-    top: 100%;
-}
-header div.search-bar form input[type="search"]::placeholder {
+.input1::placeholder {
     color: white;
 }
-header div.search-bar form input[type="search"]:focus{
-    outline: none;
+.input1:focus{
+    outline: 2px solid black;
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
-.btn-primary{
+.btn-custom-primary{
     background-color: transparent;
     border-radius: 0.6rem;
     border: 1px solid #ffffff;
@@ -308,7 +217,7 @@ header div.search-bar form input[type="search"]:focus{
     transition: --gradient-glass-bottom 0.5s ease, --gradient-glass-top 0.5s ease;
 }
 
-.btn-primary:hover{
+.btn-custom-primary:hover{
     --gradient-glass-bottom: rgba(129, 129, 129, 0.85);
     --gradient-glass-top: rgba(233, 233, 233, 0.85);
 }
@@ -325,9 +234,12 @@ header div.search-bar form input[type="search"]:focus{
 }
 
 .titleBar{
-    width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: .25rem 1rem;
+}
+.titleBar .title{
+    /* padding: 0 1rem; */
 }
 section h4{
     width: 100%;
@@ -349,6 +261,7 @@ section h4{
 }
 .searchEnginesList{ /* <ul> */
     list-style: none;
+    margin: 0;
 }
 .searchEnginesList.show{ /* <ul> */
     display: contents;

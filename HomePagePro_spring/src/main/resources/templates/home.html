@@ -10,6 +10,7 @@
     <script src="/libs/jquery/jquery-3.7.1.min.js"></script>
     <script src="/libs/jquery/jquery-ui.js"></script>
     <link rel="stylesheet" href="/libs/jquery/jquery-ui.css">
+    <link rel="stylesheet" href="./libs/bootstrap-5.3.8-dist/css/bootstrap.min.css">
 
     <link rel="stylesheet" th:href="@{${'/assets/themes/'+currentTheme+'/style.css'}}">
 
@@ -43,21 +44,21 @@
             </ul>
         </nav>
         <div class="search-bar">
-            <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="py-1" onsubmit="event.preventDefault();validateSearch(null,null,this)">
+            <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="" onsubmit="event.preventDefault();validateSearch(null,null,this)">
                 <div class="search ui-widget">
                     <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
-                    <input id="searchInput" type="search" autofocus="" placeholder="Search..." th:name="${searchParameterName}" autocomplete="off" class="px-2 border">
+                    <input id="searchInput" type="search" autofocus="" placeholder="Search..." th:name="${searchParameterName}" autocomplete="off" class="input1 px-2 border">
                     <label id="suggestions" for="searchInput"></label>
                 </div>
-                <input type="submit" value="GO" class="mx-2 btn-primary">
+                <input type="submit" value="GO" class="mx-2 btn-custom-primary">
                 <ul class="searchEnginesList">
-                    <button id="enginesArrow" class="mx-2 btn-primary">
+                    <button id="enginesArrow" class="mx-2 btn-custom-primary">
                         <img src="/arrow.svg" class="icon-sm">
                     </button>
                     <div class="container glass">
                         <li class="txt-shadow"
                             th:each="engine : ${searchEngines}">
-                            <button href="#engine1" class="px-2 btn-primary py-1" style="width: 100%;"
+                            <button href="#engine1" class="px-2 btn-custom-primary py-1" style="width: 100%;"
                                 th:uri="@{${engine.uri}}"
                                 th:parameter="@{${engine.parameter}}"
                                 >
@@ -75,12 +76,12 @@
     
     <!-- Shortcuts -->
     <section id="shortcuts" class="">
-        <div class="titleBar">
+        <div class="titleBar col-12">
             <div class="title txt-white txt-shadow">Shortcuts</div>
             <div>
-                <button id="createShortcuts" onclick="showModal('modal-createShortcut')" class="mx-3 btn-primary">add</button>
-                <button id="editShortcuts" class="mx-3 btn-primary">edit</button>
-                <button id="editGroupsDone" class="mx-3 btn-primary" style="display: none;">done</button>
+                <button id="createShortcuts" onclick="showModal('modal-createShortcut')" class="mx-3 btn-custom-primary">add</button>
+                <button id="editShortcuts" class="mx-3 btn-custom-primary">edit</button>
+                <button id="editGroupsDone" class="mx-3 btn-custom-primary" style="display: none;">done</button>
             </div>
         </div>
         <div class="shortcutsContainer listing">
@@ -90,21 +91,25 @@
 
     <!-- localhost -->
     <section id="server" class="listing">
-        <div class="titleBar">
-            <div class="title txt-white txt-shadow">Localhost</div>
+        <div class="titleBar col-12">
+            <div class="title txt-white txt-shadow">server</div>
             <div>
-                <button id="">⭐</button>
-                <button id="">🚫</button>
+                <button id="createShortcuts" onclick="showModal('modal-createShortcut')" class="mx-3 btn-custom-primary">add</button>
+                <button id="editShortcuts" class="mx-3 btn-custom-primary">edit</button>
+                <button id="editGroupsDone" class="mx-3 btn-custom-primary" style="display: none;">done</button>
             </div>
+        </div>
+        <div class="listing">
+
         </div>
     </section>
 
     <!-- modals -->
     <dialog id="modal-createShortcut">
-        <div class="titleBar">
+        <div class="titleBar col-12">
             <div class="title txt-white txt-shadow">Content|</div>
             <div>
-                <button onclick="closeModal('modal-createShortcut')">X</button>
+                <button onclick="closeModal('modal-createShortcut')" class="px-2 py-1 btn btn-danger">X</button>
             </div>
         </div>
         <form action="">
@@ -113,52 +118,60 @@
                     <div class="col-6">
                         <label for="">id</label>
                     </div>
-                    <div class="col-6">
-                        <input type="text" class="col-12">
+                    <div class="col-6 px-0">
+                        <input type="text" class="col-12 input1 px-1">
                     </div>
                 </div>
                 <div class="row col-12 mb-2">
                     <div class="col-6">
                         <label for="">Name</label>
                     </div>
-                    <div class="col-6">
-                        <input type="text" class="col-12">
+                    <div class="col-6 px-0">
+                        <input type="text" class="col-12 input1 px-1">
                     </div>
                 </div>
                 <div class="row col-12 mb-2">
                     <div class="col-6">
                         <label for="">Icon</label>
                     </div>
-                    <div class="col-6">
-                        <input type="text" placeholder="icon" class="col-12">
+                    <div class="col-6 px-0">
+                        <input type="text" placeholder="icon" class="col-12 input1 px-1">
                     </div>
                 </div>
                 <div class="row col-12 mb-2">
                     <div class="col-6">
                         <label for="">uri</label>
                     </div>
-                    <div class="col-6">
-                        <input type="text" class="col-12">
+                    <div class="col-6 px-0">
+                        <input type="text" class="col-12 input1 px-1">
                     </div>
                 </div>
                 <div class="row col-12 mb-2">
                     <div class="col-6">
                         <label for="">Type</label>
                     </div>
-                    <div class="col-6">
-                        <input id="radioFolder" type="radio" name="type" value="Folder">
-                        <label for="radioFolder">Folder</label>
-                        <input id="radioFile" type="radio" name="type" value="File">
-                        <label for="radioFile">File</label>
+                    <div class="col-6 row px-0">
+                        <div class="col-6">
+                            <input id="radioFolder" type="radio" name="type" value="Folder" class="">
+                            <label for="radioFolder">Folder</label>
+                        </div>
+                        <div class="col-6">
+                            <input id="radioFile" type="radio" name="type" value="File" class="">
+                            <label for="radioFile">File</label>
+                        </div>
                     </div>
                 </div>
-                <div class="row col-12 mb-2">
-                    <button class="mx-3 btn-primary">
-                        Save
-                    </button>
-                    <button class="mx-3 btn-primary">
-                        Cancel
-                    </button>
+                <div class="row col-12 mb-2 row">
+                    <div class="col-auto">
+                        <button id="btnSaveShortcut" class="mx-3 btn-custom-primary">
+                            Save
+                        </button>
+                    </div>
+                    <!-- <div class="col-auto">
+                        <button class="mx-3 btn-custom-primary">
+                            Cancel
+                        </button>
+                    </div> -->
                 </div>
             </div>
         </form>
