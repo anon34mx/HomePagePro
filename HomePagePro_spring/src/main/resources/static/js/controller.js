@@ -68,6 +68,9 @@ $(document).ready(function() {
 	// 	return false;
 	// });
 
+    // SHORTCUTS
+    $("#btnSaveShortcut").on("click", saveShortcut)
+
     // INITIALIZE THINGS
     generateContent();
 });
@@ -297,9 +300,11 @@ window.renderFolder=async function(folder){
     clone.querySelector("label.name").textContent=folder.name;
 
     // console.log(folder);
-    folder.content.forEach(async shortcut => {
-        await renderShortcut(shortcut, clone.querySelector(".children"));
-    });
+    if(folder.content.length>0){
+        folder.content.forEach(async shortcut => {
+            await renderShortcut(shortcut, clone.querySelector(".children"));
+        });
+    }
 
     await $("#shortcuts .shortcutsContainer").append(clone);
     // await $("#"+folder.id).hover(showFolderContent,hideFolderContent);
@@ -320,29 +325,28 @@ window.closeModal=function(modalId){
 
 // CONTEXT MENU
 window.contextmenuShow=function(event){
+    rclickTarget=event.target.parentElement;
+    $("#contextMenu li").hide();
+    $("#contextMenu li."+rclickTarget.attributes.type.value).show();
     // console.log("context menu");
     // console.log(this);
     // console.log(event.target.parentElement);
-
     // $("#contextMenu").attr("target",event.target.id);
-    rclickTarget=event.target.parentElement;
-
     posX=(event.pageX); // POSICION DEL CLICK
     posY = (event.pageY); //- $("body").scrollTop(); // POSICION DEL CLICK
 
     if(posX+$("#contextMenu")[0].offsetWidth+10 > window.innerWidth){
         posX=posX-$("#contextMenu")[0].offsetWidth;
     }
-
     // console.log(posX, posY);
     // console.log();
-
     $("#contextMenu").css("display", "block")
     $("#contextMenu").css("top", posY + "px")
     $("#contextMenu").css("left", posX + "px")
     // $("#contextMenu").css("display", "block")
     return false;
 }
+
 window.contextmenuHide=function(){
     $("#contextMenu").css("display", "none");
 }
@@ -518,4 +522,62 @@ window.addShortcutToGroup=function(shortcutID, groupID){
     }).then(()=>{
         editGroups();
     });
+}
+
+window.saveShortcut=function(){
+    let shortcut={
+        // "id":   $("#editShortcutForm input[name='id']").val() || 0,
+        "name": $("#editShortcutForm input[name='name']").val() || null,
+        "icon": $("#editShortcutForm input[name='icon']").val() || null,
+        "uri":  $("#editShortcutForm input[name='uri']").val() || null,
+        "parentId": null,
+        // "content": [],
+        "folder": parseInt($("#editShortcutForm input[name='isFolder']:checked").val())
+    };
+    let valid=true;
+    if(shortcut.name==null || shortcut.name.length < 1){
+        valid=false;
+        console.log("name");
+    }
+    if(shortcut.folder==false){
+        if(shortcut.icon==null || shortcut.icon.length<1){
+            valid=false;
+            console.log("icon");
+        }
+        if(shortcut.uri==null || shortcut.uri.length<1){
+            valid=false;
+            console.log("uri");
+        }
+    }
+
+    console.log(valid)
+    if(valid){
+        fetch('/shortcuts',{
+            method: 'POST',
+            headers:{
+                'Content-type':'application/json',
+            },
+            body:JSON.stringify(shortcut)
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("modal-createShortcut").close()
+            if(shortcut.folder){
+                renderFolder(data);
+            }else{
+                renderShortcut(data,$("#shortcuts .shortcutsContainer"));
+            }
+            alert("saved");
+        });
+    }else{
+        alert("Add all the data");
+    }
+    return false;
+}
+
+window.modalEditShortcuts=function(){
+    $("#editShortcutForm input[name='isFolder'").prop('disabled',false)
+    if(1){
+
+    }
 }

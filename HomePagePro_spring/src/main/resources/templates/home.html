@@ -32,8 +32,8 @@
 </head>
 <body>
     <div id="background"></div>
-    <header class="glass">
-        <nav>
+    <header class="glass row px-0 mx-0">
+        <nav class="col-12 col-sm-6 px-0">
             <ul>
                 <li>
                     <a href="#shortcuts" class="txt-white txt-shadow">shortcuts</a>
@@ -43,7 +43,7 @@
                 </li>
             </ul>
         </nav>
-        <div class="search-bar">
+        <div class="search-bar col-12 col-sm-6 px-2">
             <form id="searchForm" th:action="@{${defaultSearchEngine}}" method="get" class="" onsubmit="event.preventDefault();validateSearch(null,null,this)">
                 <div class="search ui-widget">
                     <img src="/search.svg" alt="Search engine" class="icon-sm mx-2">
@@ -51,7 +51,7 @@
                     <label id="suggestions" for="searchInput"></label>
                 </div>
                 <input type="submit" value="GO" class="mx-2 btn-custom-primary">
-                <ul class="searchEnginesList">
+                <ul class="searchEnginesList pl-1">
                     <button id="enginesArrow" class="mx-2 btn-custom-primary">
                         <img src="/arrow.svg" class="icon-sm">
                     </button>
@@ -112,52 +112,52 @@
                 <button onclick="closeModal('modal-createShortcut')" class="px-2 py-1 btn btn-danger">X</button>
             </div>
         </div>
-        <form action="">
+        <form id="editShortcutForm" onsubmit="return false;">
             <div class="row col-10 mx-auto py-4">
-                <div class="row col-12 mb-2">
-                    <div class="col-6">
+                <div class="row col-12 mb-2 mx-0 hidden">
+                    <div class="col-12 col-sm-6">
                         <label for="">id</label>
                     </div>
-                    <div class="col-6 px-0">
-                        <input type="text" class="col-12 input1 px-1">
+                    <div class="col-12 col-sm-6 px-0">
+                        <input type="text" class="col-12 input1 px-1" name="id" autocomplete="off">
                     </div>
                 </div>
-                <div class="row col-12 mb-2">
-                    <div class="col-6">
+                <div class="row col-12 mb-2 mx-0">
+                    <div class="col-12 col-sm-6">
                         <label for="">Name</label>
                     </div>
-                    <div class="col-6 px-0">
-                        <input type="text" class="col-12 input1 px-1">
+                    <div class="col-12 col-sm-6 px-0">
+                        <input type="text" class="col-12 input1 px-1" name="name" autocomplete="off">
                     </div>
                 </div>
-                <div class="row col-12 mb-2">
-                    <div class="col-6">
+                <div class="row col-12 mb-2 mx-0">
+                    <div class="col-12 col-sm-6">
                         <label for="">Icon</label>
                     </div>
-                    <div class="col-6 px-0">
-                        <input type="text" placeholder="icon" class="col-12 input1 px-1">
+                    <div class="col-12 col-sm-6 px-0">
+                        <input type="text" placeholder="icon" class="col-12 input1 px-1" name="icon" autocomplete="off">
                     </div>
                 </div>
-                <div class="row col-12 mb-2">
-                    <div class="col-6">
+                <div class="row col-12 mb-2 mx-0">
+                    <div class="col-12 col-sm-6">
                         <label for="">uri</label>
                     </div>
-                    <div class="col-6 px-0">
-                        <input type="text" class="col-12 input1 px-1">
+                    <div class="col-12 col-sm-6 px-0">
+                        <input type="text" class="col-12 input1 px-1" name="uri" autocomplete="off">
                     </div>
                 </div>
-                <div class="row col-12 mb-2">
-                    <div class="col-6">
+                <div class="row col-12 mb-2 mx-0">
+                    <div class="col-12 col-sm-6">
                         <label for="">Type</label>
                     </div>
-                    <div class="col-6 row px-0">
+                    <div class="col-12 col-sm-6 row px-0">
                         <div class="col-6">
-                            <input id="radioFolder" type="radio" name="type" value="Folder" class="">
+                            <input id="radioFolder" type="radio" name="isFolder" value="1" class="">
                             <label for="radioFolder">Folder</label>
                         </div>
                         <div class="col-6">
-                            <input id="radioFile" type="radio" name="type" value="File" class="">
-                            <label for="radioFile">File</label>
+                            <input id="radioShortcut" type="radio" name="isFolder" value="0" class="">
+                            <label for="radioShortcut">Shortcut</label>
                         </div>
                     </div>
                 </div>
@@ -224,11 +224,12 @@
         <li id="OpenLinkNewTab" class="uri" onclick="openElement('uriNewTab')">Open in new tab</li>
         <li id="EditLink" class="uri" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>
         
-        <li id="EditGroup" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit group</li>
+        <!-- <li id="EditGroup" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit group</li> -->
 
         <!-- FOLDERS -->
-        <li id="" class="folder" onclick="window.location='lastElement.href'">Open</li>
-        <li id="" class="folder" onclick="event.preventDefault();launchFolder()">File Explorer</li>
+        <li id="" class="uriGroup" onclick="window.location='lastElement.href'">Open</li>
+         <li id="" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>
+        <!-- <li id="" class="uriGroup" onclick="event.preventDefault();launchFolder()">File Explorer</li> -->
         <!-- FILES -->
         <li id="" class="file" onclick="event.preventDefault();window.location.href='https'">Open in browser</li>
     </ol>
