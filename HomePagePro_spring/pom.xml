@@ -87,6 +87,11 @@
 			<!-- Use a version compatible with your Spring Boot/Hibernate version, 
 				or omit the <version> tag if managed by Spring Boot parent -->
 		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.16.1</version> <!-- Use the latest version -->
+		</dependency>
 	</dependencies>
 
 	<build>

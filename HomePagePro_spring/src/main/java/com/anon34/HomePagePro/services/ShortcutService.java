@@ -34,7 +34,6 @@ public class ShortcutService {
     }
     
     public ShortcutsDTO serv_insert(ShortcutsDTO dto){
-        System.out.println(dto);
         Shortcuts sh=ShortcutsMapper.toEntity(dto);
         Shortcuts inserted=repo_shortCuts.save(sh);
         return ShortcutsMapper.toDTO(inserted);

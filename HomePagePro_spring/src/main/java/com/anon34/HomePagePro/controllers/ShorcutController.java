@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.awt.Desktop;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.anon34.HomePagePro.entities.Shortcuts.Type;
 
-
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 @RestController
 public class ShorcutController {
@@ -57,21 +64,7 @@ public class ShorcutController {
         System.out.println("CONTRKLLER");
         System.out.println(dto);
 
-        if(!dto.isFolder()){
-            if(dto.getName()==null || dto.getName().isEmpty()){
-                throw new IllegalArgumentException("VALIDATE NAME");
-            }
-            return service.serv_insert(dto);
-        }else{
-            if(dto.getName()==null || dto.getName().isEmpty()){
-                throw new IllegalArgumentException("VALIDATE NAME");
-            }
-            if(dto.getUri()==null || dto.getUri().isEmpty()){
-                throw new IllegalArgumentException("VALIDATE URI");
-            }
-            return service.serv_insert(dto);
-        }
-        // return service.serv_insert(dto);
+        return service.serv_insert(dto);
     }
 
     // UPDATE
@@ -188,5 +181,66 @@ public class ShorcutController {
         }
     }
     
+    //webscrapping favicon
+    @GetMapping("/getFavicon")
+    public String getFavicon(@RequestParam String site) throws IOException {
+        final Pattern uriPattern = Pattern.compile("[a-zA-Z]{1,6}:\\/\\/+(.)+\\/");
+        final Pattern iconUriPattern = Pattern.compile("[a-zA-Z]{1,6}:\\/\\/+(.)+\\/(.*){1,}(\\.png|\\.ico)$");
+
+        Matcher directnmatch=iconUriPattern.matcher(site);//url is an icon
+        if(directnmatch.find()){
+            System.out.println("link given is icon");
+            return directnmatch.group(0);
+        }
+        if (!site.startsWith("http://") && !site.startsWith("https://")) {
+            site = "https://" + site;
+        }
+
+        // look for the favicon
+        Connection.Response response = Jsoup.connect(site).ignoreHttpErrors(true)
+        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36")
+        .referrer("https://www.google.com")
+        .method(Connection.Method.GET)
+        .data("pragma", "no-cache")
+        .timeout(2000)
+        .followRedirects(true)
+        .execute();
+        Document doc = response.parse();
+        
+        
+        int statusCode = response.statusCode();
+        String statusMessage = response.statusMessage();
+        // String json = "{ \"statusCode\": " + statusCode + ", \"statusMessage\": \"" + statusMessage + "\" }";
+        
+        // search for something like <link rel="icon" type="image/png" href="favicon.png">
+        Element iconLinks = doc.select("link[rel~=(?i)^(shortcut icon|icon)$]").first();
+        String faviconUrl="";
+        
+        if(iconLinks!=null){
+            faviconUrl=iconLinks.attr("href");
+            Matcher ficonmatch=iconUriPattern.matcher(faviconUrl);
+            String domain="";
+            Matcher domMatch=uriPattern.matcher(site);
+            System.out.println(domain);
+            System.out.println(faviconUrl);
+            if(domMatch.find()){
+                domain=domMatch.group(0);
+            }
+
+            if(ficonmatch.find()){ // direct match - route has full route to file
+                return  "{ \"statusCode\": " + statusCode + ", \"statusMessage\": \"" + statusMessage + "\", \"icon\":\""+faviconUrl+"\" }";
+            }else if(domain!=""){ // route has relative route to file, needs to add the domain
+                if(domain.charAt(domain.length()-1)=='/'){
+                    domain=domain.substring(0, domain.length()-1);
+                }
+                if(faviconUrl.charAt(0)=='/'){
+                    faviconUrl=faviconUrl.substring(1, faviconUrl.length());
+                }
+                // return domain+"/"+faviconUrl;
+                return  "{ \"statusCode\": " + statusCode + ", \"statusMessage\": \"" + statusMessage + "\", \"icon\":\""+domain+"/"+faviconUrl+"\" }";
+            }
+        }
+        return  "{ \"statusCode\": " + statusCode + ", \"statusMessage\": \"" + statusMessage + "\", \"icon\":\"x\" }";
+    }
     
 }

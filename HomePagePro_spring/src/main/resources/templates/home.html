@@ -112,69 +112,74 @@
                 <button onclick="closeModal('modal-createShortcut')" class="px-2 py-1 btn btn-danger">X</button>
             </div>
         </div>
-        <form id="editShortcutForm" onsubmit="return false;">
-            <div class="row col-10 mx-auto py-4">
-                <div class="row col-12 mb-2 mx-0 hidden">
-                    <div class="col-12 col-sm-6">
-                        <label for="">id</label>
-                    </div>
-                    <div class="col-12 col-sm-6 px-0">
-                        <input type="text" class="col-12 input1 px-1" name="id" autocomplete="off">
-                    </div>
-                </div>
-                <div class="row col-12 mb-2 mx-0">
-                    <div class="col-12 col-sm-6">
-                        <label for="">Name</label>
-                    </div>
-                    <div class="col-12 col-sm-6 px-0">
-                        <input type="text" class="col-12 input1 px-1" name="name" autocomplete="off">
-                    </div>
-                </div>
-                <div class="row col-12 mb-2 mx-0">
-                    <div class="col-12 col-sm-6">
-                        <label for="">Icon</label>
-                    </div>
-                    <div class="col-12 col-sm-6 px-0">
-                        <input type="text" placeholder="icon" class="col-12 input1 px-1" name="icon" autocomplete="off">
-                    </div>
-                </div>
-                <div class="row col-12 mb-2 mx-0">
-                    <div class="col-12 col-sm-6">
-                        <label for="">uri</label>
-                    </div>
-                    <div class="col-12 col-sm-6 px-0">
-                        <input type="text" class="col-12 input1 px-1" name="uri" autocomplete="off">
-                    </div>
-                </div>
-                <div class="row col-12 mb-2 mx-0">
-                    <div class="col-12 col-sm-6">
-                        <label for="">Type</label>
-                    </div>
-                    <div class="col-12 col-sm-6 row px-0">
-                        <div class="col-6">
-                            <input id="radioFolder" type="radio" name="isFolder" value="1" class="">
-                            <label for="radioFolder">Folder</label>
+        <div class="content">
+            <form id="editShortcutForm" onsubmit="return false;">
+                <div class="row col-10 mx-auto py-4">
+                    <div class="row col-12 mb-2 mx-0 hidden">
+                        <div class="col-12 col-sm-6">
+                            <label for="">id</label>
                         </div>
-                        <div class="col-6">
-                            <input id="radioShortcut" type="radio" name="isFolder" value="0" class="">
-                            <label for="radioShortcut">Shortcut</label>
+                        <div class="col-12 col-sm-6 px-0">
+                            <input type="text" class="col-12 input1 px-1" name="id" autocomplete="off">
                         </div>
                     </div>
-                </div>
-                <div class="row col-12 mb-2 row">
-                    <div class="col-auto">
-                        <button id="btnSaveShortcut" class="mx-3 btn-custom-primary">
-                            Save
-                        </button>
+                    <div class="row col-12 mb-2 mx-0">
+                        <div class="col-12 col-sm-6">
+                            <label for="">uri</label>
+                        </div>
+                        <div class="col-12 col-sm-6 px-0">
+                            <input type="text" class="col-12 input1 px-1" name="uri" autocomplete="off">
+                        </div>
                     </div>
-                    <!-- <div class="col-auto">
-                        <button class="mx-3 btn-custom-primary">
-                            Cancel
-                        </button>
-                    </div> -->
+                    <div class="row col-12 mb-2 mx-0">
+                        <div class="col-12 col-sm-6">
+                            <label for="">Name</label>
+                        </div>
+                        <div class="col-12 col-sm-6 px-0">
+                            <input type="text" class="col-12 input1 px-1" name="name" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row col-12 mb-2 mx-0">
+                        <div class="col-12 col-sm-6">
+                            <label for="">Icon</label>
+                        </div>
+                        <div class="col-12 col-sm-6 px-0">
+                            <input type="text" placeholder="" class="col-12 input1 px-1" name="icon" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="row col-12 mb-2 mx-0">
+                        <img src="" name="favicon" style="width: 48px;height: 48px;padding: 0;">
+                    </div>
+                    <div class="row col-12 mb-2 mx-0">
+                        <div class="col-12 col-sm-6">
+                            <label for="">Type</label>
+                        </div>
+                        <div class="col-12 col-sm-6 row px-0">
+                            <div class="col-6">
+                                <input id="radioFolder" type="radio" name="isFolder" value="1" class="">
+                                <label for="radioFolder">Folder</label>
+                            </div>
+                            <div class="col-6">
+                                <input id="radioShortcut" type="radio" name="isFolder" value="0" class="">
+                                <label for="radioShortcut">Shortcut</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-12 mb-2 row">
+                        <div class="col-auto">
+                            <button id="btnSaveShortcut" class="mx-3 btn-custom-primary">
+                                Save
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <button id="btnUpdateShortcut" class="mx-3 btn-custom-primary">
+                                Update
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </dialog>
 
     <footer>
@@ -189,8 +194,8 @@
         <div class="content shadow">
             <div class="icon">
                     <picture>
-                        <source srcset="">
-                        <img src="assets/themes/default/icons/web-svgrepo-com.svg" error="console.log('as');">
+                        <source srcset="" type="">
+                        <img src="assets/themes/default/icons/web-svgrepo-com.svg" onerror="faviconFallback(this)">
                     </picture>
             </div>
             <label class="name txt-white txt-shadow">
@@ -207,7 +212,7 @@
             <div class="icon">
                     <picture>
                         <source srcset="" type="image/ico">
-                        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png">
+                        <img src="assets/themes/default/icons/folder_ByDinosoftLabs.png" >
                     </picture>
             </div>
             <label class="name txt-white txt-shadow">
@@ -222,13 +227,13 @@
     <ol id="contextMenu" class="contextMenu" oncontextmenu="return false;" target="" style="display: none;">
         <!-- SHORTCUTS -->
         <li id="OpenLinkNewTab" class="uri" onclick="openElement('uriNewTab')">Open in new tab</li>
-        <li id="EditLink" class="uri" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>
+        <li id="EditLink" class="uri" onclick="modalEditShortcuts();">edit</li>
         
-        <!-- <li id="EditGroup" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit group</li> -->
+        <!-- <li id="EditGroup" class="uriGroup" onclick="edit();">edit group</li> -->
 
         <!-- FOLDERS -->
         <li id="" class="uriGroup" onclick="window.location='lastElement.href'">Open</li>
-         <li id="" class="uriGroup" onclick="edit(this.attributes.target.value,'edit','uri');">edit</li>
+         <li id="" class="uriGroup" onclick="modalEditShortcuts();">edit</li>
         <!-- <li id="" class="uriGroup" onclick="event.preventDefault();launchFolder()">File Explorer</li> -->
         <!-- FILES -->
         <li id="" class="file" onclick="event.preventDefault();window.location.href='https'">Open in browser</li>

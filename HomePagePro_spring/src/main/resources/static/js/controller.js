@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
     $("#searchInput").on("keyup", googleAutocomplete);
@@ -15,6 +16,7 @@ $(document).ready(function() {
     $("#enginesArrow").on("focusin",
         showSearchEnginesList
     );
+    $("#editShortcutForm input[name='uri']").on("change", scrapFavicon);
 
     $(".searchEnginesList").on("mouseenter", function(){
         hideSearchEnginesList();
@@ -70,6 +72,7 @@ $(document).ready(function() {
 
     // SHORTCUTS
     $("#btnSaveShortcut").on("click", saveShortcut)
+    $("#btnUpdateShortcut").on("click", saveShortcut)
 
     // INITIALIZE THINGS
     generateContent();
@@ -270,6 +273,9 @@ window.renderShortcut=async function(shortcut, target, type){
     var template=document.querySelector("#shortcutTemplate");
     let clone = template.content.cloneNode(true);
     let id=shortcut.id;
+    let iconType=await shortcut.icon.match(/(?<=\.)(png|ico)$/);
+
+
 
     if(type!="local"){
         clone.querySelector(".uri").id=id;
@@ -282,10 +288,19 @@ window.renderShortcut=async function(shortcut, target, type){
             clone.querySelector(".uri").attributes.type.value="file";
         }
     }
+
+    if(iconType[0]=="ico"){
+        // iconType=="x-icon";
+        iconType="vnd.microsoft.icon";
+    }else{
+        iconType=iconType[0];
+    }
+    
     clone.querySelector(".uri").href=shortcut.uri;
     clone.querySelector(".uri").title=shortcut.uri;
     clone.querySelector("label.name").textContent=shortcut.name;
     clone.querySelector("picture source").srcset=shortcut.icon;
+    clone.querySelector("picture source").type="image/"+iconType;
 
     await $(target).append(clone);
     await $("#"+id).contextmenu(()=>{
@@ -317,6 +332,10 @@ window.renderFolder=async function(folder){
 window.showModal=function(modalId){
     let modal=document.getElementById(modalId);
     modal.showModal();
+    document.getElementById("editShortcutForm").reset();
+    $("#radioShortcut").prop("checked",true)
+    $("#editShortcutForm button").hide();
+    $("#editShortcutForm #btnSaveShortcut").show();
 }
 window.closeModal=function(modalId){
     let modal=document.getElementById(modalId);
@@ -526,7 +545,7 @@ window.addShortcutToGroup=function(shortcutID, groupID){
 
 window.saveShortcut=function(){
     let shortcut={
-        // "id":   $("#editShortcutForm input[name='id']").val() || 0,
+        "id":   $("#editShortcutForm input[name='id']").val() || null,
         "name": $("#editShortcutForm input[name='name']").val() || null,
         "icon": $("#editShortcutForm input[name='icon']").val() || null,
         "uri":  $("#editShortcutForm input[name='uri']").val() || null,
@@ -539,18 +558,17 @@ window.saveShortcut=function(){
         valid=false;
         console.log("name");
     }
-    if(shortcut.folder==false){
-        if(shortcut.icon==null || shortcut.icon.length<1){
-            valid=false;
-            console.log("icon");
-        }
+    if(shortcut.folder==0){
+        // if(shortcut.icon==null || shortcut.icon.length<1){
+        //     valid=false;
+        //     console.log("icon");
+        // }
         if(shortcut.uri==null || shortcut.uri.length<1){
             valid=false;
             console.log("uri");
         }
     }
 
-    console.log(valid)
     if(valid){
         fetch('/shortcuts',{
             method: 'POST',
@@ -559,13 +577,29 @@ window.saveShortcut=function(){
             },
             body:JSON.stringify(shortcut)
         })
-        .then(response => response.text())
+        .then(response => response.json())
+        // .then(response => response.text())
         .then(data => {
             document.getElementById("modal-createShortcut").close()
-            if(shortcut.folder){
-                renderFolder(data);
+            if(shortcut.id==null){
+                // no ID, is a new element
+                if(shortcut.folder){
+                    renderFolder(data);
+                }else{
+                    renderShortcut(data,$("#shortcuts .shortcutsContainer"));
+                }
             }else{
-                renderShortcut(data,$("#shortcuts .shortcutsContainer"));
+                // update
+                let elm=$("#"+data.id)
+                console.log(data, elm);
+
+                // elm.attr("id");
+                // elm.attr("type");
+                if(!data.isFolder){
+                    elm.attr("href", data.uri)
+                }
+                elm.find(".name")[0].innerText=data.name;
+                elm.find("img").prop("src", data.icon);
             }
             alert("saved");
         });
@@ -576,8 +610,76 @@ window.saveShortcut=function(){
 }
 
 window.modalEditShortcuts=function(){
-    $("#editShortcutForm input[name='isFolder'").prop('disabled',false)
-    if(1){
+    let elm=$(rclickTarget);
 
+    let id=elm.attr("id");
+    let type=elm.attr("type");
+    let name=elm.find(".name")[0].innerText;
+    let icon=elm.find("img").attr("src");
+    let uri=elm.attr("href",);
+    $("#editShortcutForm input[name='isFolder'").prop('disabled',false);
+    if(type=="uriGroup"){
+        $("#editShortcutForm #radioFolder").prop("checked",true);
+        $("#editShortcutForm input[name='uri']").val("").parent().parent().hide()
+    }else{
+        $("#editShortcutForm #radioShortcut").prop("checked",true);
+        $("#editShortcutForm input[name='uri']").val(uri).parent().parent().show()
     }
+    
+    
+    $("#editShortcutForm input[name='id']").val(id)
+    $("#editShortcutForm input[name='name']").val(name)
+    $("#editShortcutForm input[name='icon']").val(icon)
+    $("#editShortcutForm input[name='uri']").val(uri)
+    $("#editShortcutForm button").hide();
+    $("#editShortcutForm #btnUpdateShortcut").show();
+    
+
+    let modal=document.getElementById("modal-createShortcut");
+    modal.showModal();
+}
+
+window.scrapFavicon=function(){
+    var uri=$("#editShortcutForm input[name='uri']").val();
+    let domain=uri;
+    let domainPos=0;
+    if(domain.search("://")){
+        domainPos=domain.search("://")+3;
+        domain=domain.substr(domainPos);
+    }
+    if(domain.search("/")){
+        domain=domain.substr(0,domain.search("/"));
+    }
+    $("#editShortcutForm input[name='name']").val(domain);
+    // console.log(domain, domainPos);
+
+    fetch('/getFavicon?site='+uri,{
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then((data)=>{
+        console.log(data);
+        if(data.statusCode==200){
+            
+            $("#editShortcutForm img[name='favicon']").attr("src",data.icon);
+            if(data.icon!="x"){
+                $("#editShortcutForm input[name='icon']").val(data.icon);
+            }else{
+                $("#editShortcutForm input[name='icon']").val("");
+            }
+        }else{
+            $("#editShortcutForm input[name='icon']").val("");
+        }
+    }).catch(error => {
+        // This catches network errors or errors thrown in the first .then()
+        console.error("Fetch error:", error);
+        $("#editShortcutForm input[name='icon']").val("");
+        $("#editShortcutForm img[name='favicon']").attr("src", "assets/themes/default/icons/web-svgrepo-com.svg?date=");
+  });;
+}
+
+window.faviconFallback=function(tag){
+    // console.log('Image failed to load, using fallback...');
+    // this.src = 'assets/themes/default/icons/web-svgrepo-com.svg'; // your fallback image
+    tag.parentElement.getElementsByTagName("source")[0].remove();
 }
